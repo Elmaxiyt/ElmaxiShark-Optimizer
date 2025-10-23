@@ -1,10 +1,10 @@
-# EMX Optimizer v1.0
+# ElmaxiShark Optimizer v1.0
 
-Creado por Elmaxi ([@Elmaxizone en YouTube](https://www.youtube.com/@Elmaxizone))
+Creado por Elmaxi ([@Elmaxizone en YouTube](https://www.youtube.com/@Elmaxizone)) | [Mi Sitio Web](https://AQUI_VA_LA_URL_DE_TU_WEB.com)
 
 > **⚠️ ADVERTENCIA IMPORTANTE (BETA) ⚠️**
 >
-> Esta es una versión BETA de EMX Optimizer. Aunque ha sido probada, podrían existir errores o comportamientos inesperados.
+> Esta es una versión BETA de ElmaxiShark Optimizer. Aunque ha sido probada, podrían existir errores o comportamientos inesperados.
 >
 > **SE RECOMIENDA ENCARECIDAMENTE CREAR UN PUNTO DE RESTAURACIÓN MANUAL** usando el botón "Punto Restauración" ANTES de aplicar cualquier modo de optimización, especialmente Extremo o Modo Dios.
 >
@@ -14,7 +14,7 @@ Creado por Elmaxi ([@Elmaxizone en YouTube](https://www.youtube.com/@Elmaxizone)
 
 ## Cómo Usar
 
-1.  Descarga el `EMX Optimizer.exe` desde la sección de **[Releases](https://github.com/Elmaxiyt/Emx-Optimizer/releases)** de este repositorio.
+1.  Descarga el `ElmaxiShark Optimizer.exe` desde la sección de **[Releases](https://github.com/Elmaxiyt/ElmaxiShark-Optimizer/releases)** de este repositorio. (¡Recuerda cambiar este enlace si renombras el repo!).
 2.  Ejecuta el archivo `.exe`. La aplicación te pedirá permisos de Administrador (UAC) para poder aplicar los tweaks.
 3.  (Opcional pero recomendado) Haz clic en **"Punto Restauracion"**.
 4.  (Opcional) Haz clic en **"Crear Plan Energia"** para generar el plan optimizado.
@@ -33,8 +33,8 @@ Creado por Elmaxi ([@Elmaxizone en YouTube](https://www.youtube.com/@Elmaxizone)
 ### Herramientas Individuales
 
 * **Punto Restauracion:**
-    * **Propósito:** Crea un punto de restauración del sistema llamado 'EMX - Punto Manual'.
-    * **Comando:** `powershell.exe -ExecutionPolicy Bypass -Command "Checkpoint-Computer -Description 'EMX - Punto Manual' -RestorePointType 'MODIFY_SETTINGS'"`
+    * **Propósito:** Crea un punto de restauración del sistema llamado 'ElmaxiShark - Punto Manual'.
+    * **Comando:** `powershell.exe -ExecutionPolicy Bypass -Command "Checkpoint-Computer -Description 'ElmaxiShark - Punto Manual' -RestorePointType 'MODIFY_SETTINGS'"`
 
 * **Crear Plan Energia:**
     * **Propósito:** Crea un plan de energía optimizado llamado 'Modo Gaming Extremo', lo activa y añade un acceso directo a "Planes de Energia" en el menú contextual.
@@ -164,7 +164,7 @@ Creado por Elmaxi ([@Elmaxizone en YouTube](https://www.youtube.com/@Elmaxizone)
 
 ## Licencia y Créditos
 
-EMX Optimizer v1.0 es una herramienta gratuita (freeware).
+ElmaxiShark Optimizer v1.0 es una herramienta gratuita (freeware).
 Creada y propiedad de Elmaxi.
 
 * Puedes usar esta aplicación libremente para fines personales y no comerciales.
@@ -174,4 +174,4 @@ Creada y propiedad de Elmaxi.
 
 El incumplimiento de estos términos puede llevar a acciones legales.
 
-Gracias por usar EMX Optimizer.
+Gracias por usar ElmaxiShark Optimizer.

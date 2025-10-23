@@ -1,10 +1,18 @@
-// --- PLEXUS/NEURAL NETWORK BACKGROUND EFFECT ---
+// --- particles.js (Modificado con Colores Fuego/Hielo/Blanco) ---
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 
 let width, height, particles;
 const PARTICLE_COUNT = 80;
 const CONNECT_DISTANCE = 100;
+
+// --- NUEVA PALETA DE COLORES ---
+const particleColors = [
+  '#FFFFFF',    // Blanco
+  '#FF5050',    // Rojo Fuego (similar al borde)
+  '#00D1FF'     // Azul Hielo (similar al título)
+];
+// --- FIN NUEVA PALETA ---
 
 const mouse = {
   x: null,
@@ -37,7 +45,9 @@ class Particle {
     this.size = Math.random() * 2 + 1;
     this.speedX = (Math.random() * 0.4 - 0.2);
     this.speedY = (Math.random() * 0.4 - 0.2);
-    this.color = '#9400D3';
+    // --- CAMBIO: Asignar color aleatorio de la paleta ---
+    this.color = particleColors[Math.floor(Math.random() * particleColors.length)];
+    // --- FIN CAMBIO ---
   }
 
   update() {
@@ -47,9 +57,16 @@ class Particle {
     let dx = mouse.x - this.x;
     let dy = mouse.y - this.y;
     let distance = Math.sqrt(dx * dx + dy * dy);
-    if(distance < mouse.radius){
-        this.x -= dx / 20;
-        this.y -= dy / 20;
+    if(distance < mouse.radius && mouse.x !== null){ // Añadida comprobación por si mouse.x es null
+        // Empujar partícula lejos del ratón
+        const forceDirectionX = dx / distance;
+        const forceDirectionY = dy / distance;
+        const maxDistance = mouse.radius;
+        const force = (maxDistance - distance) / maxDistance; // Fuerza disminuye con la distancia
+        const directionX = forceDirectionX * force * this.size * 0.1; // Ajusta el multiplicador para más/menos fuerza
+        const directionY = forceDirectionY * force * this.size * 0.1;
+        this.x -= directionX;
+        this.y -= directionY;
     }
 
     this.x += this.speedX;
@@ -73,7 +90,10 @@ function connect() {
 
       if (distance < CONNECT_DISTANCE) {
         const opacity = 1 - (distance / CONNECT_DISTANCE);
-        ctx.strokeStyle = `rgba(148, 0, 211, ${opacity})`;
+        // --- CAMBIO: Color de línea a blanco semitransparente ---
+        // Hacemos las líneas un poco más tenues (opacity * 0.6) para que no dominen
+        ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.6})`;
+        // --- FIN CAMBIO ---
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(particles[a].x, particles[a].y);
@@ -100,3 +120,9 @@ window.addEventListener('resize', () => {
 
 init();
 animate();
+
+// --- RECORDATORIO IMPORTANTE ---
+// Asegúrate de que este código de partículas YA NO ESTÉ DUPLICADO
+// dentro de tu archivo renderer.js. Debe existir SOLO aquí.
+// Si todavía está en renderer.js, bórralo de allí.
+// ---------------------------------

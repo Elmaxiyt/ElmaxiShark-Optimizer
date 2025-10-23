@@ -1,105 +1,5 @@
-// --- PLEXUS/NEURAL NETWORK BACKGROUND EFFECT ---
-const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
+// renderer.js (CORREGIDO - Sin código de partículas)
 
-let width, height, particles;
-const PARTICLE_COUNT = 80;
-const CONNECT_DISTANCE = 100;
-
-const mouse = {
-  x: null,
-  y: null,
-  radius: 150
-};
-
-window.addEventListener('mousemove', (event) => {
-  mouse.x = event.x;
-  mouse.y = event.y;
-});
-window.addEventListener('mouseout', () => {
-    mouse.x = null;
-    mouse.y = null;
-});
-
-function init() {
-  width = canvas.width = window.innerWidth;
-  height = canvas.height = window.innerHeight;
-  particles = [];
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    particles.push(new Particle());
-  }
-}
-
-class Particle {
-  constructor() {
-    this.x = Math.random() * width;
-    this.y = Math.random() * height;
-    this.size = Math.random() * 2 + 1;
-    this.speedX = (Math.random() * 0.4 - 0.2);
-    this.speedY = (Math.random() * 0.4 - 0.2);
-    this.color = '#9400D3';
-  }
-
-  update() {
-    if (this.x > width || this.x < 0) this.speedX *= -1;
-    if (this.y > height || this.y < 0) this.speedY *= -1;
-
-    let dx = mouse.x - this.x;
-    let dy = mouse.y - this.y;
-    let distance = Math.sqrt(dx * dx + dy * dy);
-    if(distance < mouse.radius){
-        this.x -= dx / 20;
-        this.y -= dy / 20;
-    }
-
-    this.x += this.speedX;
-    this.y += this.speedY;
-  }
-
-  draw() {
-    ctx.fillStyle = this.color;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fill();
-  }
-}
-
-function connect() {
-  for (let a = 0; a < particles.length; a++) {
-    for (let b = a; b < particles.length; b++) {
-      const dx = particles[a].x - particles[b].x;
-      const dy = particles[a].y - particles[b].y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-
-      if (distance < CONNECT_DISTANCE) {
-        const opacity = 1 - (distance / CONNECT_DISTANCE);
-        ctx.strokeStyle = `rgba(148, 0, 211, ${opacity})`;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(particles[a].x, particles[a].y);
-        ctx.lineTo(particles[b].x, particles[b].y);
-        ctx.stroke();
-      }
-    }
-  }
-}
-
-function animate() {
-  ctx.clearRect(0, 0, width, height);
-  for (const particle of particles) {
-    particle.update();
-    particle.draw();
-  }
-  connect();
-  requestAnimationFrame(animate);
-}
-
-window.addEventListener('resize', () => {
-  init();
-});
-
-init();
-animate();
 // TÍTULO
 const tituloEl = document.getElementById('titulo');
 const textoTitulo = '¿PREPARADO PARA EL SIGUIENTE NIVEL?';
@@ -135,7 +35,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     let cleanCommand = data.command;
-    
+
     if (cleanCommand.includes(':: Clonar el plan')) {
         cleanCommand = '[Ejecutando script de plan de energia...]';
     } else {
@@ -147,15 +47,17 @@ window.addEventListener('DOMContentLoaded', () => {
         cleanCommand = cleanCommand.replace(/\)/g, ')');
         cleanCommand = cleanCommand.replace(/^@echo /i, '');
     }
-    
+
     const logEntry = `
       <div class="${messageClass}">${data.message}</div>
       <div class="log-command">${cleanCommand}</div>
     `;
-    log.innerHTML = logEntry + log.innerHTML;
+    log.innerHTML = logEntry + log.innerHTML; // Añade al principio
+    // Opcional: Auto-scroll hacia arriba si prefieres que se vea lo más nuevo arriba
+    // log.scrollTop = 0; 
   });
 
-  // --- LÓGICA DE BOTONES DE MODO (CORREGIDA) ---
+  // --- LÓGICA DE BOTONES DE MODO ---
 
   // Función auxiliar para obtener el 'mode' de un botón
   const getModeFromButton = (btn) => {
@@ -164,25 +66,21 @@ window.addEventListener('DOMContentLoaded', () => {
     if (btn.classList.contains('equilibrado')) return 'equilibrada';
     if (btn.classList.contains('extremo')) return 'extremo';
     if (btn.classList.contains('mododios')) return 'mododios';
-    return null; // Devuelve null si no es un botón de modo
+    return null;
   };
 
   botones.forEach(btn => {
-    // --- ESTA ES LA CORRECCIÓN DEL BUG ---
-    // Si el boton es una herramienta (tool), ignoramos
-    // y no le añadimos el listener de los modos.
+    // Ignoramos los botones de herramientas para la lógica de selección de modo
     if (btn.classList.contains('tool')) {
-      return; 
+      return;
     }
-    // --- FIN DE LA CORRECCIÓN ---
 
     btn.addEventListener('click', () => {
-      
-      const clickedMode = getModeFromButton(btn);
-      // Si por alguna razon getModeFromButton falla, no hacemos nada
-      if (!clickedMode) return; 
 
-      const activeBtn = document.querySelector('.boton.active');
+      const clickedMode = getModeFromButton(btn);
+      if (!clickedMode) return;
+
+      const activeBtn = document.querySelector('#niveles .boton.active'); // Busca solo en los botones de nivel
       const activeMode = getModeFromButton(activeBtn);
 
       let payload = {
@@ -190,32 +88,32 @@ window.addEventListener('DOMContentLoaded', () => {
         revertMode: null
       };
 
-      if (activeBtn && activeBtn === btn) {
+      if (activeBtn && activeBtn === btn) { // Clic en el botón ya activo -> Desactivar
         btn.classList.remove('active');
         payload.revertMode = clickedMode;
-      
-      } else if (activeBtn && activeBtn !== btn) {
+
+      } else if (activeBtn && activeBtn !== btn) { // Clic en un botón diferente -> Cambiar
         activeBtn.classList.remove('active');
         btn.classList.add('active');
         payload.revertMode = activeMode;
         payload.applyMode = clickedMode;
-      
-      } else if (!activeBtn) {
+
+      } else if (!activeBtn) { // Ningún botón activo -> Activar
         btn.classList.add('active');
         payload.applyMode = clickedMode;
       }
-      
+
       if (payload.applyMode || payload.revertMode) {
         window.electronAPI.send('run-optimization', payload);
       }
     });
   });
 
-  // --- LISTENERS PARA HERRAMIENTAS (Estos están bien) ---
+  // --- LISTENERS PARA HERRAMIENTAS ---
   document.getElementById('btn-restore').addEventListener('click', () => {
     window.electronAPI.send('run-tool', { tool: 'restauracion' });
   });
-  
+
   document.getElementById('btn-energy').addEventListener('click', () => {
     window.electronAPI.send('run-tool', { tool: 'energia' });
   });

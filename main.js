@@ -1,8 +1,7 @@
-// main.js (Completo, con FORZADO DE ADMIN y tamaño corregido)
+// main.js (Completo, con FORZADO DE ADMIN, tamaño y nombre corregidos)
 
 const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('path');
-// --- CAMBIO (Admin): Añadimos 'execSync' y 'exec' ---
 const { spawn, execSync, exec } = require('child_process');
 const os = require('os');
 const fs = require('fs'); // Para manejar archivos
@@ -11,11 +10,10 @@ let cmdProcess = null;
 let commandTimers = [];
 let isRunning = false;
 
-// --- CAMBIO (Admin): Función para chequear si somos admin ---
+// Función para chequear si somos admin
 function isRunningAsAdmin() {
   if (process.platform === 'win32') {
     try {
-      // Intenta un comando que solo funciona como admin. Si falla, no somos admin.
       execSync('fsutil dirty query %systemdrive%');
       return true;
     } catch (e) {
@@ -25,28 +23,27 @@ function isRunningAsAdmin() {
   }
   return true; // Asumir admin en plataformas no-Windows
 }
-// --- FIN DEL CAMBIO ---
 
 function launchPersistentCmd(win) {
   if (!cmdProcess || cmdProcess.killed) {
     console.log('Iniciando nuevo proceso CMD persistente...');
-    
+
     cmdProcess = spawn('cmd.exe', ['/k'], {
       stdio: ['pipe', 'ignore', 'ignore']
     });
 
     try {
       cmdProcess.stdin.write('chcp 65001 >nul\n');
-      
-      // --- CAMBIO AÑADIDO (Tamaño de CMD) ---
-      cmdProcess.stdin.write('mode con: cols=120 lines=40\n');
-      // --- FIN DEL CAMBIO ---
+      cmdProcess.stdin.write('mode con: cols=120 lines=40\n'); // Tamaño CMD
 
-      cmdProcess.stdin.write('title EMX Optimizer - Log de Comandos\n');
+      // --- CAMBIO DE NOMBRE AQUÍ ---
+      cmdProcess.stdin.write('title ElmaxiShark Optimizer - Log de Comandos\n');
       cmdProcess.stdin.write('cls\n');
       cmdProcess.stdin.write('echo off\n');
       cmdProcess.stdin.write('echo =========================================\n');
-      cmdProcess.stdin.write('echo     EMX Optimizer v1.0 - Consola de Log\n');
+      cmdProcess.stdin.write('echo     ElmaxiShark Optimizer v1.0 - Consola de Log\n');
+      // --- FIN CAMBIO NOMBRE ---
+
       cmdProcess.stdin.write('echo =========================================\n\n');
       cmdProcess.stdin.write('echo Esperando acciones del usuario...\n');
       cmdProcess.stdin.write('echo.\n');
@@ -81,7 +78,7 @@ function launchPersistentCmd(win) {
 
 
 function executeCommands(win, commands, action, mode) {
-  
+
   if (isRunning) {
     console.warn("Proceso ya en ejecucion. Se ignoro el nuevo comando.");
     if (win && !win.isDestroyed()) {
@@ -92,25 +89,25 @@ function executeCommands(win, commands, action, mode) {
     }
     return;
   }
-  
-  isRunning = true; 
+
+  isRunning = true;
   commandTimers.forEach(timer => clearTimeout(timer));
   commandTimers = [];
 
-  launchPersistentCmd(win); 
+  launchPersistentCmd(win);
 
   try {
     cmdProcess.stdin.write('cls\n');
     cmdProcess.stdin.write('echo off\n');
     cmdProcess.stdin.write('echo =========================================\n');
-    
+
     let logMessage;
     if (action === 'apply' && (mode === 'energia' || mode === 'restauracion')) {
       logMessage = 'Herramienta';
     } else if (action === 'apply') logMessage = 'Optimizacion';
     else if (action === 'revert') logMessage = 'Reversion';
     else logMessage = 'Procesamiento';
-    
+
     cmdProcess.stdin.write(`echo     Iniciando ${logMessage} (${mode})\n`);
     cmdProcess.stdin.write('echo =========================================\n\n');
     cmdProcess.stdin.write('echo.\n');
@@ -126,18 +123,18 @@ function executeCommands(win, commands, action, mode) {
         if (cmdProcess && !cmdProcess.killed) {
           console.log(`Ejecutando comando: ${cmdObj.message}`);
           if (win && !win.isDestroyed()) {
-            win.webContents.send('log-update', { 
-              message: `[${new Date().toLocaleTimeString()}] ${cmdObj.message}`, 
-              command: cmdObj.command 
+            win.webContents.send('log-update', {
+              message: `[${new Date().toLocaleTimeString()}] ${cmdObj.message}`,
+              command: cmdObj.command
             });
           }
-          
+
           try {
             cmdProcess.stdin.write(`echo. & echo [${new Date().toLocaleTimeString()}] ${cmdObj.message}\n`);
-            
+
             if (cmdObj.isScript) {
-              const tempPath = path.join(os.tmpdir(), 'emx_temp_script.bat');
-              fs.writeFileSync(tempPath, cmdObj.command, { encoding: 'utf8' }); 
+              const tempPath = path.join(os.tmpdir(), 'elmaxishark_temp_script.bat'); // Nombre temporal cambiado
+              fs.writeFileSync(tempPath, cmdObj.command, { encoding: 'utf8' });
               cmdProcess.stdin.write(`call "${tempPath}"\n`);
             } else {
               cmdProcess.stdin.write(`${cmdObj.command}\n`);
@@ -162,7 +159,7 @@ function executeCommands(win, commands, action, mode) {
 
     const finalTimerId = setTimeout(() => {
       if (cmdProcess && !cmdProcess.killed) {
-        
+
         let finalLogMessage;
         let finalActionWord;
         if (action === 'apply' && (mode === 'energia' || mode === 'restauracion')) {
@@ -178,17 +175,17 @@ function executeCommands(win, commands, action, mode) {
           finalLogMessage = 'Reajuste';
           finalActionWord = 'completado';
         }
-        
+
         const finalMessage = `=== ${finalLogMessage} ${finalActionWord}. Esperando nuevas acciones... ===`;
-        
+
         console.log(`${finalLogMessage} ${finalActionWord}`);
         if (win && !win.isDestroyed()) {
-          win.webContents.send('log-update', { 
-            message: `[${new Date().toLocaleTimeString()}] ¡${finalLogMessage} ${finalActionWord}!`, 
-            command: "=== FIN ===" 
+          win.webContents.send('log-update', {
+            message: `[${new Date().toLocaleTimeString()}] ¡${finalLogMessage} ${finalActionWord}!`,
+            command: "=== FIN ==="
           });
         }
-        
+
         try {
           cmdProcess.stdin.write(`\necho ${finalMessage}\n`);
           cmdProcess.stdin.write('echo.\n');
@@ -196,8 +193,8 @@ function executeCommands(win, commands, action, mode) {
           console.error(`Error al escribir en CMD: ${e.message}`);
         }
       }
-      
-      isRunning = false; 
+
+      isRunning = false;
 
     }, 500 * (commands.length + 2));
     commandTimers.push(finalTimerId);
@@ -207,15 +204,13 @@ function executeCommands(win, commands, action, mode) {
 function createWindow() {
   const win = new BrowserWindow({
     width: 840,
-    // --- CAMBIO DE TAMAÑO DE APP (CORREGIDO) ---
-    height: 800,     // <-- Cambiado de 680
+    height: 800,     // Tamaño ventana corregido
     minWidth: 840,
-    minHeight: 800,    // <-- Cambiado de 680
-    // --- FIN DEL CAMBIO ---
+    minHeight: 800,    // Tamaño ventana corregido
     resizable: false,
-    maximizable: false, 
+    maximizable: false,
     frame: false,
-    icon: path.join(__dirname, 'assets', 'logomini.png'),
+    icon: path.join(__dirname, 'assets', 'elmaxi_app_icon.ico'), // Mantenemos nombre icono
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
@@ -225,7 +220,7 @@ function createWindow() {
   });
 
   win.loadFile('index.html');
-  
+
   setTimeout(() => {
     launchPersistentCmd(win);
   }, 500);
@@ -261,7 +256,7 @@ function createWindow() {
 
   ipcMain.on('run-optimization', (event, { applyMode, revertMode }) => {
     console.log(`Evento run-optimization recibido: applyMode=${applyMode}, revertMode=${revertMode}`);
-    
+
     let commandsToRun = [];
     let actionType = 'Optimizacion';
     const win = BrowserWindow.fromWebContents(event.sender);
@@ -269,7 +264,7 @@ function createWindow() {
     try {
       if (revertMode) {
         let revertModeFile = (revertMode === 'mododios') ? 'optimizacion-mododios' : `optimizacion-${revertMode}`;
-        
+
         const revertScriptPath = path.join(__dirname, 'scripts', `${revertModeFile}.js`);
         console.log(`Cargando script de REVERSION: ${revertScriptPath}`);
         delete require.cache[require.resolve(revertScriptPath)];
@@ -277,7 +272,7 @@ function createWindow() {
         commandsToRun.push(...revertScript.revert);
         actionType = 'Reajuste';
       }
-      
+
       if (applyMode) {
         let applyModeFile = (applyMode === 'mododios') ? 'optimizacion-mododios' : `optimizacion-${applyMode}`;
 
@@ -285,7 +280,7 @@ function createWindow() {
         console.log(`Cargando script de APLICACION: ${applyScriptPath}`);
         delete require.cache[require.resolve(applyScriptPath)];
         const applyScript = require(applyScriptPath);
-        
+
         const applyCommands = [...applyScript.apply];
 
         if (applyMode === 'equilibrada' || applyMode === 'extremo' || applyMode === 'mododios') {
@@ -293,7 +288,7 @@ function createWindow() {
             message: "Optimizando 'svchost.exe' segun RAM...",
             command: `for /f "tokens=2 delims==" %%R in ('wmic ComputerSystem get TotalPhysicalMemory /value') do set "RAM_BYTES=%%R" & reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control" /v SvcHostSplitThresholdInKB /t REG_DWORD /d %RAM_BYTES:~0,-3% /f`
           };
-          
+
           const sysMainIndex = applyCommands.findIndex(c => c.message.includes("SysMain"));
           if (sysMainIndex !== -1) {
             applyCommands.splice(sysMainIndex + 1, 0, svchostCommand);
@@ -302,11 +297,11 @@ function createWindow() {
             applyCommands.push(svchostCommand);
           }
         }
-        
+
         commandsToRun.push(...applyCommands);
         actionType = revertMode ? 'Reajuste' : 'Optimizacion';
       }
-      
+
       if (commandsToRun && commandsToRun.length > 0) {
         console.log(`Comandos a ejecutar (${commandsToRun.length} en total): ${JSON.stringify(commandsToRun)}`);
         if (win && !win.isDestroyed()) {
@@ -315,14 +310,14 @@ function createWindow() {
             command: `Cargando ${commandsToRun.length} comandos...`
           });
         }
-        
+
         const logMode = applyMode || revertMode;
-        
+
         let action = 'process';
         if (!applyMode && revertMode) action = 'revert';
         if (applyMode && !revertMode) action = 'apply';
-        
-        executeCommands(win, commandsToRun, action, logMode); 
+
+        executeCommands(win, commandsToRun, action, logMode);
       } else {
         console.error(`No se encontraron comandos para ${applyMode} o ${revertMode}`);
         if (win && !win.isDestroyed()) {
@@ -345,13 +340,13 @@ function createWindow() {
 
   ipcMain.on('run-tool', (event, { tool }) => {
     console.log(`Evento run-tool recibido: tool=${tool}`);
-    
+
     const win = BrowserWindow.fromWebContents(event.sender);
-    
+
     try {
       const scriptPath = path.join(__dirname, 'scripts', `herramienta-${tool}.js`);
       console.log(`Cargando script de HERRAMIENTA: ${scriptPath}`);
-      
+
       delete require.cache[require.resolve(scriptPath)];
       const toolScript = require(scriptPath);
       const commandsToRun = [...toolScript.apply];
@@ -364,7 +359,7 @@ function createWindow() {
             command: `Cargando ${commandsToRun.length} comandos...`
           });
         }
-        executeCommands(win, commandsToRun, 'apply', tool); 
+        executeCommands(win, commandsToRun, 'apply', tool);
       } else {
         console.error(`No se encontraron comandos para la herramienta: ${tool}`);
         if (win && !win.isDestroyed()) {
@@ -388,25 +383,18 @@ function createWindow() {
 
 app.whenReady().then(() => {
 
-  // --- CAMBIO (Admin): FORZAR EJECUCIÓN COMO ADMINISTRADOR ---
-  // Este bloque se asegura de que el .exe siempre pida permisos de admin (UAC)
+  // FORZAR EJECUCIÓN COMO ADMINISTRADOR
   if (process.platform === 'win32' && !isRunningAsAdmin()) {
     console.log('Detectado: no es admin. Re-lanzando app con permisos...');
-    
-    // Usa PowerShell para re-lanzar el .exe actual pidiendo elevación ('runas')
     const command = `Start-Process -FilePath "${process.execPath}" -Verb runas -ArgumentList "${process.argv.slice(1).join(' ')}"`;
-    
     exec(command, { shell: 'powershell.exe' }, (error) => {
-      // Este error suele ocurrir si el usuario pulsa "No" en la ventana de UAC
       if (error) {
         console.error('Error al re-lanzar:', error.message);
       }
-      app.quit(); // Salir de la instancia actual (no-admin)
+      app.quit();
     });
-    
-    return; // Detener la ejecución de la app actual
+    return;
   }
-  // --- FIN DEL CAMBIO ---
 
   console.log(`[INFO] Directorio de trabajo: ${process.cwd()}`);
   console.log('[INFO] Ejecutando la aplicacion (como admin)...');
