@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EMX Optimizer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="particles"></canvas>
+
+  <div id="main-title-container">
+    <div class="line"></div>
+    <div id="main-title">EMX OPTIMIZER</div>
+    <div class="line"></div>
+  </div>
+
+  <div id="topbar">
+    <div id="right-top">
+      <div id="window-controls">
+        <div id="minimize-btn" class="control-btn" title="Minimizar">-</div>
+        <div id="close-btn" class="control-btn" title="Cerrar">✕</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="widget">
+    <img id="logo" src="assets/logo.png" alt="Logo EMX Optimizer">
+    <h1 id="titulo"></h1>
+    <p id="subtitulo">Potencia tu sistema con un CLICK</p>
+
+    <div id="info-herramientas">Herramientas Individuales:</div>
+    <div id="herramientas">
+      <button id="btn-restore" class="boton tool" data-tooltip="Recomendado antes de optimizar">Punto Restauracion</button>
+      <button id="btn-energy" class="boton tool" data-tooltip="Crea el 'Modo Gaming Extremo' y el menu contextual">Crear Plan Energia</button>
+    </div>
+    <div id="info-niveles">Elige un modo de optimizacion:</div>
+    <div id="niveles">
+      <button class="boton minimo" data-tooltip="Optimizacion minima">Básico</button> 
+      <button class="boton equilibrado" data-tooltip="Buen balance rendimiento/estabilidad">Equilibrado</button>
+      <button class="boton extremo" data-tooltip="Agresivo — prueba estabilidad">Extremo</button>
+      <button class="boton mododios" data-tooltip="Rendimiento Máximo — puede ser inestable.">Modo Dios</button>
+    </div>
+
+    <div id="comandos">
+      <div id="log">Aquí se mostrarán las acciones realizadas...</div>
+    </div>
+  </div>
+
+  <footer id="copyright">
+    <a id="yt-link-footer" href="https://www.youtube.com/@Elmaxizone" target="\_blank" rel="noreferrer">
+      <img id="yt-icon" src="assets/youtube.png" alt="YouTube">
+    </a>
+    <span>© 2025 ElmaxiZone. Todos los derechos reservados.</span>
+  </footer>
+
+  <script src="renderer.js"></script>
+  <script src="particles.js"></script>
+</body>
+</html>

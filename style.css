@@ -1,0 +1,223 @@
+/* style.css (Completo y Modificado) */
+
+/* Fuentes y reset */
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+
+* { box-sizing: border-box; margin:0; padding:0; }
+html { height:100%; width:100%; }
+
+/* --- MARCO CON BORDE ROJO Y SOMBRA INTERNA MORADA --- */
+body {
+  height:100%;
+  width:100%;
+  background:#000;
+  font-family: 'Russo One', sans-serif;
+  color:#fff;
+  overflow:hidden;
+  position: relative;
+  padding: 15px;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 9999;
+  border: 3.5px solid rgba(255, 50, 50, 0.8); /* Borde rojo nítido */
+  /* Sombra interna morada sutil */
+  box-shadow: inset 0 0 2px rgba(200, 100, 255, 0.6), 
+              inset 0 0 20px rgba(148, 0, 211, 0.5), 
+              inset 0 0 40px rgba(148, 0, 211, 0.3);
+}
+/* --- FIN DEL MARCO --- */
+
+
+/* PARTICLES */
+#particles { position:fixed; inset:0; z-index:0; background:transparent; }
+
+/* TÍTULO PRINCIPAL */
+#main-title-container { position: fixed; top: 35px; left: 20px; right: 20px; z-index: 100; display: flex; align-items: center; gap: 20px; -webkit-app-region: no-drag; }
+#main-title { font-size: 28px; color: #fff; letter-spacing: 2px; text-shadow: 0 0 5px #c864ff, 0 0 15px #9400D3, 0 0 25px #9400D3; white-space: nowrap; }
+#main-title-container .line { width: 100%; height: 2px; background: #9400D3; box-shadow: 0 0 5px #9400D3, 0 0 10px #9400D3; }
+
+/* TOPBAR */
+#topbar { position: fixed; top: 0; left: 0; right: 0; height: 50px; z-index: 99; display:flex; justify-content: flex-end; align-items: center; padding: 0 20px; -webkit-app-region: drag; }
+#right-top { -webkit-app-region: no-drag; }
+#window-controls { display: flex; gap: 8px; }
+.control-btn { width: 26px; height: 26px; display: flex; justify-content: center; align-items: center; font-size: 14px; color: #ccc; background: rgba(255, 255, 255, 0.05); border-radius: 50%; cursor: pointer; transition: background 0.2s, color 0.2s; }
+.control-btn:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
+#close-btn:hover { background: #ff4d4d; color: #fff; }
+
+/* WIDGET (CON BORDE MÁS FINO) */
+#widget {
+  position:absolute;
+  left:50%;
+  /* --- CAMBIO DE POSICIÓN (CORREGIDO) --- */
+  top: 52%; /* <-- REVERTIDO a tu valor original para dejar espacio al título */
+  /* --- FIN DEL CAMBIO --- */
+  transform: translate(-50%,-50%);
+  width: 600px;
+  background: linear-gradient(180deg, rgba(8,10,14,0.95), rgba(14,16,22,0.95));
+  border-radius: 24px;
+  padding: 30px 28px;
+  z-index:3;
+  text-align:center;
+  /* Borde rojo más fino (2px) */
+  border: 1.5px solid rgba(255, 50, 50, 0.8);
+  /* Sombra externa morada */
+  box-shadow: 0 0 2px rgba(200, 100, 255, 0.6), 
+              0 0 15px rgba(148, 0, 211, 0.5), 
+              0 0 30px rgba(148, 0, 211, 0.3);
+}
+
+/* LOGO INTEGRADO (SIN BORDES DUROS) */
+#logo {
+  width: 120px;
+  margin-bottom: 10px;
+  border-radius: 16px; /* Mantenemos el redondeo */
+  filter: drop-shadow(0 8px 28px rgba(0, 150, 255, 0.08)) blur(0.5px);
+  /* Máscara para difuminar el borde superior y que se integre */
+  -webkit-mask-image: linear-gradient(to top, black 85%, transparent 100%);
+  mask-image: linear-gradient(to top, black 85%, transparent 100%);
+}
+
+/* Elementos internos */
+#titulo { font-size:18px; color: #00d1ff; text-shadow: 0 0 4px rgba(0, 209, 255, 0.8), 0 0 12px rgba(0, 209, 255, 0.6); min-height:24px; margin-bottom:5px; letter-spacing: 1.5px; }
+#subtitulo { font-size: 16px; color: #b0c4de; text-shadow: none; margin-bottom: 12px; }
+
+/* --- ESTILOS PARA HERRAMIENTAS (MOVIDOS Y EDITADOS) --- */
+#info-herramientas {
+  font-size: 14px;
+  color: #cccccc;
+  text-shadow: none;
+  margin-bottom: 10px;
+  margin-top: 5px; /* Reducido el margen superior */
+}
+
+#herramientas {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 14px;
+  /* Borde inferior para separar de los modos */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+  padding-bottom: 14px;
+}
+
+#info-niveles { font-size:14px; color: #cccccc; text-shadow: none; margin-bottom:10px; }
+#niveles { display:flex; gap:10px; justify-content:center; flex-wrap:nowrap; align-items:center; margin-bottom:14px; }
+
+
+/* BOTONES */
+.boton { min-width: 130px; height:42px; padding:8px 12px; border-radius:10px; border: 4px solid rgba(0,0,0,0.8); font-size:13px; cursor:pointer; position:relative; transition: transform .12s ease, box-shadow .18s ease, filter .12s, border-color .2s; color:#0a0a0a; text-shadow: 0 1px 0 rgba(255,255,255,0.06); font-family: 'Russo One', sans-serif; }
+.boton.active { border-color: #fff; box-shadow: 0 0 15px #fff; transform: translateY(-2px); }
+
+/* Color MORADO para los botones de herramientas */
+.boton.tool {
+  min-width: 160px; /* Mas estrechos */
+  background: linear-gradient(180deg, #c864ff, #9400D3);
+}
+
+.boton.minimo { background: linear-gradient(180deg,#9fd9ff,#4db9ff); }
+.boton.equilibrado { background: linear-gradient(180deg,#62ffb8,#18d77e); }
+.boton.extremo { background: linear-gradient(180deg,#ffd38a,#ff9a2b); }
+/* --- RENOMBRADO DE .ultra A .mododios --- */
+.boton.mododios { background: linear-gradient(180deg,#ff7b7b,#ff2b2b); }
+
+.boton:not(.active):hover { transform: translateY(-5px); filter:brightness(1.1); box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
+.boton:active { transform: scale(.98); }
+
+/* TOOLTIPS */
+.boton::after { content: attr(data-tooltip); position:absolute; bottom:58px; left:50%; transform:translateX(-50%); background: rgba(10,10,10,0.95); padding:6px 10px; border-radius:6px; font-size:12px; opacity:0; pointer-events:none; transition:opacity .14s, transform .14s; white-space: nowrap; z-index:6; }
+.boton:hover::after { opacity:1; transform:translateX(-50%) translateY(-6px); }
+
+/* Tooltip morado para Herramientas */
+.boton.tool::after {
+  color: #c864ff;
+}
+.boton.minimo::after { color: #4db9ff; }
+.boton.equilibrado::after { color: #18d77e; }
+.boton.extremo::after { color: #ff9a2b; }
+/* --- RENOMBRADO DE .ultra A .mododios --- */
+.boton.mododios::after { color: #ff2b2b; }
+
+/* LOG BOX */
+#comandos { margin-top: 10px; }
+#log { 
+  background: #0D0F13; 
+  border-radius:10px; 
+  padding:12px; 
+  text-align:left; 
+  /* --- CAMBIO DE TAMAÑO DE LOG (CORREGIDO) --- */
+  height: 240px; /* <-- Altura ajustada (120px originales + 120px de la ventana) */
+  /* --- FIN DEL CAMBIO --- */
+  overflow:auto; 
+  color:#e6eef6; 
+  font-family: 'Courier New', monospace; 
+  font-size:12px; 
+  border: 1px solid rgba(255,255,255,0.05); 
+  box-shadow: inset 0 0 12px rgba(0,0,0,0.5); 
+}
+
+/* Footer */
+#copyright { position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; align-items: center; gap: 10px; color: #7f8b94; font-size: 12px; z-index: 4; }
+#yt-link-footer { -webkit-app-region: no-drag; }
+#yt-icon { width:40px; height:auto; cursor:pointer; transition: transform .18s ease; }
+#yt-icon:hover { transform: scale(1.1); }
+
+
+/* --- ESTILOS PARA LOG --- */
+.log-command {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: #8a9baf; /* Un color más suave para el comando */
+  margin-left: 15px;
+  margin-bottom: 8px; /* Espacio extra */
+  padding: 2px 5px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+  white-space: pre;       /* No rompe la línea */
+  overflow-x: auto;     /* Añade scroll horizontal si se pasa */
+}
+
+.log-error {
+  color: #ff8a8a;
+  font-weight: bold;
+}
+
+
+/* --- ESTILOS PARA SCROLLBARS PERSONALIZADAS (AJUSTADOS) --- */
+
+/* Para el scrollbar vertical del log principal */
+#log::-webkit-scrollbar {
+  width: 8px; /* Ancho del scrollbar vertical: ¡Ajustado a 8px! */
+}
+#log::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.1); /* Fondo (casi invisible) */
+  border-radius: 10px;
+}
+#log::-webkit-scrollbar-thumb {
+  background-color: #9400D3; /* Morado principal */
+  border-radius: 10px;
+}
+#log::-webkit-scrollbar-thumb:hover {
+  background-color: #c864ff; /* Morado más claro al pasar el ratón */
+}
+
+/* Para el scrollbar horizontal de los comandos */
+.log-command::-webkit-scrollbar {
+  height: 3px; /* Alto del scrollbar horizontal: ¡Ajustado a 3px! */
+}
+.log-command::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.2); /* Fondo (mismo que el comando) */
+  border-radius: 4px;
+}
+.log-command::-webkit-scrollbar-thumb {
+  background-color: #9400D3; /* ¡Cambiado a morado principal! */
+  border-radius: 4px;
+}
+.log-command::-webkit-scrollbar-thumb:hover {
+  background-color: #c864ff; /* Morado más claro */
+}

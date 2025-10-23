@@ -1,0 +1,44 @@
+{
+  "name": "emx-optimizer",
+  "version": "1.0.0",
+  "description": "Optimizador de Windows para Gaming",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "keywords": [
+    "optimizer",
+    "windows",
+    "gaming",
+    "tweak"
+  ],
+  "author": "Elmaxi",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.6.4"
+  },
+  "build": {
+    "appId": "com.elmaxi.emxoptimizer",
+    "productName": "EMX Optimizer",
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "style.css",
+      "renderer.js",
+      "particles.js",
+      "scripts/**/*",
+      "assets/**/*"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "assets/elmaxi_app_icon.ico",
+      "requestedExecutionLevel": "requireAdministrator"
+    },
+    "portable": {
+      "artifactName": "EMX Optimizer.exe"
+    }
+  }
+}
