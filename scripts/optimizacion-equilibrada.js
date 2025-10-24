@@ -70,7 +70,8 @@ const applyEquilibrado = [
   },
   // --- QOL Y PERIFERICOS ---
   {
-    message: "Activando Menu Contextual Clasico (W11)...",
+    // --- CAMBIO DE MENSAJE: Activación del menú completo de W10/W7 ---
+    message: "Activando Menu Contextual Completo (W10/W7 style)",
     command: 'reg add "HKCU\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32" /v "" /t REG_SZ /d "" /f'
   },
   {
@@ -168,7 +169,8 @@ const revertEquilibrado = [
   },
   // --- REVERT QOL Y PERIFERICOS ---
   {
-    message: "Desactivando Menu Contextual Clasico (W11)...",
+    // --- CAMBIO DE MENSAJE: Restauración al menú moderno de W11 ---
+    message: "Restaurando Menu Contextual Moderno (W11 style)",
     command: 'reg delete "HKCU\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" /f >nul 2>&1'
   },
   {

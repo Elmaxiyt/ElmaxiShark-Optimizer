@@ -30,6 +30,7 @@ module.exports = {
       command: 'rmdir /s /q "%LOCALAPPDATA%\\Steam\\htmlcache" >nul 2>&1 & rmdir /s /q "%LOCALAPPDATA%\\Steam\\appcache" >nul 2>&1'
     },
     {
+      // --- LÍNEA CORREGIDA ---
       message: "Limpiando cache de Epic Games Launcher...",
       command: 'rmdir /s /q "%LOCALAPPDATA%\\EpicGamesLauncher\\Saved\\webcache" >nul 2>&1'
     },
@@ -42,10 +43,6 @@ module.exports = {
       command: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize" /v EnableTransparency /t REG_DWORD /d 0 /f'
     },
     {
-      message: "Activando Modo Oscuro (Apps)...",
-      command: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize" /v AppsUseLightTheme /t REG_DWORD /d 0 /f'
-    },
-    {
       message: "Manteniendo suavizado de fuentes...",
       command: 'reg add "HKCU\\Control Panel\\Desktop" /v FontSmoothing /t REG_SZ /d 2 /f'
     },
@@ -54,7 +51,6 @@ module.exports = {
       command: 'reg add "HKCU\\Control Panel\\Desktop" /v "JPEGImportQuality" /t REG_DWORD /d "100" /f'
     },
     {
-      // --- COMANDO DNS CORREGIDO (PARA ETHERNET Y WI-FI) ---
       message: "Cambiando DNS (Ethernet y Wi-Fi) a Cloudflare/Google...",
       command: 'netsh interface ipv4 set dnsserver name="Ethernet" static 1.1.1.1 primary >nul 2>&1 & netsh interface ipv4 add dnsserver name="Ethernet" address=8.8.8.8 index=2 >nul 2>&1 & netsh interface ipv4 set dnsserver name="Wi-Fi" static 1.1.1.1 primary >nul 2>&1 & netsh interface ipv4 add dnsserver name="Wi-Fi" address=8.8.8.8 index=2 >nul 2>&1'
     },
@@ -89,7 +85,6 @@ module.exports = {
       command: 'powercfg /setactive 381b4222-f694-41f0-9685-ff5bb260df2e'
     },
     {
-      // --- COMANDO DNS-REVERT CORREGIDO (PARA ETHERNET Y WI-FI) ---
       message: "Restaurando DNS (Ethernet y Wi-Fi) a Automatico (DHCP)...",
       command: 'netsh interface ipv4 set dnsserver name="Ethernet" source=dhcp >nul 2>&1 & netsh interface ipv4 set dnsserver name="Wi-Fi" source=dhcp >nul 2>&1'
     },
@@ -100,10 +95,6 @@ module.exports = {
     {
       message: "Reactivando efectos de transparencia...",
       command: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize" /v EnableTransparency /t REG_DWORD /d 1 /f'
-    },
-    {
-      message: "Restaurando Modo Claro (Apps)...",
-      command: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize" /v AppsUseLightTheme /t REG_DWORD /d 1 /f'
     },
     {
       message: "Restaurando calidad de Wallpaper...",

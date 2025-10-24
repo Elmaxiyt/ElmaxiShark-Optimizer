@@ -14,17 +14,17 @@ Creado por Elmaxi ([@Elmaxizone en YouTube](https://www.youtube.com/@Elmaxizone)
 
 ## Cómo Usar
 
-1.  Descarga el `ElmaxiShark Optimizer.exe` desde la sección de **[Releases](https://github.com/Elmaxiyt/ElmaxiShark-Optimizer/releases)** de este repositorio. (¡Recuerda cambiar este enlace si renombras el repo!).
-2.  Ejecuta el archivo `.exe`. La aplicación te pedirá permisos de Administrador (UAC) para poder aplicar los tweaks.
-3.  (Opcional pero recomendado) Haz clic en **"Punto Restauracion"**.
-4.  (Opcional) Haz clic en **"Crear Plan Energia"** para generar el plan optimizado.
-5.  Elige un modo de optimización haciendo clic en uno de los botones de colores:
-    * **Básico:** Optimizaciones seguras y básicas.
-    * **Equilibrado:** Un buen balance entre rendimiento y estabilidad.
-    * **Extremo:** Ajustes más agresivos. Prueba la estabilidad de tu sistema.
-    * **Modo Dios:** Máximo rendimiento. Desactiva funciones del sistema y mitigaciones de seguridad.
-6.  Para revertir los cambios de un modo, simplemente **vuelve a hacer clic en el botón que esté activo**.
-7.  Puedes cambiar entre modos. Al hacerlo, se revertirán los cambios del modo anterior y se aplicarán los del nuevo modo seleccionado.
+1.  Descarga el `ElmaxiShark Optimizer.exe` desde la sección de **[Releases](https://github.com/Elmaxiyt/ElmaxiShark-Optimizer/releases)** de este repositorio.
+2.  Ejecuta el archivo `.exe`. La aplicación te pedirá permisos de Administrador (UAC) para poder aplicar los tweaks.
+3.  (Opcional pero recomendado) Haz clic en **"Punto Restauracion"**.
+4.  (Opcional) Haz clic en **"Crear Plan Energia"** para generar el plan optimizado.
+5.  Elige un modo de optimización haciendo clic en uno de los botones de colores:
+    * **Básico:** Optimizaciones seguras y básicas.
+    * **Equilibrado:** Un buen balance entre rendimiento y estabilidad.
+    * **Extremo:** Ajustes más agresivos. Prueba la estabilidad de tu sistema.
+    * **Modo Dios:** Máximo rendimiento. Desactiva funciones del sistema y mitigaciones de seguridad.
+6.  Para revertir los cambios de un modo, simplemente **vuelve a hacer clic en el botón que esté activo**.
+7.  Puedes cambiar entre modos. Al hacerlo, se revertirán los cambios del modo anterior y se aplicarán los del nuevo modo seleccionado.
 
 ---
 
@@ -33,49 +33,11 @@ Creado por Elmaxi ([@Elmaxizone en YouTube](https://www.youtube.com/@Elmaxizone)
 ### Herramientas Individuales
 
 * **Punto Restauracion:**
-    * **Propósito:** Crea un punto de restauración del sistema llamado 'ElmaxiShark - Punto Manual'.
-    * **Comando:** `powershell.exe -ExecutionPolicy Bypass -Command "Checkpoint-Computer -Description 'ElmaxiShark - Punto Manual' -RestorePointType 'MODIFY_SETTINGS'"`
+    * **Propósito:** Crea un punto de restauración del sistema llamado 'ElmaxiShark - Punto Manual'.
+    * **Comando:** `powershell.exe -ExecutionPolicy Bypass -Command "Checkpoint-Computer -Description 'ElmaxiShark - Punto Manual' -RestorePointType 'MODIFY_SETTINGS'"`
 
 * **Crear Plan Energia:**
-    * **Propósito:** Crea un plan de energía optimizado llamado 'Modo Gaming Extremo', lo activa y añade un acceso directo a "Planes de Energia" en el menú contextual.
-    * **Comando (Script de Plan):**
-        ```batch
-        @echo off
-        chcp 65001 >nul
-        :: Clona el plan de "Alto Rendimiento" (e9a42b02-d5df-448d-aa00-03f14749eb61)
-        for /f "tokens=2 delims=:" %%A in ('powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61 2^>nul') do set PLAN_GUID=%%A
-        :: Si falla, usa el plan activo como base
-        if not defined PLAN_GUID for /f "tokens=2 delims=:" %%A in ('powercfg -getactivescheme') do set PLAN_GUID=%%A
-        set PLAN_GUID=%PLAN_GUID:~1,36%
-        if "%PLAN_GUID%"=="" ( exit /b 1 )
-        :: Renombrar y activar el plan
-        powercfg -changename %PLAN_GUID% "Modo Gaming Extremo"
-        powercfg -setactive %PLAN_GUID%
-        :: Aplicar ajustes avanzados (Min/Max CPU, Core Parking, USB Suspend, etc.)
-        powercfg -setacvalueindex %PLAN_GUID% SUB_PROCESSOR PROCTHROTTLEMIN 100 2>nul
-        powercfg -setdcvalueindex %PLAN_GUID% SUB_PROCESSOR PROCTHROTTLEMIN 100 2>nul
-        powercfg -setacvalueindex %PLAN_GUID% SUB_PROCESSOR PROCTHROTTLEMAX 100 2>nul
-        powercfg -setdcvalueindex %PLAN_GUID% SUB_PROCESSOR PROCTHROTTLEMAX 100 2>nul
-        powercfg -setacvalueindex %PLAN_GUID% SUB_PROCESSOR PERFBOOSTMODE 2 2>nul
-        powercfg -setdcvalueindex %PLAN_GUID% SUB_PROCESSOR PERFBOOSTMODE 2 2>nul
-        powercfg -setacvalueindex %PLAN_GUID% SUB_PROCESSOR CPMINCORES 100 2>nul
-        powercfg -setdcvalueindex %PLAN_GUID% SUB_PROCESSOR CPMINCORES 100 2>nul
-        powercfg -setacvalueindex %PLAN_GUID% SUB_DISK DISKIDLE 0 2>nul
-        powercfg -setdcvalueindex %PLAN_GUID% SUB_DISK DISKIDLE 0 2>nul
-        powercfg -setacvalueindex %PLAN_GUID% SUB_PCIEXPRESS ASPM 0 2>nul
-        powercfg -setdcvalueindex %PLAN_GUID% SUB_PCIEXPRESS ASPM 0 2>nul
-        powercfg -setacvalueindex %PLAN_GUID% SUB_USB USBSELECTSUSPEND 0 2>nul
-        powercfg -setdcvalueindex %PLAN_GUID% SUB_USB USBSELECTSUSPEND 0 2>nul
-        powercfg -setacvalueindex %PLAN_GUID% SUB_VIDEO VIDEOIDLE 0 2>nul
-        powercfg -setdcvalueindex %PLAN_GUID% SUB_VIDEO VIDEOIDLE 0 2>nul
-        powercfg -setactive %PLAN_GUID%
-        ```
-    * **Comando (Menú Contextual):**
-        ```batch
-        reg add "HKCU\Software\Classes\DesktopBackground\Shell\PowerOptions" /v "Icon" /t REG_SZ /d "powercpl.dll" /f
-        reg add "HKCU\Software\Classes\DesktopBackground\Shell\PowerOptions" /v "MUIVerb" /t REG_SZ /d "Planes de Energia" /f
-        reg add "HKCU\Software\Classes\DesktopBackground\Shell\PowerOptions\command" /v "" /t REG_SZ /d "control.exe powercfg.cpl" /f
-        ```
+    * **Propósito:** Crea un plan de energía optimizado llamado 'Modo Gaming Extremo', lo activa y añade un acceso directo a "Planes de Energia" en el menú contextual.
 
 ---
 
@@ -83,15 +45,8 @@ Creado por Elmaxi ([@Elmaxizone en YouTube](https://www.youtube.com/@Elmaxizone)
 *(Aplica todos estos comandos)*
 
 * **Limpieza:** Caches de Temp, Prefetch, Shaders, Windows Update, Iconos, Steam y Epic Games.
-* **Red:** Establece DNS a Cloudflare (1.1.1.1) y Google (8.8.8.8).
-* **Red:** Limpia cache DNS (`ipconfig /flushdns`).
-* **Red:** Activa RSS (`netsh interface tcp set global rss=enabled`).
-* **Sistema:** Habilita TRIM para SSD (`fsutil behavior set DisableDeleteNotify 0`).
-* **QOL:** Ajusta visuales a "Mejor Rendimiento".
-* **QOL:** Desactiva transparencia y activa Modo Oscuro.
-* **QOL:** Mejora calidad de JPG en wallpaper (`JPEGImportQuality = 100`).
-* **QOL:** Muestra extensiones de archivos (`HideFileExt = 0`).
-* **QOL:** Acelera menús y desactiva animaciones de ventanas.
+* **QOL:** Ajusta visuales a "Mejor Rendimiento" y desactiva transparencia. **Acelera menús/animaciones y mantiene suavizado de fuentes (Preserva la configuración de Modo Oscuro/Claro del usuario).**
+* **Red/Sistema:** Establece DNS a Cloudflare (1.1.1.1) y Google (8.8.8.8), limpia caché DNS, activa RSS, verifica TRIM (SSD).
 
 ---
 
@@ -107,7 +62,7 @@ Creado por Elmaxi ([@Elmaxizone en YouTube](https://www.youtube.com/@Elmaxizone)
 * **Memoria:** Desactiva Large System Cache (`LargeSystemCache = 0`).
 * **Memoria:** Mantiene el Kernel en RAM (`DisablePagingExecutive = 1`).
 * **Memoria:** Optimiza uso de memoria de NTFS (`fsutil behavior set memoryusage 2`).
-* **QOL (W11):** Activa Menú Contextual Clásico.
+* **QOL/Interfaz:** **Activa el Menú Contextual Completo (W10/W7 style)**.
 * **QOL:** Desactiva aceleración de ratón y optimiza respuesta de teclado.
 * **QOL:** Desactiva Optimizaciones de Pantalla Completa (Global).
 * **QOL:** Restringe Apps UWP en segundo plano.
@@ -143,7 +98,7 @@ Creado por Elmaxi ([@Elmaxizone en YouTube](https://www.youtube.com/@Elmaxizone)
 
 > **ADVERTENCIA:** Este modo es muy agresivo. Desactiva funciones básicas del sistema como el Buscador de Windows, la impresión y servicios de Xbox. También desactiva mitigaciones de seguridad de la CPU. Puede causar inestabilidad o problemas de compatibilidad. **USAR CON PRECAUCIÓN.**
 
-* **Red:** Desactiva Algoritmo de Nagle (TcpAckFrequency = 1, TCPNoDelay = 1).
+* **Red:** Desactiva Algoritmo de Nagle (TcpAckFrequency = 1, TcpNoDelay = 1).
 * **Red:** Desactiva IPv6.
 * **Red:** Desactiva ICMP Redirects.
 * **Red:** Desactiva NDU (Servicio de Diagnóstico de Red).
