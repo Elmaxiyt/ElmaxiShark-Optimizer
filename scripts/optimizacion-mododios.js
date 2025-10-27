@@ -1,5 +1,5 @@
-// scripts/optimizacion-mododios.js
-const optimizacionExtremo = require('./optimizacion-extremo.js');
+// scripts/optimizacion-mododios.js (v1.1 - MÁS SEGURO)
+const optimizacionOverdrive = require('./optimizacion-overdrive.js'); // <-- CAMBIADO
 
 const applyModoDios = [
   // --- TWEAKS DE RED AGRESIVOS ---
@@ -12,7 +12,7 @@ const applyModoDios = [
     command: 'reg add "HKLM\\SYSTEM\\ControlSet001\\services\\TCPIP6\\Parameters" /v "DisabledComponents" /t REG_DWORD /d 255 /f'
   },
   {
-    message: "Desactivando ICMP Redirects (Puede romper FiveM)...",
+    message: "Desactivando ICMP Redirects...",
     command: 'netsh int ip set global icmpredirects=disabled'
   },
   {
@@ -20,10 +20,7 @@ const applyModoDios = [
     command: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Ndu" /v Start /t REG_DWORD /d 4 /f'
   },
   // --- TWEAKS DE SISTEMA AGRESIVOS ---
-  {
-    message: "Optimizando temporizadores avanzados (HPET/TSC)...",
-    command: 'bcdedit /deletevalue useplatformclock & bcdedit /set tscsyncpolicy Enhanced'
-  },
+  // { message: "Optimizando temporizadores avanzados (HPET/TSC)...", command: '...' }, // Movido a Overdrive
   {
     message: "Desactivando virtualizacion (Hyper-V)...",
     command: 'bcdedit /set hypervisorlaunchtype off'
@@ -82,18 +79,10 @@ Powershell.exe -command "& {Get-AppxPackage *Microsoft.WindowsFeedbackHub* | Rem
 Powershell.exe -command "& {Get-AppxPackage *Microsoft.WindowsSoundRecorder* | Remove-AppxPackage}" >nul 2>&1
 Powershell.exe -command "& {Get-AppxPackage *Microsoft.YourPhone* | Remove-AppxPackage}" >nul 2>&1
 Powershell.exe -command "& {Get-AppxPackage *Microsoft.ZuneMusic* | Remove-AppxPackage}" >nul 2>&1
-:: (Línea para eliminar Microsoft.ZuneVideo eliminada para evitar problemas con el reproductor)
+:: (Línea para eliminar Microsoft.ZuneVideo (Películas y TV) ELIMINADA aquí)
 `
-  },
-  // --- MITIGACIONES AGRESIVAS ---
-  {
-    message: "ADVERTENCIA: Desactivando mitigaciones de CPU (Meltdown/Spectre)...",
-    command: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management" /v FeatureSettingsOverride /t REG_DWORD /d 3 /f & reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management" /v FeatureSettingsOverrideMask /t REG_DWORD /d 3 /f'
-  },
-  {
-    message: "ADVERTENCIA: Desactivando mitigaciones (VBS, CFG, ASLR)...",
-    command: 'reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeviceGuard" /v "EnableVirtualizationBasedSecurity" /t REG_DWORD /d 0 /f & reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\kernel" /v "DisableExceptionChainValidation" /t REG_DWORD /d 1 /f & reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\kernel" /v "KernelSEHOPEnabled" /t REG_DWORD /d 0 /f & reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management" /v "EnableCfg" /t REG_DWORD /d 0 /f & reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management" /v "MoveImages" /t REG_DWORD /d 0 /f'
   }
+  // --- MITIGACIONES AGRESIVAS ELIMINADAS ---
 ];
 
 const revertModoDios = [
@@ -115,10 +104,7 @@ const revertModoDios = [
     command: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Ndu" /v Start /t REG_DWORD /d 2 /f'
   },
   // --- REVERT TWEAKS DE SISTEMA AGRESIVOS ---
-  {
-    message: "Restaurando temporizadores del sistema (HPET/TSC)...",
-    command: 'bcdedit /set useplatformclock true & bcdedit /deletevalue tscsyncpolicy'
-  },
+  // { message: "Restaurando temporizadores del sistema (HPET/TSC)...", command: '...' }, // Movido a Overdrive
   {
     message: "Reactivando virtualizacion (Hyper-V)...",
     command: 'bcdedit /set hypervisorlaunchtype auto'
@@ -150,22 +136,12 @@ const revertModoDios = [
   },
   {
     message: "MODO DIOS: Reinstalando Apps UWP (Puede tardar)...",
-    // --- CORRECCIÓN CLAVE DE SINTAXIS (Comillas rectas y escape correcto) ---
     command: 'powershell -Command "Get-AppxPackage -allusers | foreach {Add-AppxPackage -register \\"$($_.InstallLocation)\\appxmanifest.xml\\" -DisabledevelopmentMode}"'
-    // --- FIN CORRECCIÓN ---
-  },
-  // --- REVERT MITIGACIONES AGRESIVAS ---
-  {
-    message: "Reactivando mitigaciones de CPU (Meltdown/Spectre)...",
-    command: 'reg delete "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management" /v FeatureSettingsOverride /f >nul 2>&1 & reg delete "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management" /v FeatureSettingsOverrideMask /f >nul 2>&1'
-  },
-  {
-    message: "Reactivando mitigaciones (VBS, CFG, ASLR)...",
-    command: 'reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeviceGuard" /v "EnableVirtualizationBasedSecurity" /t REG_DWORD /d 1 /f & reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\kernel" /v "DisableExceptionChainValidation" /t REG_DWORD /d 0 /f & reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\kernel" /v "KernelSEHOPEnabled" /t REG_DWORD /d 1 /f & reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management" /v "EnableCfg" /t REG_DWORD /d 1 /f & reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management" /v "MoveImages" /t REG_DWORD /d 1 /f'
   }
+  // --- MITIGACIONES AGRESIVAS ELIMINADAS ---
 ];
 
 module.exports = {
-  apply: [...optimizacionExtremo.apply, ...applyModoDios],
-  revert: [...revertModoDios, ...optimizacionExtremo.revert]
+  apply: [...optimizacionOverdrive.apply, ...applyModoDios], // <-- CAMBIADO
+  revert: [...revertModoDios, ...optimizacionOverdrive.revert] // <-- CAMBIADO
 };

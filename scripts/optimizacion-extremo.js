@@ -1,4 +1,4 @@
-// scripts/optimizacion-extremo.js
+// scripts/optimizacion-extremo.js (v1.1)
 const optimizacionEquilibrada = require('./optimizacion-equilibrada.js');
 
 const applyExtremo = [
@@ -11,10 +11,7 @@ const applyExtremo = [
     message: "Optimizando red para baja latencia (NetworkThrottling)...",
     command: 'reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile" /v NetworkThrottlingIndex /t REG_DWORD /d 4294967295 /f & netsh interface tcp set global autotuninglevel=disabled'
   },
-  {
-    message: "Optimizando temporizadores del sistema (DynamicTick)...",
-    command: 'bcdedit /set disabledynamictick yes'
-  },
+  // { message: "Optimizando temporizadores del sistema (DynamicTick)...", command: 'bcdedit /set disabledynamictick yes' }, // Movido a Overdrive
   {
     message: "Optimizando TCP (MaxUserPort, TcpTimedWaitDelay)...",
     command: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters" /v "MaxUserPort" /t REG_DWORD /d 65534 /f & reg add "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters" /v "TcpTimedWaitDelay" /t REG_DWORD /d 30 /f'
@@ -23,9 +20,14 @@ const applyExtremo = [
     message: "Desactivando ECN Capability (Red)...",
     command: 'netsh int tcp set global ecncapability=disabled'
   },
+  // { message: "Desactivando Offloads (LSO, RSC)...", command: 'powershell -Command "..."' }, // Movido a Overdrive
   {
-    message: "Desactivando Offloads (LSO, RSC) (Puede mejorar latencia)...",
-    command: 'powershell -Command "Set-NetOffloadGlobalSetting -ReceiveSegmentCoalescing disabled -ReceiveSideScaling disabled -Chimney disabled; Disable-NetAdapterLso -Name *; Disable-NetAdapterChecksumOffload -Name *"'
+    message: "Activando Programacion de GPU acelerada por hardware (HwSchMode)...",
+    command: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers" /v "HwSchMode" /t REG_DWORD /d "2" /f'
+  },
+  {
+    message: "Limpiando configuracion de drivers Vulkan (ICD)...",
+    command: 'setx VK_ICD_FILENAMES ""'
   },
   // --- ENERGIA Y MEMORIA ---
   {
@@ -36,10 +38,7 @@ const applyExtremo = [
     message: "Desactivando Inicio Rapido...",
     command: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power" /v HiberbootEnabled /t REG_DWORD /d 0 /f'
   },
-  {
-    message: "Desactivando Compresion de Memoria y Page Combining (para 16GB+ RAM)...",
-    command: 'powershell -Command "Disable-MMAgent -MemoryCompression; Disable-MMAgent -PageCombining"'
-  },
+  // { message: "Desactivando Compresion de Memoria...", command: 'powershell -Command "..."' }, // Movido a Overdrive
   // --- ALMACENAMIENTO Y USB ---
   {
     message: "Desactivando Last Access Time (Mejora NTFS)...",
@@ -60,7 +59,7 @@ const applyExtremo = [
     command: `@echo off
 chcp 65001 >nul
 :: Itera sobre todos los adaptadores de red y desactiva funciones de ahorro de energia/interrupcion
-for /f %%n in ('Reg query "HKLM\SYSTEM\CurrentControlSet\Control\Class\{4D36E972-E325-11CE-BFC1-08002bE10318}" /v "*SpeedDuplex" /s ^| findstr "HKEY"') do (
+for /f %%n in ('Reg query "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}" /v "*SpeedDuplex" /s ^| findstr "HKEY"') do (
     reg add "%%n" /v "AdvancedEEE" /t REG_SZ /d 0 /f >nul 2>&1
     reg add "%%n" /v "*EEE" /t REG_SZ /d 0 /f >nul 2>&1
     reg add "%%n" /v "EEE" /t REG_SZ /d 0 /f >nul 2>&1
@@ -91,10 +90,7 @@ const revertExtremo = [
     message: "Restaurando configuracion de red (NetworkThrottling)...",
     command: 'reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile" /v NetworkThrottlingIndex /t REG_DWORD /d 10 /f & netsh interface tcp set global autotuninglevel=normal'
   },
-  {
-    message: "Reactivando Dynamic Tick...",
-    command: 'bcdedit /deletevalue disabledynamictick'
-  },
+  // { message: "Reactivando Dynamic Tick...", command: 'bcdedit /deletevalue disabledynamictick' }, // Movido a Overdrive
   {
     message: "Restaurando TCP (MaxUserPort, TcpTimedWaitDelay)...",
     command: 'reg delete "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters" /v "MaxUserPort" /f >nul 2>&1 & reg delete "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters" /v "TcpTimedWaitDelay" /f >nul 2>&1'
@@ -103,9 +99,10 @@ const revertExtremo = [
     message: "Reactivando ECN Capability (Red)...",
     command: 'netsh int tcp set global ecncapability=enabled'
   },
+  // { message: "Reactivando Offloads (LSO, RSC)...", command: 'powershell -Command "..."' }, // Movido a Overdrive
   {
-    message: "Reactivando Offloads (LSO, RSC)...",
-    command: 'powershell -Command "Set-NetOffloadGlobalSetting -ReceiveSegmentCoalescing enabled -ReceiveSideScaling enabled -Chimney enabled; Enable-NetAdapterLso -Name *; Enable-NetAdapterChecksumOffload -Name *"'
+    message: "Desactivando Programacion de GPU acelerada por hardware (HwSchMode)...",
+    command: 'reg delete "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers" /v "HwSchMode" /f >nul 2>&1'
   },
   // --- REVERT ENERGIA Y MEMORIA ---
   {
@@ -116,10 +113,7 @@ const revertExtremo = [
     message: "Reactivando Inicio Rapido...",
     command: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power" /v HiberbootEnabled /t REG_DWORD /d 1 /f'
   },
-  {
-    message: "Reactivando Compresion de Memoria y Page Combining...",
-    command: 'powershell -Command "Enable-MMAgent -MemoryCompression; Enable-MMAgent -PageCombining"'
-  },
+  // { message: "Reactivando Compresion de Memoria...", command: 'powershell -Command "..."' }, // Movido a Overdrive
   // --- REVERT ALMACENAMIENTO Y USB ---
   {
     message: "Restaurando Last Access Time...",
@@ -140,7 +134,7 @@ const revertExtremo = [
     command: `@echo off
 chcp 65001 >nul
 :: Itera y borra los valores para que vuelvan a su default de driver
-for /f %%n in ('Reg query "HKLM\SYSTEM\CurrentControlSet\Control\Class\{4D36E972-E325-11CE-BFC1-08002bE10318}" /v "*SpeedDuplex" /s ^| findstr "HKEY"') do (
+for /f %%n in ('Reg query "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}" /v "*SpeedDuplex" /s ^| findstr "HKEY"') do (
     reg delete "%%n" /v "AdvancedEEE" /f >nul 2>&1
     reg delete "%%n" /v "*EEE" /f >nul 2>&1
     reg delete "%%n" /v "EEE" /f >nul 2>&1

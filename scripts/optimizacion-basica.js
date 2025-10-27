@@ -1,4 +1,4 @@
-// scripts/optimizacion-basica.js
+// scripts/optimizacion-basica.js (v1.1)
 module.exports = {
   apply: [
     {
@@ -14,8 +14,20 @@ module.exports = {
       command: 'del /f /s /q C:\\Windows\\Prefetch\\* >nul 2>&1'
     },
     {
-      message: "Limpiando cache de Shaders...",
-      command: 'rmdir /s /q %LOCALAPPDATA%\\D3DSCache >nul 2>&1'
+      message: "Limpiando cache DirectX generica (D3DSCache)...",
+      command: 'rmdir /s /q "%LocalAppData%\\D3DSCache" >nul 2>&1'
+    },
+    {
+      message: "Limpiando cache DirectX de NVIDIA...",
+      command: 'del /s /q "%LocalAppData%\\NVIDIA\\DXCache\\*.*" >nul 2>&1'
+    },
+    {
+      message: "Limpiando cache OpenGL de NVIDIA...",
+      command: 'del /s /q "%LocalAppData%\\NVIDIA\\GLCache\\*.*" >nul 2>&1'
+    },
+    {
+      message: "Limpiando cache Vulkan...",
+      command: 'del /s /q "%AppData%\\Vulkan\\Cache\\*.*" >nul 2>&1'
     },
     {
       message: "Limpiando cache de Windows Update...",
@@ -30,7 +42,6 @@ module.exports = {
       command: 'rmdir /s /q "%LOCALAPPDATA%\\Steam\\htmlcache" >nul 2>&1 & rmdir /s /q "%LOCALAPPDATA%\\Steam\\appcache" >nul 2>&1'
     },
     {
-      // --- LÍNEA CORREGIDA ---
       message: "Limpiando cache de Epic Games Launcher...",
       command: 'rmdir /s /q "%LOCALAPPDATA%\\EpicGamesLauncher\\Saved\\webcache" >nul 2>&1'
     },
@@ -77,6 +88,10 @@ module.exports = {
     {
       message: "Desactivando animaciones...",
       command: 'reg add "HKCU\\Control Panel\\Desktop\\WindowMetrics" /v MinAnimate /t REG_SZ /d 0 /f'
+    },
+    {
+      message: "Habilitando rutas de archivo largas (LongPaths)...",
+      command: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem" /v LongPathsEnabled /t REG_DWORD /d 1 /f'
     }
   ],
   revert: [
@@ -111,6 +126,10 @@ module.exports = {
     {
       message: "Reactivando animaciones...",
       command: 'reg add "HKCU\\Control Panel\\Desktop\\WindowMetrics" /v MinAnimate /t REG_SZ /d 1 /f'
+    },
+    {
+      message: "Deshabilitando rutas de archivo largas (LongPaths)...",
+      command: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem" /v LongPathsEnabled /t REG_DWORD /d 0 /f'
     }
   ]
 };

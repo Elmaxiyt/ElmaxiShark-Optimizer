@@ -1,14 +1,26 @@
-// main.js (Completo, con FORZADO DE ADMIN, tamaño y nombre corregidos)
+// main.js (Completo - v1.1 con Advertencias y Lógica Overdrive)
 
-const { app, BrowserWindow, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron'); // Aseguramos dialog
 const path = require('path');
 const { spawn, execSync, exec } = require('child_process');
 const os = require('os');
-const fs = require('fs'); // Para manejar archivos
+const fs = require('fs');
 
 let cmdProcess = null;
 let commandTimers = [];
 let isRunning = false;
+let store; // Declaramos store aquí
+
+// --- Función asíncrona para inicializar Store ---
+async function initializeStore() {
+  try {
+    const { default: Store } = await import('electron-store');
+    store = new Store();
+    console.log("electron-store inicializado correctamente.");
+  } catch (err) {
+    console.error("!!! Error CRÍTICO al inicializar electron-store:", err);
+  }
+}
 
 // Función para chequear si somos admin
 function isRunningAsAdmin() {
@@ -21,396 +33,333 @@ function isRunningAsAdmin() {
       return false;
     }
   }
-  return true; // Asumir admin en plataformas no-Windows
+  return true;
 }
 
+// Función para lanzar CMD
 function launchPersistentCmd(win) {
-  if (!cmdProcess || cmdProcess.killed) {
-    console.log('Iniciando nuevo proceso CMD persistente...');
+    if (!cmdProcess || cmdProcess.killed) {
+        console.log('Iniciando nuevo proceso CMD persistente...');
+        cmdProcess = spawn('cmd.exe', ['/k'], { stdio: ['pipe', 'ignore', 'ignore'] });
+        try {
+            cmdProcess.stdin.write('chcp 65001 >nul\n');
+            cmdProcess.stdin.write('mode con: cols=120 lines=40\n');
+            cmdProcess.stdin.write('title ElmaxiShark Optimizer - Log de Comandos\n');
+            cmdProcess.stdin.write('cls\n');
+            cmdProcess.stdin.write('echo off\n');
+            cmdProcess.stdin.write('echo =========================================\n');
+            cmdProcess.stdin.write('echo     ElmaxiShark Optimizer v1.0 - Consola de Log\n');
+            cmdProcess.stdin.write('echo =========================================\n\n');
+            cmdProcess.stdin.write('echo Esperando acciones del usuario...\n');
+            cmdProcess.stdin.write('echo.\n');
+        } catch (e) { console.error(`Error al inicializar CMD: ${e.message}`); }
 
-    cmdProcess = spawn('cmd.exe', ['/k'], {
-      stdio: ['pipe', 'ignore', 'ignore']
-    });
+        cmdProcess.on('close', (code) => {
+            console.log(`Proceso CMD cerrado con código ${code}`);
+            if (win && !win.isDestroyed()) {
+                win.webContents.send('log-update', { message: `[INFO] Consola CMD cerrada (codigo ${code})`, command: "=== PROCESO CMD FINALIZADO ===" });
+            }
+            cmdProcess = null; isRunning = false;
+        });
+        cmdProcess.on('error', (err) => {
+            console.error(`Error al iniciar CMD: ${err.message}`);
+            if (win && !win.isDestroyed()) {
+                win.webContents.send('log-update', { message: `[ERROR] Error al iniciar CMD: ${err.message}`, command: "!!! ERROR DE SPAWN !!!" });
+            }
+            cmdProcess = null; isRunning = false;
+        });
+    }
+}
+
+
+// Función executeCommands (Con Barra de Progreso y Guardado)
+function executeCommands(win, commands, action, mode) {
+    if (isRunning) {
+        if (win && !win.isDestroyed()) { win.webContents.send('log-update', { message: '[ERROR] Espere a que termine el proceso actual.', command: "!!! PROCESO OCUPADO !!!" }); }
+        return;
+    }
+    isRunning = true;
+    commandTimers.forEach(timer => clearTimeout(timer));
+    commandTimers = [];
+    launchPersistentCmd(win);
+
+    // --- BARRA DE PROGRESO: Enviar 0% al inicio ---
+    if (win && !win.isDestroyed()) {
+        win.webContents.send('progress-update', { percentage: 0, text: 'Iniciando...', isRunning: true });
+    }
 
     try {
-      cmdProcess.stdin.write('chcp 65001 >nul\n');
-      cmdProcess.stdin.write('mode con: cols=120 lines=40\n'); // Tamaño CMD
-
-      // --- CAMBIO DE NOMBRE AQUÍ ---
-      cmdProcess.stdin.write('title ElmaxiShark Optimizer - Log de Comandos\n');
-      cmdProcess.stdin.write('cls\n');
-      cmdProcess.stdin.write('echo off\n');
-      cmdProcess.stdin.write('echo =========================================\n');
-      cmdProcess.stdin.write('echo     ElmaxiShark Optimizer v1.0 - Consola de Log\n');
-      // --- FIN CAMBIO NOMBRE ---
-
-      cmdProcess.stdin.write('echo =========================================\n\n');
-      cmdProcess.stdin.write('echo Esperando acciones del usuario...\n');
-      cmdProcess.stdin.write('echo.\n');
+        cmdProcess.stdin.write('cls\n');
+        cmdProcess.stdin.write('echo off\n');
+        cmdProcess.stdin.write('echo =========================================\n');
+        let logMessage;
+        if (mode === 'limpieza-sistema' || mode === 'restauracion' || mode === 'energia') { logMessage = 'Herramienta'; }
+        else if (action === 'apply') { logMessage = 'Optimizacion'; }
+        else if (action === 'revert') { logMessage = 'Reversion'; }
+        else { logMessage = 'Reajuste'; }
+        cmdProcess.stdin.write(`echo     Iniciando ${logMessage} (${mode})\n`);
+        cmdProcess.stdin.write('echo =========================================\n\n');
+        cmdProcess.stdin.write('echo.\n');
     } catch (e) {
-      console.error(`Error al inicializar CMD: ${e.message}`);
+        console.error(`Error al escribir en CMD: ${e.message}`);
+        isRunning = false;
+        if (win && !win.isDestroyed()) { win.webContents.send('progress-update', { percentage: 0, text: 'Error', isRunning: false }); }
+        return;
     }
 
-    cmdProcess.on('close', (code) => {
-      console.log(`Proceso CMD cerrado con código ${code}`);
-      if (win && !win.isDestroyed()) {
-        win.webContents.send('log-update', {
-          message: `[INFO] Consola de CMD cerrada (codigo ${code})`,
-          command: "=== PROCESO CMD FINALIZADO ==="
+    const totalCommands = commands.length;
+
+    setTimeout(() => {
+        commands.forEach((cmdObj, index) => {
+            const timerId = setTimeout(() => {
+                if (cmdProcess && !cmdProcess.killed) {
+                    if (win && !win.isDestroyed()) { win.webContents.send('log-update', { message: `[${new Date().toLocaleTimeString()}] ${cmdObj.message}`, command: cmdObj.command }); }
+                    const percentage = Math.round(((index + 1) / totalCommands) * 100);
+                    const progressText = `${percentage}% (${index + 1}/${totalCommands})`;
+                    if (win && !win.isDestroyed()) {
+                        win.webContents.send('progress-update', { percentage: percentage, text: progressText, isRunning: true });
+                    }
+                    try {
+                        cmdProcess.stdin.write(`echo. & echo [${new Date().toLocaleTimeString()}] ${cmdObj.message}\n`);
+                        if (cmdObj.isScript) {
+                            const tempPath = path.join(os.tmpdir(), 'elmaxishark_temp_script.bat');
+                            fs.writeFileSync(tempPath, cmdObj.command, { encoding: 'utf8' });
+                            cmdProcess.stdin.write(`call "${tempPath}"\n`);
+                        } else {
+                            cmdProcess.stdin.write(`${cmdObj.command}\n`);
+                        }
+                        cmdProcess.stdin.write('echo.\n');
+                    } catch (e) { console.error(`Error al escribir comando en CMD: ${e.message}`); }
+                }
+            }, 500 * (index + 1));
+            commandTimers.push(timerId);
         });
-      }
-      cmdProcess = null;
-      isRunning = false;
-    });
 
-    cmdProcess.on('error', (err) => {
-      console.error(`Error al iniciar CMD: ${err.message}`);
-      if (win && !win.isDestroyed()) {
-        win.webContents.send('log-update', {
-          message: `[ERROR] Error al iniciar CMD: ${err.message}`,
-          command: "!!! ERROR DE SPAWN !!!"
-        });
-      }
-      isRunning = false;
-    });
-  }
-}
-
-
-function executeCommands(win, commands, action, mode) {
-
-  if (isRunning) {
-    console.warn("Proceso ya en ejecucion. Se ignoro el nuevo comando.");
-    if (win && !win.isDestroyed()) {
-      win.webContents.send('log-update', {
-        message: '[ERROR] Espere a que termine el proceso actual.',
-        command: "!!! PROCESO OCUPADO !!!"
-      });
-    }
-    return;
-  }
-
-  isRunning = true;
-  commandTimers.forEach(timer => clearTimeout(timer));
-  commandTimers = [];
-
-  launchPersistentCmd(win);
-
-  try {
-    cmdProcess.stdin.write('cls\n');
-    cmdProcess.stdin.write('echo off\n');
-    cmdProcess.stdin.write('echo =========================================\n');
-
-    let logMessage;
-    if (action === 'apply' && (mode === 'energia' || mode === 'restauracion')) {
-      logMessage = 'Herramienta';
-    } else if (action === 'apply') logMessage = 'Optimizacion';
-    else if (action === 'revert') logMessage = 'Reversion';
-    else logMessage = 'Procesamiento';
-
-    cmdProcess.stdin.write(`echo     Iniciando ${logMessage} (${mode})\n`);
-    cmdProcess.stdin.write('echo =========================================\n\n');
-    cmdProcess.stdin.write('echo.\n');
-  } catch (e) {
-    console.error(`Error al escribir en CMD (probablemente ya se cerró): ${e.message}`);
-    isRunning = false;
-    return;
-  }
-
-  setTimeout(() => {
-    commands.forEach((cmdObj, index) => {
-      const timerId = setTimeout(() => {
-        if (cmdProcess && !cmdProcess.killed) {
-          console.log(`Ejecutando comando: ${cmdObj.message}`);
-          if (win && !win.isDestroyed()) {
-            win.webContents.send('log-update', {
-              message: `[${new Date().toLocaleTimeString()}] ${cmdObj.message}`,
-              command: cmdObj.command
-            });
-          }
-
-          try {
-            cmdProcess.stdin.write(`echo. & echo [${new Date().toLocaleTimeString()}] ${cmdObj.message}\n`);
-
-            if (cmdObj.isScript) {
-              const tempPath = path.join(os.tmpdir(), 'elmaxishark_temp_script.bat'); // Nombre temporal cambiado
-              fs.writeFileSync(tempPath, cmdObj.command, { encoding: 'utf8' });
-              cmdProcess.stdin.write(`call "${tempPath}"\n`);
+        const finalTimerId = setTimeout(() => {
+            let success = true;
+            if (cmdProcess && !cmdProcess.killed) {
+                let finalLogMessage, finalActionWord;
+                if (mode === 'energia' || mode === 'restauracion' || mode === 'limpieza-sistema') {
+                    finalLogMessage = 'Herramienta'; finalActionWord = 'completada';
+                } else if (action === 'apply' || action === 'process') {
+                    finalLogMessage = (action === 'process') ? 'Reajuste' : 'Tweaks';
+                    finalActionWord = (action === 'process') ? 'completado' : 'completados';
+                } else if (action === 'revert') {
+                    finalLogMessage = 'Tweaks'; finalActionWord = 'revertidos';
+                } else {
+                    finalLogMessage = 'Proceso'; finalActionWord = 'terminado';
+                }
+                const finalMessage = `=== ${finalLogMessage} ${finalActionWord}. Esperando nuevas acciones... ===`;
+                console.log(`${finalLogMessage} ${finalActionWord}`);
+                if (win && !win.isDestroyed()) {
+                    win.webContents.send('log-update', { message: `[${new Date().toLocaleTimeString()}] ¡${finalLogMessage} ${finalActionWord}!`, command: "=== FIN ===" });
+                    win.webContents.send('progress-update', { percentage: 100, text: 'Completado', isRunning: false });
+                }
+                try {
+                    cmdProcess.stdin.write(`\necho ${finalMessage}\n`);
+                    cmdProcess.stdin.write('echo.\n');
+                } catch (e) { console.error(`Error al escribir mensaje final en CMD: ${e.message}`); }
             } else {
-              cmdProcess.stdin.write(`${cmdObj.command}\n`);
+                success = false;
+                if (win && !win.isDestroyed()) { win.webContents.send('progress-update', { percentage: 0, text: 'Error', isRunning: false }); }
             }
 
-            cmdProcess.stdin.write('echo.\n');
-          } catch (e) {
-            console.error(`Error al escribir en CMD: ${e.message}`);
-          }
-        } else {
-          console.error('Proceso CMD no disponible');
-          if (win && !win.isDestroyed()) {
-            win.webContents.send('log-update', {
-              message: '[ERROR] Proceso CMD no disponible',
-              command: "!!! ERROR DE PROCESO !!!"
-            });
-          }
-        }
-      }, 500 * (index + 1));
-      commandTimers.push(timerId);
-    });
+            if (store) {
+                if (success && mode !== 'limpieza-sistema' && mode !== 'restauracion' && mode !== 'energia') {
+                    if (action === 'apply' || action === 'process') {
+                        store.set('activeMode', mode);
+                    } else if (action === 'revert') {
+                        store.set('activeMode', null);
+                    }
+                }
+            } else { console.warn("Store no disponible para guardar estado."); }
 
-    const finalTimerId = setTimeout(() => {
-      if (cmdProcess && !cmdProcess.killed) {
-
-        let finalLogMessage;
-        let finalActionWord;
-        if (action === 'apply' && (mode === 'energia' || mode === 'restauracion')) {
-          finalLogMessage = 'Herramienta';
-          finalActionWord = 'completada';
-        } else if (action === 'apply') {
-          finalLogMessage = 'Tweaks';
-          finalActionWord = 'completados';
-        } else if (action === 'revert') {
-          finalLogMessage = 'Tweaks';
-          finalActionWord = 'revertidos';
-        } else {
-          finalLogMessage = 'Reajuste';
-          finalActionWord = 'completado';
-        }
-
-        const finalMessage = `=== ${finalLogMessage} ${finalActionWord}. Esperando nuevas acciones... ===`;
-
-        console.log(`${finalLogMessage} ${finalActionWord}`);
-        if (win && !win.isDestroyed()) {
-          win.webContents.send('log-update', {
-            message: `[${new Date().toLocaleTimeString()}] ¡${finalLogMessage} ${finalActionWord}!`,
-            command: "=== FIN ==="
-          });
-        }
-
-        try {
-          cmdProcess.stdin.write(`\necho ${finalMessage}\n`);
-          cmdProcess.stdin.write('echo.\n');
-        } catch (e) {
-          console.error(`Error al escribir en CMD: ${e.message}`);
-        }
-      }
-
-      isRunning = false;
-
-    }, 500 * (commands.length + 2));
-    commandTimers.push(finalTimerId);
-  }, 100);
+            isRunning = false;
+        }, 500 * (commands.length + 2));
+        commandTimers.push(finalTimerId);
+    }, 100);
 }
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 840,
-    height: 800,     // Tamaño ventana corregido
-    minWidth: 840,
-    minHeight: 800,    // Tamaño ventana corregido
-    resizable: false,
-    maximizable: false,
-    frame: false,
-    icon: path.join(__dirname, 'assets', 'elmaxi_app_icon.ico'), // Mantenemos nombre icono
+    width: 840, height: 800, minWidth: 840, minHeight: 800,
+    resizable: false, maximizable: false, frame: false,
+    icon: path.join(__dirname, 'assets', 'elmaxi_app_icon.ico'),
     webPreferences: {
-      contextIsolation: true,
-      nodeIntegration: false,
+      contextIsolation: true, nodeIntegration: false,
       preload: path.join(__dirname, 'preload.js')
     },
     autoHideMenuBar: true
   });
-
   win.loadFile('index.html');
 
-  setTimeout(() => {
-    launchPersistentCmd(win);
-  }, 500);
+  win.webContents.on('did-finish-load', () => {
+    if (store) {
+      const activeMode = store.get('activeMode', null);
+      console.log(`Enviando estado inicial al renderer: ${activeMode}`);
+      win.webContents.send('set-initial-mode', activeMode);
+    } else {
+      console.warn("Store no inicializado al enviar estado inicial.");
+      win.webContents.send('set-initial-mode', null);
+    }
+  });
 
-  // win.webContents.openDevTools();
+  setTimeout(() => { launchPersistentCmd(win); }, 500);
 
   win.on('close', () => {
-    if (cmdProcess && !cmdProcess.killed) {
-      try {
-        cmdProcess.stdin.write('exit\n');
-        cmdProcess.stdin.end();
-      } catch (e) {
-        console.error(`Error al cerrar CMD: ${e.message}`);
-      }
-      cmdProcess.kill();
-    }
-  });
-
-  ipcMain.on('minimize-app', () => win.minimize());
-  ipcMain.on('close-app', () => {
-    if (cmdProcess && !cmdProcess.killed) {
-      try {
-        cmdProcess.stdin.write('exit\n');
-        cmdProcess.stdin.end();
-      } catch (e) {
-        console.error(`Error al cerrar CMD: ${e.message}`);
-      }
-      cmdProcess.kill();
-    }
-    win.close();
-  });
-  ipcMain.on('open-external-link', (event, url) => shell.openExternal(url));
-
-  ipcMain.on('run-optimization', (event, { applyMode, revertMode }) => {
-    console.log(`Evento run-optimization recibido: applyMode=${applyMode}, revertMode=${revertMode}`);
-
-    let commandsToRun = [];
-    let actionType = 'Optimizacion';
-    const win = BrowserWindow.fromWebContents(event.sender);
-
-    try {
-      if (revertMode) {
-        let revertModeFile = (revertMode === 'mododios') ? 'optimizacion-mododios' : `optimizacion-${revertMode}`;
-
-        const revertScriptPath = path.join(__dirname, 'scripts', `${revertModeFile}.js`);
-        console.log(`Cargando script de REVERSION: ${revertScriptPath}`);
-        delete require.cache[require.resolve(revertScriptPath)];
-        const revertScript = require(revertScriptPath);
-        commandsToRun.push(...revertScript.revert);
-        actionType = 'Reajuste';
-      }
-
-      if (applyMode) {
-        let applyModeFile = (applyMode === 'mododios') ? 'optimizacion-mododios' : `optimizacion-${applyMode}`;
-
-        const applyScriptPath = path.join(__dirname, 'scripts', `${applyModeFile}.js`);
-        console.log(`Cargando script de APLICACION: ${applyScriptPath}`);
-        delete require.cache[require.resolve(applyScriptPath)];
-        const applyScript = require(applyScriptPath);
-
-        const applyCommands = [...applyScript.apply];
-
-        if (applyMode === 'equilibrada' || applyMode === 'extremo' || applyMode === 'mododios') {
-          const svchostCommand = {
-            message: "Optimizando 'svchost.exe' segun RAM...",
-            command: `for /f "tokens=2 delims==" %%R in ('wmic ComputerSystem get TotalPhysicalMemory /value') do set "RAM_BYTES=%%R" & reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control" /v SvcHostSplitThresholdInKB /t REG_DWORD /d %RAM_BYTES:~0,-3% /f`
-          };
-
-          const sysMainIndex = applyCommands.findIndex(c => c.message.includes("SysMain"));
-          if (sysMainIndex !== -1) {
-            applyCommands.splice(sysMainIndex + 1, 0, svchostCommand);
-            console.log(`Comando svchost inyectado en el indice ${sysMainIndex + 1}`);
-          } else {
-            applyCommands.push(svchostCommand);
-          }
-        }
-
-        commandsToRun.push(...applyCommands);
-        actionType = revertMode ? 'Reajuste' : 'Optimizacion';
-      }
-
-      if (commandsToRun && commandsToRun.length > 0) {
-        console.log(`Comandos a ejecutar (${commandsToRun.length} en total): ${JSON.stringify(commandsToRun)}`);
-        if (win && !win.isDestroyed()) {
-          win.webContents.send('log-update', {
-            message: `[${new Date().toLocaleTimeString()}] Iniciando ${actionType}: ${applyMode || revertMode}`,
-            command: `Cargando ${commandsToRun.length} comandos...`
-          });
-        }
-
-        const logMode = applyMode || revertMode;
-
-        let action = 'process';
-        if (!applyMode && revertMode) action = 'revert';
-        if (applyMode && !revertMode) action = 'apply';
-
-        executeCommands(win, commandsToRun, action, logMode);
-      } else {
-        console.error(`No se encontraron comandos para ${applyMode} o ${revertMode}`);
-        if (win && !win.isDestroyed()) {
-          win.webContents.send('log-update', {
-            message: `[ERROR] No se encontraron comandos.`,
-            command: "!!! ERROR DE SCRIPT !!!"
-          });
-        }
-      }
-    } catch (e) {
-      console.error("Error al cargar o ejecutar el script:", e);
-      if (win && !win.isDestroyed()) {
-        win.webContents.send('log-update', {
-          message: `[ERROR] No se pudo ejecutar la optimizacion: ${applyMode || revertMode} - ${e.message}`,
-          command: "!!! ERROR AL CARGAR SCRIPT !!!"
-        });
-      }
-    }
-  });
-
-  ipcMain.on('run-tool', (event, { tool }) => {
-    console.log(`Evento run-tool recibido: tool=${tool}`);
-
-    const win = BrowserWindow.fromWebContents(event.sender);
-
-    try {
-      const scriptPath = path.join(__dirname, 'scripts', `herramienta-${tool}.js`);
-      console.log(`Cargando script de HERRAMIENTA: ${scriptPath}`);
-
-      delete require.cache[require.resolve(scriptPath)];
-      const toolScript = require(scriptPath);
-      const commandsToRun = [...toolScript.apply];
-
-      if (commandsToRun && commandsToRun.length > 0) {
-        console.log(`Comandos a ejecutar (${commandsToRun.length} en total): ${JSON.stringify(commandsToRun)}`);
-        if (win && !win.isDestroyed()) {
-          win.webContents.send('log-update', {
-            message: `[${new Date().toLocaleTimeString()}] Iniciando herramienta: ${tool}`,
-            command: `Cargando ${commandsToRun.length} comandos...`
-          });
-        }
-        executeCommands(win, commandsToRun, 'apply', tool);
-      } else {
-        console.error(`No se encontraron comandos para la herramienta: ${tool}`);
-        if (win && !win.isDestroyed()) {
-          win.webContents.send('log-update', {
-            message: `[ERROR] No se encontraron comandos.`,
-            command: "!!! ERROR DE SCRIPT !!!"
-          });
-        }
-      }
-    } catch (e) {
-      console.error("Error al cargar o ejecutar el script de herramienta:", e);
-      if (win && !win.isDestroyed()) {
-        win.webContents.send('log-update', {
-          message: `[ERROR] No se pudo ejecutar la herramienta: ${e.message}`,
-          command: "!!! ERROR AL CARGAR SCRIPT !!!"
-        });
-      }
+    console.log('Ventana principal cerrándose...');
+    if (cmdProcess && !cmdProcess.killed && cmdProcess.pid) {
+      try { execSync(`taskkill /PID ${cmdProcess.pid} /F /T`); }
+      catch (e) { console.error(`Error al cerrar CMD con taskkill: ${e.message}`); }
+      cmdProcess = null;
     }
   });
 }
 
-app.whenReady().then(() => {
-
-  // FORZAR EJECUCIÓN COMO ADMINISTRADOR
+app.whenReady().then(async () => {
+  await initializeStore();
   if (process.platform === 'win32' && !isRunningAsAdmin()) {
     console.log('Detectado: no es admin. Re-lanzando app con permisos...');
-    const command = `Start-Process -FilePath "${process.execPath}" -Verb runas -ArgumentList "${process.argv.slice(1).join(' ')}"`;
+    const command = `Start-Process -FilePath "${process.execPath}" -Verb runas -ArgumentList '${process.argv.slice(1).join(' ')}'`;
     exec(command, { shell: 'powershell.exe' }, (error) => {
-      if (error) {
-        console.error('Error al re-lanzar:', error.message);
-      }
+      if (error) { console.error('Error al re-lanzar:', error.message); }
       app.quit();
     });
     return;
   }
-
   console.log(`[INFO] Directorio de trabajo: ${process.cwd()}`);
   console.log('[INFO] Ejecutando la aplicacion (como admin)...');
   createWindow();
 });
 
 app.on('window-all-closed', () => {
+  console.log('Todas las ventanas cerradas.');
   commandTimers.forEach(timer => clearTimeout(timer));
-  if (cmdProcess && !cmdProcess.killed) {
-    try {
-      cmdProcess.stdin.write('exit\n');
-      cmdProcess.stdin.end();
-    } catch (e) {
-      console.error(`Error al cerrar CMD: ${e.message}`);
-    }
-    cmdProcess.kill();
+  if (cmdProcess && !cmdProcess.killed && cmdProcess.pid) {
+    try { execSync(`taskkill /PID ${cmdProcess.pid} /F /T`); }
+    catch (e) { console.error(`Error al cerrar CMD (window-all-closed): ${e.message}`); }
   }
-  if (process.platform !== 'darwin') app.quit();
+  if (process.platform !== 'darwin') { app.quit(); }
+});
+
+ipcMain.on('minimize-app', () => BrowserWindow.getFocusedWindow()?.minimize());
+ipcMain.on('close-app', () => BrowserWindow.getFocusedWindow()?.close());
+ipcMain.on('open-external-link', (event, url) => shell.openExternal(url));
+
+// --- LISTENER RUN-OPTIMIZATION (ACTUALIZADO CON ADVERTENCIAS Y LÓGICA V1.1) ---
+ipcMain.on('run-optimization', (event, { applyMode, revertMode }) => {
+    console.log(`Evento run-optimization recibido: applyMode=${applyMode}, revertMode=${revertMode}`);
+    const win = BrowserWindow.fromWebContents(event.sender);
+    
+    // --- ADVERTENCIAS PARA MODOS AGRESIVOS ---
+    if (applyMode === 'overdrive') {
+        const choice = dialog.showMessageBoxSync(win, {
+            type: 'warning',
+            buttons: ['Continuar', 'Cancelar'],
+            defaultId: 1,
+            title: 'Advertencia: Modo Overdrive',
+            message: 'Estás a punto de aplicar ajustes sensibles de temporización y memoria (SysMain, HPET, DynamicTick).',
+            detail: 'Estos ajustes pueden causar inestabilidad o lentitud en algunos portátiles o sistemas. ¿Estás seguro de que quieres continuar?'
+        });
+        if (choice === 1) { // Si elige 'Cancelar'
+            if (win && !win.isDestroyed()) { win.webContents.send('set-initial-mode', store.get('activeMode', null)); } // Revierte el botón visualmente
+            return;
+        }
+    }
+    if (applyMode === 'mododios') {
+        const choice = dialog.showMessageBoxSync(win, {
+            type: 'error',
+            buttons: ['Entiendo el riesgo, Continuar', 'Cancelar'],
+            defaultId: 1,
+            title: '¡ADVERTENCIA MÁXIMA: MODO DIOS!',
+            message: 'Estás a punto de aplicar DEBLOAT AGRESIVO y desactivar funciones clave del sistema.',
+            detail: 'Esto desactivará Windows Search, la Cola de Impresión, Servicios de Xbox y Hyper-V. Es un modo de riesgo para máximo rendimiento. NO RECOMENDADO en portátiles o PCs de trabajo. ¿Continuar?'
+        });
+        if (choice === 1) { // Si elige 'Cancelar'
+            if (win && !win.isDestroyed()) { win.webContents.send('set-initial-mode', store.get('activeMode', null)); } // Revierte el botón visualmente
+            return;
+        }
+    }
+    // --- FIN ADVERTENCIAS ---
+
+    let commandsToRun = [];
+    let actionType = 'Optimizacion';
+    try {
+        let scriptToLoad = '';
+        if (revertMode) {
+            scriptToLoad = (revertMode === 'mododios') ? 'optimizacion-mododios' : (revertMode === 'overdrive') ? 'optimizacion-overdrive' : `optimizacion-${revertMode}`;
+            const revertScriptPath = path.join(__dirname, 'scripts', `${scriptToLoad}.js`);
+            console.log(`Cargando script de REVERSION: ${revertScriptPath}`);
+            delete require.cache[require.resolve(revertScriptPath)];
+            const revertScript = require(revertScriptPath);
+            commandsToRun.push(...revertScript.revert);
+            actionType = 'Reajuste';
+        }
+        if (applyMode) {
+            scriptToLoad = (applyMode === 'mododios') ? 'optimizacion-mododios' : (applyMode === 'overdrive') ? 'optimizacion-overdrive' : `optimizacion-${applyMode}`;
+            const applyScriptPath = path.join(__dirname, 'scripts', `${scriptToLoad}.js`);
+            console.log(`Cargando script de APLICACION: ${applyScriptPath}`);
+            delete require.cache[require.resolve(applyScriptPath)];
+            const applyScript = require(applyScriptPath);
+            const applyCommands = [...applyScript.apply];
+            
+            // --- INYECCIÓN SvcHost (AHORA SOLO EN OVERDRIVE Y DIOS) ---
+            if (applyMode === 'overdrive' || applyMode === 'mododios') {
+                const svchostCommand = {
+                    message: "Optimizando 'svchost.exe' segun RAM...",
+                    command: `for /f "tokens=2 delims==" %%R in ('wmic ComputerSystem get TotalPhysicalMemory /value') do set "RAM_BYTES=%%R" & reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control" /v SvcHostSplitThresholdInKB /t REG_DWORD /d %RAM_BYTES:~0,-3% /f`
+                };
+                // Inyectarlo después de SysMain (que ahora está en Overdrive)
+                const sysMainIndex = applyCommands.findIndex(c => c.message.includes("SysMain"));
+                if (sysMainIndex !== -1) { applyCommands.splice(sysMainIndex + 1, 0, svchostCommand); console.log(`Comando svchost inyectado`);}
+                else { applyCommands.push(svchostCommand); }
+            }
+            // --- FIN INYECCIÓN ---
+
+            commandsToRun.push(...applyCommands);
+            actionType = revertMode ? 'Reajuste' : 'Optimizacion';
+        }
+        if (commandsToRun.length > 0) {
+            if (win && !win.isDestroyed()) { win.webContents.send('log-update', { message: `[${new Date().toLocaleTimeString()}] Iniciando ${actionType}: ${applyMode || revertMode}`, command: `Cargando ${commandsToRun.length} comandos...` }); }
+            const modeForSave = applyMode || revertMode;
+            let action = applyMode && revertMode ? 'process' : (applyMode ? 'apply' : 'revert');
+            executeCommands(win, commandsToRun, action, modeForSave);
+        } else {
+            if (win && !win.isDestroyed()) { win.webContents.send('log-update', { message: `[ERROR] No se encontraron comandos.`, command: "!!! ERROR DE SCRIPT !!!" });}
+        }
+    } catch (e) {
+        console.error("Error al cargar o ejecutar el script:", e);
+        if (win && !win.isDestroyed()) { win.webContents.send('log-update', { message: `[ERROR] No se pudo ejecutar la optimizacion: ${applyMode || revertMode} - ${e.message}`, command: "!!! ERROR AL CARGAR SCRIPT !!!" });}
+        // Si la carga falla (ej. script no encontrado), revertir el botón visualmente
+        if(store) { if (win && !win.isDestroyed()) { win.webContents.send('set-initial-mode', store.get('activeMode', null)); } }
+    }
+});
+
+// Listener run-tool (Actualizado para limpieza-sistema)
+ipcMain.on('run-tool', (event, { tool }) => {
+  console.log(`Evento run-tool recibido: tool=${tool}`);
+  const win = BrowserWindow.fromWebContents(event.sender);
+  let scriptFileName = '';
+  if (tool === 'limpieza-sistema') { scriptFileName = 'herramienta-limpieza-sistema.js'; }
+  else if (tool === 'restauracion' || tool === 'energia') { scriptFileName = `herramienta-${tool}.js`; }
+  else { console.warn(`Herramienta desconocida: ${tool}`); return; }
+
+  try {
+    const scriptPath = path.join(__dirname, 'scripts', scriptFileName);
+    console.log(`Cargando script de HERRAMIENTA: ${scriptPath}`);
+    delete require.cache[require.resolve(scriptPath)];
+    const toolScript = require(scriptPath);
+    const commandsToRun = [...toolScript.apply];
+    if (commandsToRun.length > 0) {
+      if (win && !win.isDestroyed()) {
+        win.webContents.send('log-update', { message: `[${new Date().toLocaleTimeString()}] Iniciando herramienta: ${tool.replace('-', ' ')}...`, command: `Cargando ${commandsToRun.length} comandos...` });
+      }
+      executeCommands(win, commandsToRun, 'apply', tool);
+    } else {
+        if (win && !win.isDestroyed()) { win.webContents.send('log-update', { message: `[ERROR] No se encontraron comandos.`, command: "!!! ERROR DE SCRIPT !!!" });}
+    }
+  } catch (e) {
+      console.error("Error al cargar o ejecutar el script de herramienta:", e);
+      if (win && !win.isDestroyed()) { win.webContents.send('log-update', { message: `[ERROR] No se pudo ejecutar la herramienta: ${tool} - ${e.message}`, command: "!!! ERROR AL CARGAR SCRIPT !!!" });}
+  }
 });

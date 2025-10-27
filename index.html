@@ -16,6 +16,9 @@
   </div>
 
   <div id="topbar">
+    <div id="left-top">
+       <div id="btn-translate" class="control-btn" title="Language (Coming Soon)">🌐</div>
+    </div>
     <div id="right-top">
       <div id="window-controls">
         <div id="minimize-btn" class="control-btn" title="Minimizar">-</div>
@@ -31,20 +34,28 @@
 
     <div id="info-herramientas">Herramientas Individuales:</div>
     <div id="herramientas">
-      <button id="btn-restore" class="boton tool" data-tooltip="Recomendado antes de optimizar">Punto Restauracion</button>
-      <button id="btn-energy" class="boton tool" data-tooltip="Crea el 'Modo Gaming Extremo' y el menu contextual">Crear Plan Energia</button>
+      <button id="btn-restore" class="boton tool" data-tooltip="Crea un punto antes de optimizar">Punto Restauracion</button>
+      <button id="btn-energy" class="boton tool" data-tooltip="Crea Plan 'Modo Gaming Extremo'">Crear Plan Energia</button>
+      <button id="btn-clean" class="boton tool" data-tooltip="Borra archivos temporales y cachés">Limpieza Sistema</button>
     </div>
+
     <div id="info-niveles">Elige un modo de optimizacion:</div>
     <div id="niveles">
       <button class="boton minimo" data-tooltip="Optimizacion minima">Básico</button>
       <button class="boton equilibrado" data-tooltip="Buen balance rendimiento/estabilidad">Equilibrado</button>
       <button class="boton extremo" data-tooltip="Agresivo — prueba estabilidad">Extremo</button>
-      <button class="boton mododios" data-tooltip="Rendimiento Máximo — puede ser inestable.">Modo Dios</button>
+      <button class="boton overdrive" data-tooltip="MUY Agresivo — Puede causar inestabilidad">Overdrive</button>
+      <button class="boton mododios" data-tooltip="Rendimiento Máximo + Debloat — RIESGO">Modo Dios</button>
     </div>
 
     <div id="comandos">
       <div id="log">Aquí se mostrarán las acciones realizadas...</div>
-    </div>
+      
+      <div id="progress-container">
+        <div id="progress-bar-fill"></div>
+        <span id="progress-bar-text"></span>
+      </div>
+      </div>
   </div>
 
   <footer id="copyright">

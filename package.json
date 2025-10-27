@@ -1,11 +1,12 @@
 {
   "name": "elmaxishark-optimizer",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Optimizador de Windows para Gaming por ElmaxiShark",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "publish": "electron-builder --publish always"
   },
   "keywords": [
     "optimizer",
@@ -23,6 +24,11 @@
   "build": {
     "appId": "com.elmaxi.elmaxisharkoptimizer",
     "productName": "ElmaxiShark Optimizer",
+    "publish": {
+      "provider": "github",
+      "owner": "Elmaxiyt",
+      "repo": "ElmaxiShark-Optimizer"
+    },
     "files": [
       "main.js",
       "preload.js",
@@ -41,5 +47,8 @@
     "portable": {
       "artifactName": "ElmaxiShark Optimizer.exe"
     }
+  },
+  "dependencies": {
+    "electron-store": "^11.0.2"
   }
 }
