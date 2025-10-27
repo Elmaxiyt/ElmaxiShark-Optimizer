@@ -22,7 +22,7 @@ Creado por Elmaxi ([@Elmaxizone en YouTube](https://www.youtube.com/@Elmaxizone)
     * **Básico:** Optimizaciones seguras de limpieza y QOL (Calidad de Vida).
     * **Equilibrado:** Un buen balance que desactiva telemetría y servicios innecesarios.
     * **Extremo:** Ajustes más agresivos para gaming (prioridad de GPU, red).
-    * **Overdrive:** Ajustes sensibles de bajo nivel (kernel, temporizadores). **Puede causar inestabilidad en algunos portátiles.**
+    * **Overdrive:** Ajustes avanzados para bajo nivel de red y memoria.
     * **Modo Dios:** Debloat máximo. Desactiva funciones del sistema (Buscador, Impresión, etc.). **Máximo Riesgo.**
 6.  Para revertir los cambios de un modo, simplemente **vuelve a hacer clic en el botón que esté activo**.
 7.  Puedes cambiar entre modos. Al hacerlo, se revertirán los cambios del modo anterior y se aplicarán los del nuevo modo seleccionado.
@@ -75,10 +75,10 @@ Creado por Elmaxi ([@Elmaxizone en YouTube](https://www.youtube.com/@Elmaxizone)
 ### Modo Overdrive
 *(Aplica todo lo de Extremo **MÁS** lo siguiente)*
 
-> **ADVERTENCIA: MODO AVANZADO.** Contiene tweaks sensibles de bajo nivel (kernel, temporizadores) que pueden causar inestabilidad o lentitud en algunos portátiles. Aplicar con precaución.
+> **ADVERTENCIA: MODO AVANZADO.** Contiene ajustes avanzados de red y memoria que pueden afectar la funcionalidad del sistema o el rendimiento. Aplicar con precaución.
 
-* **Servicios/Memoria:** Desactiva **SysMain (Superfetch)**, Desactiva **Compresión de Memoria** (para 16GB+ RAM), **Inyecta Tweak SvcHost** (optimiza `svchost.exe` según RAM).
-* **Kernel/Temporizadores:** Desactiva **Dynamic Tick** (`bcdedit`), Optimiza **HPET/TSC** (`bcdedit`), Desactiva Timer Coalescing (Experimental).
+* **Servicios/Memoria:** Desactiva **Compresión de Memoria** (para 16GB+ RAM), **Inyecta Tweak SvcHost** (optimiza `svchost.exe` según RAM).
+* **Kernel/Temporizadores:** Desactiva Timer Coalescing (Experimental).
 * **Red Sensible:** Desactiva **Offloads** (LSO, RSC) vía PowerShell (puede afectar velocidad de descarga en algunos sistemas).
 
 ---
