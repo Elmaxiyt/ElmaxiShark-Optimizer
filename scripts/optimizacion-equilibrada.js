@@ -1,4 +1,4 @@
-// scripts/optimizacion-equilibrada.js (v1.1)
+// scripts/optimizacion-equilibrada.js (v1.2 - Añadidos Tweaks de Prioridad y Shader Cache)
 const optimizacionBasica = require('./optimizacion-basica.js');
 
 const applyEquilibrado = [
@@ -7,7 +7,6 @@ const applyEquilibrado = [
     message: "Desactivando servicios de telemetria...",
     command: 'sc config diagtrack start= disabled & sc config DPS start= disabled & sc config WerSvc start= disabled'
   },
-  // { message: "Desactivando SysMain (Superfetch)...", command: 'sc config SysMain start= disabled' }, // Movido a Overdrive
   {
     message: "Desactivando Game Bar y DVR...",
     command: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR" /v AppCaptureEnabled /t REG_DWORD /d 0 /f & reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR" /v AllowGameDVR /t REG_DWORD /d 0 /f'
@@ -113,6 +112,10 @@ const applyEquilibrado = [
   {
     message: "Desactivando sondeo de internet (Internet Probing)...",
     command: 'reg add "HKLM\\System\\ControlSet001\\services\\NlaSvc\\Parameters\\Internet" /v "EnableActiveProbing" /t REG_DWORD /d 0 /f'
+  },
+  { // --- NUEVO TWEAK SEGURO ---
+    message: "Optimizando prioridades de aplicaciones (Foreground Boost)...",
+    command: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl" /v Win32PrioritySeparation /t REG_DWORD /d 26 /f'
   }
 ];
 
@@ -122,7 +125,6 @@ const revertEquilibrado = [
     message: "Reactivando servicios de telemetria...",
     command: 'sc config diagtrack start= auto & sc config DPS start= auto & sc config WerSvc start= auto'
   },
-  // { message: "Reactivando SysMain (Superfetch)...", command: 'sc config SysMain start= auto' }, // Movido a Overdrive
   {
     message: "Reactivando Game Bar y DVR...",
     command: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR" /v AppCaptureEnabled /t REG_DWORD /d 1 /f & reg delete "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR" /v AllowGameDVR /f >nul 2>&1'
@@ -180,7 +182,6 @@ const revertEquilibrado = [
     command: 'schtasks /Change /TN "\\Microsoft\\Windows\\TaskScheduler\\Idle Maintenance" /Enable & schtasks /Change /TN "\\Microsoft\\Windows\\TaskScheduler\\Maintenance Configurator" /Enable'
   },
   // --- REVERT SISTEMA Y MEMORIA ---
-  // { message: "Restaurando SvcHost por defecto...", command: 'reg delete "..."' }, // Movido a Overdrive (gestionado en main.js)
   {
     message: "Reactivando Mantenimiento Automatico...",
     command: 'reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\Maintenance" /v "MaintenanceDisabled" /t REG_DWORD /d 0 /f'
@@ -229,6 +230,10 @@ const revertEquilibrado = [
   {
     message: "Reactivando sondeo de internet (Internet Probing)...",
     command: 'reg add "HKLM\\System\\ControlSet001\\services\\NlaSvc\\Parameters\\Internet" /v "EnableActiveProbing" /t REG_DWORD /d 1 /f'
+  },
+  { // --- NUEVO TWEAK SEGURO (REVERTIR) ---
+    message: "Restaurando prioridades de aplicaciones (Por defecto)...",
+    command: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl" /v Win32PrioritySeparation /t REG_DWORD /d 2 /f'
   }
 ];
 

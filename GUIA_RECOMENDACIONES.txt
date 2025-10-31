@@ -1,0 +1,53 @@
+GUÍA RÁPIDA: ¿QUÉ MODO DEBO USAR?
+(ElmaxiShark Optimizer v1.2.0)
+
+Para evitar problemas y obtener el mejor resultado, busca tu perfil de usuario y sigue estas recomendaciones:
+
+================================
+ANTES DE EMPEZAR (¡OBLIGATORIO!)
+================================
+
+1.  Paso 1: Haz clic en el botón "Punto Restauracion". Si algo sale mal, podrás volver atrás.
+2.  Paso 2: Después de aplicar cualquier modo, REINICIA EL EQUIPO. La app te lo recordará, pero es fundamental que lo hagas para que los cambios surtan efecto.
+
+===============================================
+PERFIL 1: Usuario Principiante / Portátil de Trabajo
+===============================================
+
+* ¿Quién eres?: Usas tu PC o portátil para navegar, estudiar, o jugar ocasionalmente. Quieres que vaya más rápido, pero NO puedes permitirte que nada falle.
+* Modo Recomendado: Básico o Equilibrado.
+* Por qué: Estos modos limpian el sistema, desactivan la telemetría y aceleran las tareas diarias sin tocar nada que pueda romper la estabilidad.
+* Herramientas: "Limpieza Sistema" es 100% seguro para ti.
+
+================================
+PERFIL 2: Gamer de Portátil
+================================
+
+* ¿Quién eres?: Juegas en un portátil *gaming*. La batería y las temperaturas te importan, pero también los FPS.
+* Modo Recomendado: Equilibrado o Extremo.
+* Por qué: "Equilibrado" te da un gran impulso sin arriesgar nada. "Extremo" es potente, ya que optimiza la GPU, pero vigila tus temperaturas.
+* ¡Advertencia!: EVITA el "Modo Dios". Aunque ahora es seguro y no rompe el Bluetooth, sus ajustes de red y sistema son muy agresivos y los portátiles son más sensibles a ellos.
+
+===============================================
+PERFIL 3: Gamer de Sobremesa (PC de Escritorio)
+===============================================
+
+* ¿Quién eres?: Tienes un PC de escritorio para jugar. Quieres los máximos FPS posibles y no usas tu PC para virtualización (Hyper-V).
+* Modo Recomendado: Extremo o Modo Dios.
+* Por qué: Estos son tus modos. Aplican todos los tweaks seguros de optimización de red, GPU y sistema.
+* Herramientas: "Crear Plan Energia" está hecho para ti. Úsalo.
+
+===============================================
+PERFIL 4: Usuario Experto / Entusiasta del Tweak
+===============================================
+
+* ¿Quién eres?: Sabes lo que es `bcdedit`, entiendes los riesgos y quieres control total.
+* Modo Recomendado: Modo Custom.
+* Tu ruta:
+    1.  NO apliques ningún modo de 1-clic. Ve directamente al menú "Custom".
+    2.  "Custom" es un lienzo en blanco. Te permite seleccionar *exactamente* lo que quieres, incluyendo los tweaks "críticos" (Mitigaciones, Timers) y "Debloat" (Store, UWP apps).
+    3.  RECUERDA: El modo "Custom" es un estado separado. Si aplicas "Custom" y luego "Modo Dios", tus ajustes de Custom se revertirán (y viceversa).
+
+Poco a poco estamos puliendo esta increíble Herramienta con vuestro valioso Feedback
+
+Gracias por usar ElmaxiShark Optimizer. ¡Os quiero! Saludos Elmaxi

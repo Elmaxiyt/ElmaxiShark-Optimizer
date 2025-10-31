@@ -1,4 +1,4 @@
-/* style.css (Completo - v1.1 Final con Barra de Progreso Fuego-Hielo-Mejora) */
+/* style.css (Completo - v2.2 Final con Animación de Carga) */
 
 /* Fuentes y reset */
 @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
@@ -41,13 +41,18 @@ body::before {
   display:flex; justify-content: space-between; align-items: center; padding: 0 20px;
   -webkit-app-region: drag;
 }
-#left-top { -webkit-app-region: no-drag; }
+#left-top { -webkit-app-region: no-drag; display: flex; gap: 8px; align-items: center; }
 #right-top { -webkit-app-region: no-drag; }
 #window-controls { display: flex; gap: 8px; }
 .control-btn { width: 26px; height: 26px; display: flex; justify-content: center; align-items: center; font-size: 14px; color: #ccc; background: rgba(255, 255, 255, 0.05); border-radius: 50%; cursor: pointer; transition: background 0.2s, color 0.2s; }
 .control-btn:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
 #close-btn:hover { background: #ff4d4d; color: #fff; }
-#btn-translate { color: #888; cursor: help; }
+#btn-translate {
+  color: #888; cursor: help;
+  width: 32px; 
+  height: 32px; 
+  font-size: 18px;
+}
 #btn-translate:hover { color: #ccc; background: rgba(255, 255, 255, 0.1); }
 
 /* WIDGET */
@@ -83,16 +88,26 @@ body::before {
 
 #info-niveles { font-size:14px; color: #cccccc; text-shadow: none; margin-bottom:10px; }
 #niveles {
-  display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; align-items: center;
-  margin-bottom: 14px; max-width: 420px; margin-left: auto; margin-right: auto;
+  display: flex; gap: 8px; justify-content: center; flex-wrap: nowrap; 
+  align-items: center;
+  margin-bottom: 14px; 
+  margin-left: auto; margin-right: auto;
 }
 
 /* BOTONES */
 .boton { min-width: 130px; height:42px; padding:8px 12px; border-radius:10px; border: 4px solid rgba(0,0,0,0.8); font-size:13px; cursor:pointer; position:relative; transition: transform .12s ease, box-shadow .18s ease, filter .12s, border-color .2s; color:#0a0a0a; text-shadow: 0 1px 0 rgba(255,255,255,0.06); font-family: 'Russo One', sans-serif; }
 .boton.active { border-color: #fff; box-shadow: 0 0 15px #fff; transform: translateY(-2px); }
 
-/* Ajuste tamaño botones de modo */
-#niveles .boton { min-width: 110px; padding: 8px 8px; font-size: 12px; flex-grow: 1; max-width: 130px; }
+/* CAMBIOS TAMAÑO BOTONES */
+#niveles .boton { 
+  min-width: 90px; 
+  padding: 8px 6px; 
+  font-size: 11px; 
+  flex-grow: 1; 
+  max-width: 105px; 
+  height: 40px; 
+}
+
 
 /* Colores botones Herramientas y Básico */
 .boton.tool { min-width: 150px; }
@@ -125,18 +140,42 @@ body::before {
 .boton.overdrive::after { color: #c864ff; } /* Morado Claro */
 .boton.mododios::after { color: #ff2b2b; }
 
+/* ESTILOS PARA ENLACES DENTRO DEL WIDGET */
+.utility-links {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px; 
+  margin-top: 10px; 
+}
+
+
 /* LOG BOX */
 #comandos { margin-top: 10px; }
 #log {
   background: linear-gradient(#0D0F13, #0D0F13) padding-box,
               linear-gradient(to right, rgba(255, 80, 80, 0.4), rgba(0, 170, 255, 0.4)) border-box;
-  border-radius:10px; padding:12px; text-align:left; height: 170px; overflow:auto;
+  border-radius:10px; padding:12px; text-align:left; 
+  height: 145px; 
+  overflow:auto;
   color:#e6eef6; font-family: 'Courier New', monospace; font-size:12px;
   box-shadow: inset 0 0 12px rgba(0,0,0,0.5); border: 2px solid transparent;
 }
 
 /* Footer */
-#copyright { position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 12px; z-index: 4; }
+#copyright { 
+  position: absolute; 
+  bottom: 10px; 
+  left: 0; 
+  right: 0; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  gap: 10px; 
+  font-size: 12px; 
+  z-index: 4;
+}
+
+/* El texto de copyright (gradiente) */
 #copyright span {
   background: linear-gradient(to right, #ff5050, #00d1ff);
   -webkit-background-clip: text; background-clip: text;
@@ -156,6 +195,20 @@ body::before {
 }
 .log-error { color: #ff8a8a; font-weight: bold; }
 
+/* --- AÑADIDO: ESTILO PARA EL MENSAJE DE BÚSQUEDA --- */
+/* Animación de puntos suspensivos */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.log-loading-dots span {
+  animation: blink 1s infinite steps(1);
+}
+.log-loading-dots span:nth-child(1) { animation-delay: 0s; }
+.log-loading-dots span:nth-child(2) { animation-delay: 0.3s; }
+.log-loading-dots span:nth-child(3) { animation-delay: 0.6s; }
+
 
 /* --- ESTILOS PARA SCROLLBARS --- */
 #log::-webkit-scrollbar { width: 8px; }
@@ -168,25 +221,23 @@ body::before {
 .log-command::-webkit-scrollbar-thumb { background-color: #00aaff; border-radius: 4px; }
 .log-command::-webkit-scrollbar-thumb:hover { background-color: #00d1ff; }
 
-/* === ESTILOS BARRA DE PROGRESO (AJUSTADA) === */
+/* === ESTILOS BARRA DE PROGRESO === */
 #progress-container {
   width: 100%;
-  height: 11px; /* <-- CAMBIO: Más fina (antes 18px) */
-  background: #0D0F13;
-  border-radius: 10px;
+  height: 11px;
+  background: #0D0F13; 
+  border-radius: 10px; 
   margin-top: 3px;
-  overflow: hidden;
+  overflow: hidden; 
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.1);
   display: none;
 }
 
 #progress-bar-fill {
-  height: 100%;
+  height: 100%; 
   width: 0%;
-  /* --- CAMBIO: Gradiente de "mejora" (Rojo a Azul Hielo) --- */
   background: linear-gradient(to right, #ff5050, #ff9a2b, #18d77e, #00d1ff);
-  border-radius: 8px;
+  border-radius: 0; 
   transition: width 0.3s ease-out;
 }
 
@@ -197,10 +248,46 @@ body::before {
   left: 50%;
   transform: translate(-50%, -50%);
   color: white;
-  font-size: 9px; /* <-- CAMBIO: Más fino/pequeño (antes 11px) */
+  font-size: 9px;
   font-family: 'Russo One', sans-serif;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
   text-align: center;
   z-index: 5;
 }
 /* === FIN ESTILOS BARRA DE PROGRESO === */
+
+/* --- ELIMINADO: ESTILOS BANNER DE ACTUALIZACIÓN --- */
+/* (Se ha eliminado todo el bloque de #update-banner y sus clases .info, .success, .error) */
+
+
+/* ESTILO PARA LA VERSIÓN EN EL FOOTER */
+#app-version {
+  color: #888; 
+  font-weight: normal;
+  font-size: 12px;
+}
+
+/* ESTILO PARA LOS LINKS DE TEXTO */
+.text-link {
+  color: #888;
+  font-weight: normal;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  transition: all 0.2s ease;
+}
+.text-link:hover {
+  color: #fff;
+  text-shadow: none !important; 
+}
+
+/* COLORES FUEGO/HIELO PARA ENLACES */
+.color-hielo {
+  color: #00d1ff;
+  text-shadow: 0 0 5px rgba(0, 209, 255, 0.7);
+}
+.color-fuego {
+  color: #ff5050;
+  text-shadow: 0 0 5px rgba(255, 80, 80, 0.7);
+}

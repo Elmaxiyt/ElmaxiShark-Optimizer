@@ -35,17 +35,25 @@
     <div id="info-herramientas">Herramientas Individuales:</div>
     <div id="herramientas">
       <button id="btn-restore" class="boton tool" data-tooltip="Crea un punto antes de optimizar">Punto Restauracion</button>
-      <button id="btn-energy" class="boton tool" data-tooltip="Crea Plan 'Modo Gaming Extremo'">Crear Plan Energia</button>
+      <button id="btn-energy" class="boton tool" data-tooltip="Crea Plan Modo Gaming Extremo">Crear Plan Energia</button>
       <button id="btn-clean" class="boton tool" data-tooltip="Borra archivos temporales y cachés">Limpieza Sistema</button>
     </div>
 
     <div id="info-niveles">Elige un modo de optimizacion:</div>
+    
     <div id="niveles">
       <button class="boton minimo" data-tooltip="Optimizacion minima">Básico</button>
       <button class="boton equilibrado" data-tooltip="Buen balance rendimiento/estabilidad">Equilibrado</button>
-      <button class="boton extremo" data-tooltip="Agresivo — prueba estabilidad">Extremo</button>
-      <button class="boton overdrive" data-tooltip="MUY Agresivo — Puede causar inestabilidad">Overdrive</button>
-      <button class="boton mododios" data-tooltip="Rendimiento Máximo + Debloat — RIESGO">Modo Dios</button>
+      <button class="boton extremo" data-tooltip="Optimización Agresiva (GPU/Red/Energía)">Extremo</button>
+      
+      <button class="boton mododios" data-tooltip="El modo más potente (Extremo/Tweaks Avanzados)">Modo Dios</button>
+      
+      <button class="boton overdrive" data-tooltip="Tweaks personalizados">Custom</button>
+    </div>
+
+    <div class="utility-links">
+      <span id="download-guide-btn" class="text-link color-hielo">Descargar Guía</span>
+      <span id="btn-check-update" class="text-link color-hielo">Buscar Actualización</span>
     </div>
 
     <div id="comandos">
@@ -55,14 +63,15 @@
         <div id="progress-bar-fill"></div>
         <span id="progress-bar-text"></span>
       </div>
-      </div>
+    </div>
   </div>
 
   <footer id="copyright">
-    <a id="yt-link-footer" href="https://www.youtube.com/@Elmaxizone" target="_blank" rel="noreferrer">
+    <a id="yt-link-footer" href="https." target="_blank" rel="noreferrer">
       <img id="yt-icon" src="assets/youtube.png" alt="YouTube">
     </a>
     <span>© 2025 ElmaxiZone. Todos los derechos reservados.</span>
+    <span id="app-version"></span>
   </footer>
 
   <script src="renderer.js"></script>

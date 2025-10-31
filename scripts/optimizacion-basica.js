@@ -1,4 +1,4 @@
-// scripts/optimizacion-basica.js (v1.1)
+// scripts/optimizacion-basica.js (v1.2 - Bug de Energía arreglado + Tweak NTFS)
 module.exports = {
   apply: [
     {
@@ -92,13 +92,13 @@ module.exports = {
     {
       message: "Habilitando rutas de archivo largas (LongPaths)...",
       command: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem" /v LongPathsEnabled /t REG_DWORD /d 1 /f'
+    },
+    { 
+      message: "Desactivando Nombres 8.3 de NTFS (Mejora rendimiento de disco)...",
+      command: 'fsutil behavior set disable8dot3 1'
     }
   ],
   revert: [
-    {
-      message: "Restaurando plan a Equilibrado...",
-      command: 'powercfg /setactive 381b4222-f694-41f0-9685-ff5bb260df2e'
-    },
     {
       message: "Restaurando DNS (Ethernet y Wi-Fi) a Automatico (DHCP)...",
       command: 'netsh interface ipv4 set dnsserver name="Ethernet" source=dhcp >nul 2>&1 & netsh interface ipv4 set dnsserver name="Wi-Fi" source=dhcp >nul 2>&1'
@@ -130,6 +130,10 @@ module.exports = {
     {
       message: "Deshabilitando rutas de archivo largas (LongPaths)...",
       command: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem" /v LongPathsEnabled /t REG_DWORD /d 0 /f'
+    },
+    { 
+      message: "Reactivando Nombres 8.3 de NTFS...",
+      command: 'fsutil behavior set disable8dot3 0'
     }
   ]
 };

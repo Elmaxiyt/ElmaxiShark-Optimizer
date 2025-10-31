@@ -1,110 +1,157 @@
-# ElmaxiShark Optimizer v1.1
+🚀 Novedades de la v1.2.0
+¡Esta versión se centra en la seguridad, la funcionalidad y las peticiones de la comunidad!
 
-Creado por Elmaxi ([@Elmaxizone en YouTube](https://www.youtube.com/@Elmaxizone)) | [Mi Sitio Web](https://AQUI_VA_LA_URL_DE_TU_WEB.com)
+¡Buscador de Actualizaciones! Se ha añadido un botón ("Buscar Actualización") para comprobar manualmente si hay una nueva versión en GitHub.
 
-> **⚠️ ADVERTENCIA IMPORTANTE (BETA) ⚠️**
->
-> Esta es una versión BETA de ElmaxiShark Optimizer. Aunque ha sido probada, podrían existir errores o comportamientos inesperados.
->
-> **SE RECOMIENDA ENCARECIDAMENTE CREAR UN PUNTO DE RESTAURACIÓN MANUAL** usando el botón "Punto Restauracion" ANTES de aplicar cualquier modo de optimización.
->
-> El uso de esta herramienta es bajo tu propia responsabilidad. El autor no se hace responsable de posibles daños o pérdidas de datos.
+Filosofía "Seguro por Defecto": Los botones de 1-clic (Básico, Equilibrado, Extremo, Modo Dios) han sido revisados para mejorar la seguridad y estabilidad. Ya no desactivan funciones clave del sistema (Store, Búsqueda, Impresoras, etc.).
 
----
+Modo "Custom" Mejorado: Todos los tweaks "agresivos" (Debloat, Mitigaciones de CPU, Desactivar VRAM, etc.) se han movido al menú "Custom" para usuarios expertos.
 
-## Cómo Usar
+Arreglado (Bug de Bluetooth): El "Modo Dios" ya no desactiva el servicio de Radio (RmSvc), por lo que los mandos de PS5 y otros dispositivos Bluetooth funcionan perfectamente.
 
-1.  Descarga el `ElmaxiShark Optimizer.exe` desde la sección de **[Releases](https://github.com/Elmaxiyt/ElmaxiShark-Optimizer/releases)** de este repositorio.
-2.  Ejecuta el archivo `.exe`. La aplicación te pedirá permisos de Administrador (UAC).
-3.  **(Recomendado)** Haz clic en **"Punto Restauracion"** primero.
-4.  **(Opcional)** Haz clic en **"Crear Plan Energia"** o **"Limpieza Sistema"** para acciones individuales.
-5.  Elige un modo de optimización haciendo clic en uno de los botones de colores:
-    * **Básico:** Optimizaciones seguras de limpieza y QOL (Calidad de Vida).
-    * **Equilibrado:** Un buen balance que desactiva telemetría y servicios innecesarios.
-    * **Extremo:** Ajustes más agresivos para gaming (prioridad de GPU, red).
-    * **Overdrive:** Ajustes sensibles de bajo nivel (kernel, temporizadores). **Puede causar inestabilidad en algunos portátiles.**
-    * **Modo Dios:** Debloat máximo. Desactiva funciones del sistema (Buscador, Impresión, etc.). **Máximo Riesgo.**
-6.  Para revertir los cambios de un modo, simplemente **vuelve a hacer clic en el botón que esté activo**.
-7.  Puedes cambiar entre modos. Al hacerlo, se revertirán los cambios del modo anterior y se aplicarán los del nuevo modo seleccionado.
+Arreglado (Bug Plan de Energía): Los modos de optimización ya no fuerzan el plan "Equilibrado" al revertir o cambiar entre modos.
 
----
+Nuevos Tweaks Seguros: Se han añadido optimizaciones seguras para NTFS, prioridad de tareas y estabilidad de la GPU (TdrDelay) a los botones de 1-clic.
 
-## Detalle de los Modos y Herramientas
+Aviso de Reinicio: La aplicación ahora recomienda reiniciar el PC después de aplicar una optimización para asegurar que todos los cambios surtan efecto.
 
-### Herramientas Individuales
+Versión en la App: La versión actual (v1.2.0) ahora se muestra en el pie de página.
 
-* **Punto Restauracion:**
-    * **Propósito:** Crea un punto de restauración del sistema llamado **'ElmaxiShark - Punto Manual'**.
-* **Crear Plan Energia:**
-    * **Propósito:** Crea un plan de energía optimizado llamado 'Modo Gaming Extremo', lo activa y añade un acceso directo a "Planes de Energia" en el menú contextual.
-* **Limpieza Sistema:**
-    * **Propósito:** Ejecuta *solamente* las tareas de limpieza profundas (Temp, Prefetch, Cachés de Shaders de NVIDIA/AMD/Vulkan, Cachés de Steam/Epic, etc.) sin aplicar otros tweaks.
+Guía de Recomendaciones: Se ha añadido un botón "Descargar Guía" en la app para ayudarte a elegir el modo correcto para tu PC.
 
----
+⚠️ Guía Rápida: ¿Qué modo debo usar?
+Para saber qué modo es el mejor para tu sistema (Portátil, PC Gaming, etc.), por favor haz clic en el botón "Descargar Guía" que se encuentra en la aplicación.
 
-### Modo Básico
-*(Aplica todos estos comandos)*
+Esto guardará un archivo GUIA_RECOMENDACIONES.txt en tu carpeta de Descargas con todas las instrucciones y recomendaciones.
 
-* **Limpieza:** Caches de Temp, Prefetch, **Cachés de GPU (NVIDIA/Vulkan/D3D)**, Windows Update, Iconos, Steam y Epic Games.
-* **QOL:** Ajusta visuales a "Mejor Rendimiento" y desactiva transparencia. **Acelera menús/animaciones y mantiene suavizado de fuentes (Preserva la configuración de Modo Oscuro/Claro del usuario).**
-* **Red/Sistema:** Establece DNS a Cloudflare/Google, limpia caché DNS, activa RSS, verifica TRIM (SSD), **Habilita Rutas de Archivo Largas (LongPaths)**.
+Antes de Empezar (¡OBLIGATORIO!)
+Paso 1: Haz clic en el botón "Punto Restauracion".
 
----
+Paso 2: Después de aplicar cualquier modo, REINICIA EL EQUIPO.
 
-### Modo Equilibrado
-*(Aplica todo lo de Básico **MÁS** lo siguiente)*
+Perfil 4: Usuario Experto / Entusiasta del Tweak
+(Extracto de la Guía)
 
-* **Servicios:** Desactiva Telemetría (DiagTrack, DPS, WerSvc), Game Bar, DVR, Modo Juego Auto y servicios innecesarios (Fax, Mapas, Geo-localización, etc.).
-* **Debloat Ligero:** Desactiva Sugerencias (ConsumerFeatures), Servicio BAM, Tareas Idle, Experiencias Compartidas (CDP) y Sincronización de Ajustes.
-* **Sistema:** Desactiva Mantenimiento Automático, Evita drivers de Windows Update, **Optimiza registro de Caché de Shaders**.
-* **Memoria:** Desactiva Large System Cache, Mantiene Kernel en RAM (`DisablePagingExecutive`), Optimiza uso de memoria de NTFS.
-* **QOL/Interfaz:** **Activa el Menú Contextual Completo (W10/W7 style)**, desactiva aceleración de ratón y optimiza respuesta de teclado.
+¿Quién eres?: Sabes lo que es bcdedit, entiendes los riesgos y quieres control total.
 
----
+Modo Recomendado: Modo Custom.
 
-### Modo Extremo
-*(Aplica todo lo de Equilibrado **MÁS** lo siguiente)*
+Tu ruta:
 
-* **Sistema:** Prioriza CPU/GPU para juegos (SystemResponsiveness = 0), **Activa Programación de GPU (HwSchMode)**.
-* **Red:** Optimiza Network Throttling (`NetworkThrottlingIndex`), Desactiva Autotuning, Optimiza TCP (MaxUserPort, etc.), Desactiva ECN Capability.
-* **Red (Script):** Optimiza propiedades de adaptador de red (desactiva EEE, Flow Control, WakeOnLan).
-* **Energía/Almacenamiento:** Desactiva Power Throttling, Desactiva Inicio Rápido, Desactiva Last Access Time (NTFS), Desactiva ahorro de energía SSD/USB.
+NO apliques ningún modo de 1-clic. Ve directamente al menú "Custom".
 
----
+"Custom" es un lienzo en blanco que te permite seleccionar exactamente lo que quieres (tweaks críticos, debloat, etc.).
 
-### Modo Overdrive
-*(Aplica todo lo de Extremo **MÁS** lo siguiente)*
+RECUERDA: El modo "Custom" es un estado separado. Si aplicas "Custom" y luego "Modo Dios", tus ajustes de Custom se revertirán (y viceversa).
 
-> **ADVERTENCIA: MODO AVANZADO.** Contiene tweaks sensibles de bajo nivel (kernel, temporizadores) que pueden causar inestabilidad o lentitud en algunos portátiles. Aplicar con precaución.
+🔧 Cómo Usar (Instalación)
+Descarga el ElmaxiShark Optimizer.exe desde la sección de Releases de este repositorio.
 
-* **Servicios/Memoria:** Desactiva **SysMain (Superfetch)**, Desactiva **Compresión de Memoria** (para 16GB+ RAM), **Inyecta Tweak SvcHost** (optimiza `svchost.exe` según RAM).
-* **Kernel/Temporizadores:** Desactiva **Dynamic Tick** (`bcdedit`), Optimiza **HPET/TSC** (`bcdedit`), Desactiva Timer Coalescing (Experimental).
-* **Red Sensible:** Desactiva **Offloads** (LSO, RSC) vía PowerShell (puede afectar velocidad de descarga en algunos sistemas).
+Ejecuta el archivo .exe. La aplicación te pedirá permisos de Administrador (UAC).
 
----
+(Recomendado) Haz clic en "Punto Restauracion" primero.
 
-### Modo Dios
-*(Aplica todo lo de Overdrive **MÁS** lo siguiente)*
+Elige un modo de optimización siguiendo la guía de recomendaciones de arriba.
 
-> **ADVERTENCIA MÁXIMA: DEBLOAT AGRESIVO.** Desactiva funciones clave del sistema para liberar la máxima cantidad de recursos. Usar con precaución y solo si sabes lo que haces.
+Para revertir los cambios de un modo, simplemente vuelve a hacer clic en el botón que esté activo.
 
-* **Red Agresiva:** Desactiva Algoritmo de Nagle (para latencia mínima), Desactiva IPv6, Desactiva NDU (Diagnóstico de Red).
-* **Sistema:** Desactiva Hyper-V.
-* **Debloat (Riesgo):** Desactiva **Windows Search** (Rompe el buscador del Menú Inicio), **Cola de Impresión** (Desactiva impresoras), Servicios de Xbox, Microsoft Store.
-* **Debloat (Irreversible):** Desinstala Cortana, Copilot y Apps UWP (Clima, Mapas, Correo, etc. **No elimina el Reproductor de Video**).
-* **(NOTA: Se han eliminado los tweaks de Mitigación de CPU/Seguridad para prevenir BSODs y garantizar estabilidad.)**
+Al cambiar de modo, se revertirán los cambios del modo anterior y se aplicarán los del nuevo.
 
----
+📂 Detalle de los Modos y Herramientas
+Herramientas Individuales
+Punto Restauracion: Crea un punto de restauración del sistema llamado 'ElmaxiShark - Punto Manual'.
 
-## Licencia y Créditos
+Crear Plan Energia: Crea un plan de energía optimizado llamado 'Modo Gaming Extremo' y lo activa.
 
-ElmaxiShark Optimizer v1.1 es una herramienta gratuita (freeware).
-Creada y propiedad de Elmaxi.
+Limpieza Sistema: Ejecuta solamente las tareas de limpieza profundas (Temp, Prefetch, Cachés de Shaders, etc.).
 
-* Puedes usar esta aplicación libremente para fines personales y no comerciales.
-* Puedes distribuir la aplicación (en su forma original, sin modificar) siempre y cuando des crédito claro y visible al creador (Elmaxi) e incluyas este archivo `README.md` sin modificar.
-* **ESTÁ PROHIBIDO vender esta aplicación o cualquier parte de ella.**
-* Está prohibido modificar, descompilar o realizar ingeniería inversa a la aplicación con fines de lucro o para crear obras derivadas sin el permiso expreso del autor.
+Modo Básico
+(Aplica todos estos comandos)
+
+Limpieza: Caches de Temp, Prefetch, Cachés de GPU (NVIDIA/Vulkan/D3D), Windows Update, Iconos, Steam y Epic Games.
+
+QOL: Ajusta visuales a "Mejor Rendimiento", desactiva transparencia, acelera menús/animaciones y mantiene suavizado de fuentes.
+
+Red/Sistema: Establece DNS a Cloudflare/Google, limpia caché DNS, activa RSS, verifica TRIM (SSD), Habilita Rutas de Archivo Largas (LongPaths).
+
+Optimización NTFS: Desactiva la creación de nombres de archivo 8.3 (mejora la E/S del disco).
+
+Modo Equilibrado
+(Aplica todo lo de Básico MÁS lo siguiente)
+
+Servicios: Desactiva Telemetría (DiagTrack, DPS, WerSvc), Game Bar, DVR, Modo Juego Auto y servicios innecesarios (Fax, Mapas, Geo-localización, etc.).
+
+Debloat Ligero: Desactiva Sugerencias (ConsumerFeatures), Servicio BAM, Tareas Idle, Experiencias Compartidas (CDP) y Sincronización de Ajustes.
+
+Sistema: Desactiva Mantenimiento Automático, Evita drivers de Windows Update.
+
+Memoria: Desactiva Large System Cache, Mantiene Kernel en RAM (DisablePagingExecutive), Optimiza uso de memoria de NTFS.
+
+QOL/Interfaz: Activa el Menú Contextual Completo (W10/W7 style), desactiva aceleración de ratón y optimiza respuesta de teclado.
+
+Optimización de Tareas: Mejora la respuesta de la aplicación activa (Foreground Boost).
+
+Optimización de Shaders: Optimiza el registro del Caché de Shaders de Direct3D.
+
+Modo Extremo
+(Aplica todo lo de Equilibrado MÁS lo siguiente)
+
+Sistema: Prioriza CPU/GPU para juegos (SystemResponsiveness = 0), Activa Programación de GPU (HwSchMode).
+
+Red: Optimiza Network Throttling (NetworkThrottlingIndex), Desactiva Autotuning, Optimiza TCP (MaxUserPort, etc.), Desactiva ECN Capability.
+
+Red (Script): Optimiza propiedades de adaptador de red (desactiva EEE, Flow Control, WakeOnLan).
+
+Energía/Almacenamiento: Desactiva Power Throttling, Desactiva Inicio Rápido, Desactiva Last Access Time (NTFS), Desactiva ahorro de energía SSD/USB.
+
+Estabilidad de GPU: Aumenta el TdrDelay a 10 segundos para prevenir cuelgues del controlador gráfico.
+
+Modo Dios (Optimización Avanzada)
+(Aplica todo lo de Extremo MÁS lo siguiente)
+
+ADVERTENCIA (Experto): Este modo aplica tweaks de red y sistema de bajo nivel. Está pensado para usuarios avanzados que buscan el máximo rendimiento. (Ver Guía para más detalles).
+
+Red Agresiva: Desactiva Algoritmo de Nagle y optimiza TCP (para latencia mínima), Desactiva IPv6, Desactiva NDU (Diagnóstico de Red).
+
+Sistema: Desactiva Hyper-V (virtualización).
+
+Servicios: Desactiva servicios avanzados (Notas, Tablet).
+
+¡ARREGLADO! Ya NO desactiva el servicio de Radio (RmSvc), por lo que el Bluetooth y los mandos funcionan correctamente.
+
+¡NOTA! Los tweaks de Debloat (Store, Search, Impresoras, Xbox) han sido eliminados de este modo y movidos al menú Custom.
+
+Modo Personalizado (Custom)
+Propósito: Para usuarios expertos que quieren control total.
+
+Qué hace: Abre un menú que te permite seleccionar tweaks individuales que son demasiado agresivos o específicos para los modos de 1-clic.
+
+Incluye (y más):
+
+Desactivar Servicios (Xbox, Impresoras, Búsqueda, etc.).
+
+Desactivar Microsoft Store.
+
+Desinstalar Apps UWP (Debloat).
+
+Desactivar Mitigaciones de CPU (Spectre/Meltdown).
+
+Desactivar Compresión de VRAM.
+
+Desactivar Telemetría de NVIDIA.
+
+Tweaks de Kernel (DynamicTick, HPET, etc.).
+
+©️ Licencia y Créditos
+ElmaxiShark Optimizer v1.2.0 es una herramienta gratuita (freeware). Creada y propiedad de Elmaxi.
+
+Puedes usar esta aplicación libremente para fines personales y no comerciales.
+
+Puedes distribuir la aplicación (en su forma original, sin modificar) siempre y cuando des crédito claro y visible al creador (Elmaxi) e incluyas este archivo README.md sin modificar.
+
+ESTÁ PROHIBIDO vender esta aplicación o cualquier parte de ella.
+
+Está prohibido modificar, descompilar o realizar ingeniería inversa a la aplicación con fines de lucro o para crear obras derivadas sin el permiso expreso del autor.
 
 El incumplimiento de estos términos puede llevar a acciones legales.
 

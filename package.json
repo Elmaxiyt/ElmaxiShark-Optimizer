@@ -1,6 +1,6 @@
 {
   "name": "elmaxishark-optimizer",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Optimizador de Windows para Gaming por ElmaxiShark",
   "main": "main.js",
   "scripts": {
@@ -37,7 +37,11 @@
       "renderer.js",
       "particles.js",
       "scripts/**/*",
-      "assets/**/*"
+      "assets/**/*",
+      "custom.html",
+      "custom-preload.js",
+      "custom-renderer.js",
+      "GUIA_RECOMENDACIONES.txt"
     ],
     "win": {
       "target": "portable",
@@ -49,6 +53,7 @@
     }
   },
   "dependencies": {
-    "electron-store": "^11.0.2"
+    "electron-store": "^11.0.2",
+    "electron-updater": "^6.6.2"
   }
 }
