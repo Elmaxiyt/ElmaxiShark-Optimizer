@@ -1,29 +1,24 @@
-/* style.css (Completo - v2.2 Final con Animación de Carga) */
+/* style.css (v2.3 GOLD - Final con PayPal) */
 
-/* Fuentes y reset */
 @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
-
 * { box-sizing: border-box; margin:0; padding:0; }
 html { height:100%; width:100%; }
 
-/* --- MARCO CON BORDE Y SOMBRA FUEGO/HIELO --- */
 body {
   height:100%; width:100%; background:#000; font-family: 'Russo One', sans-serif;
   color:#fff; overflow:hidden; position: relative; padding: 15px;
 }
 body::before {
   content: ''; position: absolute; inset: 0; border-radius: 8px; pointer-events: none;
-  z-index: 9999; border: 3.5px solid transparent;
+  z-index: 9999; border: 5px solid transparent;
   background: linear-gradient(to right, rgba(255, 50, 50, 0.95), rgba(0, 209, 255, 0.95)) border-box;
   -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: destination-out; mask-composite: exclude;
   box-shadow: inset 0 0 8px rgba(255, 80, 80, 0.3), inset 0 0 8px rgba(0, 170, 255, 0.3);
 }
 
-/* PARTICLES */
 #particles { position:fixed; inset:0; z-index:0; background:transparent; }
 
-/* TÍTULO PRINCIPAL FUEGO/HIELO */
 #main-title-container { position: fixed; top: 35px; left: 20px; right: 20px; z-index: 100; display: flex; align-items: center; gap: 20px; -webkit-app-region: no-drag; }
 #main-title {
   font-size: 28px; color: #fff; letter-spacing: 2px;
@@ -35,7 +30,6 @@ body::before {
   box-shadow: 0 0 5px #ff9a2b, 0 0 5px #00aaff;
 }
 
-/* TOPBAR */
 #topbar {
   position: fixed; top: 0; left: 0; right: 0; height: 50px; z-index: 99;
   display:flex; justify-content: space-between; align-items: center; padding: 0 20px;
@@ -47,247 +41,141 @@ body::before {
 .control-btn { width: 26px; height: 26px; display: flex; justify-content: center; align-items: center; font-size: 14px; color: #ccc; background: rgba(255, 255, 255, 0.05); border-radius: 50%; cursor: pointer; transition: background 0.2s, color 0.2s; }
 .control-btn:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
 #close-btn:hover { background: #ff4d4d; color: #fff; }
-#btn-translate {
-  color: #888; cursor: help;
-  width: 32px; 
-  height: 32px; 
-  font-size: 18px;
-}
+#btn-translate { width: 32px; height: 32px; font-size: 18px; color: #888; cursor: help; }
 #btn-translate:hover { color: #ccc; background: rgba(255, 255, 255, 0.1); }
 
-/* WIDGET */
 #widget {
-  position:absolute; left:50%; top: 52%; transform: translate(-50%,-50%); width: 600px;
+  position:absolute; left:50%; top: 52%; transform: translate(-50%,-50%); width: 680px;
   background: linear-gradient(180deg, rgb(8,10,14), rgb(14,16,22)) padding-box,
               linear-gradient(to right, rgba(255, 50, 50, 0.9), rgba(0, 209, 255, 0.9)) border-box;
   border-radius: 24px; padding: 30px 28px; z-index: 3; text-align:center;
-  border: 1.5px solid transparent;
+  border: 3px solid transparent;
   box-shadow: -8px 8px 35px rgba(255, 80, 80, 0.5), 8px -4px 35px rgba(0, 170, 255, 0.5);
 }
 
-/* LOGO CON SOMBRA SUPERIOR */
 #logo {
   width: 190px; height: 190px; margin-bottom: 2px; margin-top: -45px; object-fit: cover;
   filter: drop-shadow(0px 4px 8px rgba(255, 80, 80, 0.5)) drop-shadow(0px -4px 8px rgba(0, 170, 255, 0.5));
 }
 
-/* Elementos internos */
-#titulo {
-  font-size:18px; color: #00A3FF;
-  text-shadow: 0 0 5px rgba(0, 163, 255, 0.9), 0 0 15px rgba(0, 123, 255, 0.7);
-  min-height:24px; margin-bottom:5px; letter-spacing: 1.5px;
-}
-#subtitulo { font-size: 16px; color: #b0c4de; text-shadow: none; margin-bottom: 12px; }
+#titulo { font-size:18px; color: #00A3FF; text-shadow: 0 0 5px rgba(0, 163, 255, 0.9), 0 0 15px rgba(0, 123, 255, 0.7); min-height:24px; margin-bottom:5px; letter-spacing: 1.5px; }
+#subtitulo { font-size: 16px; color: #b0c4de; margin-bottom: 12px; }
+#info-herramientas { font-size: 14px; color: #cccccc; margin-bottom: 10px; margin-top: 5px; }
+#info-niveles { font-size:14px; color: #cccccc; margin-bottom:10px; }
 
-/* --- ESTILOS PARA HERRAMIENTAS --- */
-#info-herramientas { font-size: 14px; color: #cccccc; text-shadow: none; margin-bottom: 10px; margin-top: 5px; }
-#herramientas {
-  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 14px;
-}
-
-#info-niveles { font-size:14px; color: #cccccc; text-shadow: none; margin-bottom:10px; }
-#niveles {
-  display: flex; gap: 8px; justify-content: center; flex-wrap: nowrap; 
-  align-items: center;
-  margin-bottom: 14px; 
-  margin-left: auto; margin-right: auto;
-}
-
-/* BOTONES */
-.boton { min-width: 130px; height:42px; padding:8px 12px; border-radius:10px; border: 4px solid rgba(0,0,0,0.8); font-size:13px; cursor:pointer; position:relative; transition: transform .12s ease, box-shadow .18s ease, filter .12s, border-color .2s; color:#0a0a0a; text-shadow: 0 1px 0 rgba(255,255,255,0.06); font-family: 'Russo One', sans-serif; }
-.boton.active { border-color: #fff; box-shadow: 0 0 15px #fff; transform: translateY(-2px); }
-
-/* CAMBIOS TAMAÑO BOTONES */
-#niveles .boton { 
-  min-width: 90px; 
-  padding: 8px 6px; 
-  font-size: 11px; 
-  flex-grow: 1; 
-  max-width: 105px; 
-  height: 40px; 
-}
-
-
-/* Colores botones Herramientas y Básico */
-.boton.tool { min-width: 150px; }
-#btn-restore { background: linear-gradient(180deg, #ff7b7b, #ff2b2b); } /* Fuego */
-#btn-energy { background: linear-gradient(180deg,#9fd9ff,#4db9ff); } /* Hielo */
-#btn-clean { background: linear-gradient(180deg, #cccccc, #aaaaaa); } /* Gris Limpieza */
-
-/* Colores botones de Modo */
-.boton.minimo { background: linear-gradient(180deg, #ffffff, #dcdcdc); } /* Blanco */
-.boton.equilibrado { background: linear-gradient(180deg,#62ffb8,#18d77e); } /* Verde */
-.boton.extremo { background: linear-gradient(180deg,#ffd38a,#ff9a2b); } /* Naranja */
-.boton.overdrive { background: linear-gradient(180deg, #c864ff, #9400D3); } /* Morado Intenso */
-.boton.mododios { background: linear-gradient(180deg,#ff7b7b,#ff2b2b); } /* Rojo */
-
-/* Efectos Hover/Active */
-.boton:not(.active):hover { transform: translateY(-5px); filter:brightness(1.1); box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
-.boton:active { transform: scale(.98); }
-
-/* TOOLTIPS */
-.boton::after { content: attr(data-tooltip); position:absolute; bottom:58px; left:50%; transform:translateX(-50%); background: rgba(10,10,10,0.95); padding:6px 10px; border-radius:6px; font-size:12px; opacity:0; pointer-events:none; transition:opacity .14s, transform .14s; white-space: nowrap; z-index:6; }
-.boton:hover::after { opacity:1; transform:translateX(-50%) translateY(-6px); }
-
-/* Colores Tooltips */
-#btn-restore::after { color: #ff5050; } /* Fuego */
-#btn-energy::after { color: #4db9ff; } /* Hielo */
-#btn-clean::after { color: #bbbbbb; } /* Gris claro */
-.boton.minimo::after { color: #f0f0f0; } /* Blanco */
-.boton.equilibrado::after { color: #18d77e; }
-.boton.extremo::after { color: #ff9a2b; }
-.boton.overdrive::after { color: #c864ff; } /* Morado Claro */
-.boton.mododios::after { color: #ff2b2b; }
-
-/* ESTILOS PARA ENLACES DENTRO DEL WIDGET */
-.utility-links {
+#herramientas, #niveles {
   display: flex;
+  gap: 10px;
   justify-content: space-between;
-  padding: 0 10px; 
-  margin-top: 10px; 
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 0 5px;
+}
+#herramientas {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 18px;
+    margin-bottom: 18px;
 }
 
-
-/* LOG BOX */
-#comandos { margin-top: 10px; }
-#log {
-  background: linear-gradient(#0D0F13, #0D0F13) padding-box,
-              linear-gradient(to right, rgba(255, 80, 80, 0.4), rgba(0, 170, 255, 0.4)) border-box;
-  border-radius:10px; padding:12px; text-align:left; 
-  height: 145px; 
-  overflow:auto;
-  color:#e6eef6; font-family: 'Courier New', monospace; font-size:12px;
-  box-shadow: inset 0 0 12px rgba(0,0,0,0.5); border: 2px solid transparent;
+.boton {
+    height:44px; padding:4px 2px; border-radius:10px;
+    border: 4px solid rgba(0,0,0,0.8); 
+    font-size:11px; 
+    cursor:pointer; position:relative; transition: all .15s ease;
+    color:#0a0a0a; text-shadow: 0 1px 0 rgba(255,255,255,0.06);
+    font-family: 'Russo One', sans-serif;
+    flex: 1;
+    display: flex; justify-content: center; align-items: center; text-align: center;
+    line-height: 1.1;
+    white-space: normal;
+    overflow: visible;
 }
+.boton.active { border-color: #fff; box-shadow: 0 0 15px #fff; transform: translateY(-2px); }
+.boton:not(.active):hover { transform: translateY(-4px); filter:brightness(1.15); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+.boton:active { transform: scale(.97); }
 
-/* Footer */
+#btn-clean { background: linear-gradient(180deg, #ffffff, #dcdcdc); }
+#btn-restore { background: linear-gradient(180deg,#62ffb8,#18d77e); }
+#btn-energy { background: linear-gradient(180deg,#ffd38a,#ff9a2b); }
+#btn-network-tool { background: linear-gradient(180deg, #ff7b7b, #ff2b2b); }
+#btn-backup-reg { background: linear-gradient(180deg, #c864ff, #9400D3); }
+
+.boton.minimo { background: linear-gradient(180deg, #ffffff, #dcdcdc); }
+.boton.equilibrado { background: linear-gradient(180deg,#62ffb8,#18d77e); }
+.boton.extremo { background: linear-gradient(180deg,#ffd38a,#ff9a2b); }
+.boton.mododios { background: linear-gradient(180deg,#ff7b7b,#ff2b2b); }
+.boton.overdrive { background: linear-gradient(180deg, #c864ff, #9400D3); }
+
+.boton::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 115%; left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: rgba(15, 15, 20, 0.98);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: normal;
+    color: #fff;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    white-space: pre;
+    z-index: 9999;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    min-width: 180px;
+    text-align: center;
+}
+.boton::before {
+    content: ''; position: absolute; bottom: 115%; left: 50%;
+    transform: translateX(-50%) translateY(10px) rotate(45deg);
+    width: 10px; height: 10px;
+    background: rgba(15, 15, 20, 0.98);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-right: 1px solid rgba(255,255,255,0.1);
+    opacity: 0; z-index: 9998;
+    transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.boton:hover::after, .boton:hover::before { opacity: 1; transform: translateX(-50%) translateY(0px) rotate(0deg); }
+.boton:hover::before { transform: translateX(-50%) translateY(5px) rotate(45deg); }
+
+#btn-clean::after, .boton.minimo::after { color: #fff; border-color: #fff; }
+#btn-restore::after, .boton.equilibrado::after { color: #62ffb8; border-color: #62ffb8; }
+#btn-energy::after, .boton.extremo::after { color: #ffd38a; border-color: #ffd38a; }
+#btn-network-tool::after, .boton.mododios::after { color: #ff5050; border-color: #ff5050; }
+#btn-backup-reg::after, .boton.overdrive::after { color: #c864ff; border-color: #c864ff; }
+
+.utility-links { display: flex; justify-content: space-between; padding: 0 15px; margin-top: 15px; }
+#comandos { margin-top: 15px; }
+#log { background: linear-gradient(#0D0F13, #0D0F13) padding-box, linear-gradient(to right, rgba(255, 80, 80, 0.4), rgba(0, 170, 255, 0.4)) border-box; border-radius:10px; padding:12px; text-align:left; height: 145px; overflow:auto; color:#e6eef6; font-family: 'Courier New', monospace; font-size:12px; box-shadow: inset 0 0 12px rgba(0,0,0,0.5); border: 2.5px solid transparent; }
+
+/* FOOTER REVISADO */
 #copyright { 
-  position: absolute; 
-  bottom: 10px; 
-  left: 0; 
-  right: 0; 
-  display: flex; 
-  justify-content: center; 
-  align-items: center; 
-  gap: 10px; 
-  font-size: 12px; 
-  z-index: 4;
+    position: absolute; bottom: 10px; left: 0; right: 0; 
+    display: flex; justify-content: center; align-items: center; 
+    gap: 10px; /* Más espacio entre bloques */
+    font-size: 12px; z-index: 4; 
 }
-
-/* El texto de copyright (gradiente) */
-#copyright span {
-  background: linear-gradient(to right, #ff5050, #00d1ff);
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent; color: transparent; font-weight: bold;
+#footer-icons {
+    display: flex; gap: 0px; align-items: center; -webkit-app-region: no-drag;
 }
-#yt-link-footer { -webkit-app-region: no-drag; }
-#yt-icon { width:40px; height:auto; cursor:pointer; transition: transform .18s ease; }
-#yt-icon:hover { transform: scale(1.1); }
-
-
-/* --- ESTILOS PARA LOG --- */
-.log-command {
-  font-family: 'Courier New', monospace; font-size: 11px; color: #8a9baf;
-  margin-left: 15px; margin-bottom: 8px; padding: 2px 5px;
-  background: rgba(0,0,0,0.2); border-radius: 4px;
-  white-space: pre; overflow-x: auto;
+#copyright span { background: linear-gradient(to right, #ff5050, #00d1ff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; font-weight: bold; }
+#yt-icon, #paypal-icon { 
+    width: 55px; /* Tamaño unificado */
+    height: auto; cursor:pointer; transition: transform .18s ease, filter .18s ease; 
+    opacity: 0.85; /* Un poco sutil por defecto */
 }
-.log-error { color: #ff8a8a; font-weight: bold; }
+#yt-icon:hover, #paypal-icon:hover { transform: scale(1.15); opacity: 1; filter: brightness(1.2); }
 
-/* --- AÑADIDO: ESTILO PARA EL MENSAJE DE BÚSQUEDA --- */
-/* Animación de puntos suspensivos */
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.log-loading-dots span {
-  animation: blink 1s infinite steps(1);
-}
-.log-loading-dots span:nth-child(1) { animation-delay: 0s; }
-.log-loading-dots span:nth-child(2) { animation-delay: 0.3s; }
-.log-loading-dots span:nth-child(3) { animation-delay: 0.6s; }
-
-
-/* --- ESTILOS PARA SCROLLBARS --- */
-#log::-webkit-scrollbar { width: 8px; }
-#log::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
-#log::-webkit-scrollbar-thumb { background-color: #00aaff; border-radius: 10px; }
-#log::-webkit-scrollbar-thumb:hover { background-color: #00d1ff; }
-
-.log-command::-webkit-scrollbar { height: 3px; }
-.log-command::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
-.log-command::-webkit-scrollbar-thumb { background-color: #00aaff; border-radius: 4px; }
-.log-command::-webkit-scrollbar-thumb:hover { background-color: #00d1ff; }
-
-/* === ESTILOS BARRA DE PROGRESO === */
-#progress-container {
-  width: 100%;
-  height: 11px;
-  background: #0D0F13; 
-  border-radius: 10px; 
-  margin-top: 3px;
-  overflow: hidden; 
-  position: relative;
-  display: none;
-}
-
-#progress-bar-fill {
-  height: 100%; 
-  width: 0%;
-  background: linear-gradient(to right, #ff5050, #ff9a2b, #18d77e, #00d1ff);
-  border-radius: 0; 
-  transition: width 0.3s ease-out;
-}
-
-#progress-bar-text {
-  position: absolute;
-  width: 100%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-size: 9px;
-  font-family: 'Russo One', sans-serif;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-  text-align: center;
-  z-index: 5;
-}
-/* === FIN ESTILOS BARRA DE PROGRESO === */
-
-/* --- ELIMINADO: ESTILOS BANNER DE ACTUALIZACIÓN --- */
-/* (Se ha eliminado todo el bloque de #update-banner y sus clases .info, .success, .error) */
-
-
-/* ESTILO PARA LA VERSIÓN EN EL FOOTER */
-#app-version {
-  color: #888; 
-  font-weight: normal;
-  font-size: 12px;
-}
-
-/* ESTILO PARA LOS LINKS DE TEXTO */
-.text-link {
-  color: #888;
-  font-weight: normal;
-  font-size: 12px;
-  text-decoration: underline;
-  cursor: pointer;
-  -webkit-app-region: no-drag;
-  transition: all 0.2s ease;
-}
-.text-link:hover {
-  color: #fff;
-  text-shadow: none !important; 
-}
-
-/* COLORES FUEGO/HIELO PARA ENLACES */
-.color-hielo {
-  color: #00d1ff;
-  text-shadow: 0 0 5px rgba(0, 209, 255, 0.7);
-}
-.color-fuego {
-  color: #ff5050;
-  text-shadow: 0 0 5px rgba(255, 80, 80, 0.7);
-}
+.log-command { font-family: 'Courier New', monospace; font-size: 11px; color: #8a9baf; margin-left: 15px; margin-bottom: 8px; padding: 2px 5px; background: rgba(0,0,0,0.2); border-radius: 4px; white-space: pre; overflow-x: auto; }
+.log-error { color: #ff8a8a; font-weight: bold; } .log-success { color: #62ffb8; font-weight: bold; } .log-info-update { color: #ffd38a; font-style: italic; }
+#progress-container { width: 100%; height: 11px; background: #0D0F13; border-radius: 10px; margin-top: 3px; overflow: hidden; position: relative; display: none; }
+#progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(to right, #ff5050, #ff9a2b, #18d77e, #00d1ff); border-radius: 0; transition: width 0.3s ease-out; }
+#progress-bar-text { position: absolute; width: 100%; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 9px; font-family: 'Russo One', sans-serif; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); text-align: center; z-index: 5; }
+.text-link { color: #888; font-weight: normal; font-size: 12px; text-decoration: underline; cursor: pointer; -webkit-app-region: no-drag; transition: all 0.2s ease; }
+.text-link:hover { color: #fff; text-shadow: none !important; }
+.color-hielo { color: #00d1ff; text-shadow: 0 0 5px rgba(0, 209, 255, 0.7); } .color-fuego { color: #ff5050; text-shadow: 0 0 5px rgba(255, 80, 80, 0.7); }
+::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; } ::-webkit-scrollbar-thumb { background-color: #00aaff; border-radius: 10px; } ::-webkit-scrollbar-thumb:hover { background-color: #00d1ff; }
+.log-command::-webkit-scrollbar { height: 3px; } .log-command::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; } .log-command::-webkit-scrollbar-thumb { background-color: #00aaff; border-radius: 4px; }

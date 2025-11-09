@@ -1,5 +1,5 @@
 GUÍA RÁPIDA: ¿QUÉ MODO DEBO USAR?
-(ElmaxiShark Optimizer v1.2.0)
+(ElmaxiShark Optimizer v1.3.0)
 
 Para evitar problemas y obtener el mejor resultado, busca tu perfil de usuario y sigue estas recomendaciones:
 
@@ -7,14 +7,19 @@ Para evitar problemas y obtener el mejor resultado, busca tu perfil de usuario y
 ANTES DE EMPEZAR (¡OBLIGATORIO!)
 ================================
 
-1.  Paso 1: Haz clic en el botón "Punto Restauracion". Si algo sale mal, podrás volver atrás.
-2.  Paso 2: Después de aplicar cualquier modo, REINICIA EL EQUIPO. La app te lo recordará, pero es fundamental que lo hagas para que los cambios surtan efecto.
+1.  Paso 1: Primer Salvavidas (Backup de Registro): Haz clic en el botón "Backup Registro".
+    > **⚠️ NOTA IMPORTANTE:** Este es un backup manual, y es el **último recurso** antes del Punto de Restauración. Si tienes que usarlo, haz doble clic en los archivos .reg **en Modo Seguro de Windows** para garantizar la reversión sin conflictos.
+2.  Paso 2: Segundo Salvavidas (Punto de Restauración): Haz clic en el botón "Punto Restauracion".
+    > **👍 Recomendación:** El Punto de Restauración es la forma más fácil y segura de deshacer cambios grandes.
+3.  Paso 3: Después de aplicar cualquier modo, REINICIA EL EQUIPO.
+    La app te lo recordará, pero es fundamental que lo hagas para que los cambios surtan efecto.
 
 ===============================================
 PERFIL 1: Usuario Principiante / Portátil de Trabajo
 ===============================================
 
-* ¿Quién eres?: Usas tu PC o portátil para navegar, estudiar, o jugar ocasionalmente. Quieres que vaya más rápido, pero NO puedes permitirte que nada falle.
+* ¿Quién eres?: Usas tu PC o portátil para navegar, estudiar, o jugar ocasionalmente.
+  Quieres que vaya más rápido, pero NO puedes permitirte que nada falle.
 * Modo Recomendado: Básico o Equilibrado.
 * Por qué: Estos modos limpian el sistema, desactivan la telemetría y aceleran las tareas diarias sin tocar nada que pueda romper la estabilidad.
 * Herramientas: "Limpieza Sistema" es 100% seguro para ti.
@@ -23,19 +28,22 @@ PERFIL 1: Usuario Principiante / Portátil de Trabajo
 PERFIL 2: Gamer de Portátil
 ================================
 
-* ¿Quién eres?: Juegas en un portátil *gaming*. La batería y las temperaturas te importan, pero también los FPS.
-* Modo Recomendado: Equilibrado o Extremo.
-* Por qué: "Equilibrado" te da un gran impulso sin arriesgar nada. "Extremo" es potente, ya que optimiza la GPU, pero vigila tus temperaturas.
-* ¡Advertencia!: EVITA el "Modo Dios". Aunque ahora es seguro y no rompe el Bluetooth, sus ajustes de red y sistema son muy agresivos y los portátiles son más sensibles a ellos.
+* ¿Quién eres?: Juegas en un portátil *gaming*.
+  La batería y las temperaturas te importan, pero también los FPS.
+* Modo Recomendado: Equilibrado, Extremo o Modo Gamer.
+* Por qué: "Equilibrado" te da un gran impulso sin arriesgar nada.
+  "Extremo" optimiza la GPU y el sistema sin tocar la red agresivamente.
+  "Modo Gamer" es ahora 100% seguro (ya no rompe virtualización) y te dará el máximo rendimiento posible.
 
 ===============================================
 PERFIL 3: Gamer de Sobremesa (PC de Escritorio)
 ===============================================
 
-* ¿Quién eres?: Tienes un PC de escritorio para jugar. Quieres los máximos FPS posibles y no usas tu PC para virtualización (Hyper-V).
-* Modo Recomendado: Extremo o Modo Dios.
-* Por qué: Estos son tus modos. Aplican todos los tweaks seguros de optimización de red, GPU y sistema.
-* Herramientas: "Crear Plan Energia" está hecho para ti. Úsalo.
+* ¿Quién eres?: Tienes un PC de escritorio para jugar.
+  Quieres los máximos FPS posibles.
+* Modo Recomendado: Modo Gamer.
+* Por qué: Es el modo definitivo. Aplica todas las optimizaciones de red, GPU, sistema y energía de forma segura.
+* Herramientas: "Crear Plan Energia" y "Red Avanzada" están hechos para ti.
 
 ===============================================
 PERFIL 4: Usuario Experto / Entusiasta del Tweak
@@ -44,10 +52,74 @@ PERFIL 4: Usuario Experto / Entusiasta del Tweak
 * ¿Quién eres?: Sabes lo que es `bcdedit`, entiendes los riesgos y quieres control total.
 * Modo Recomendado: Modo Custom.
 * Tu ruta:
-    1.  NO apliques ningún modo de 1-clic. Ve directamente al menú "Custom".
-    2.  "Custom" es un lienzo en blanco. Te permite seleccionar *exactamente* lo que quieres, incluyendo los tweaks "críticos" (Mitigaciones, Timers) y "Debloat" (Store, UWP apps).
-    3.  RECUERDA: El modo "Custom" es un estado separado. Si aplicas "Custom" y luego "Modo Dios", tus ajustes de Custom se revertirán (y viceversa).
+    1.  NO apliques ningún modo de 1-clic (o aplica uno como base).
+    2.  Ve al menú "Custom".
+    3.  "Custom" te permite seleccionar *exactamente* lo que quieres, incluyendo los tweaks que hemos quitado de los modos normales por seguridad (como desactivar Hyper-V, mitigaciones de CPU o desinstalar apps de la Store).
 
 Poco a poco estamos puliendo esta increíble Herramienta con vuestro valioso Feedback
 
 Gracias por usar ElmaxiShark Optimizer. ¡Os quiero! Saludos Elmaxi
+
+__________________________________________________________________________
+
+QUICK GUIDE: WHICH MODE SHOULD I USE?
+(ElmaxiShark Optimizer v1.3.0)
+
+To avoid issues and get the best result, find your user profile and follow these recommendations:
+
+================================
+BEFORE STARTING (MANDATORY!)
+================================
+
+1.  Step 1: First Lifesaver (Registry Backup): Click the "Registry Backup" button.
+    > **⚠️ IMPORTANT NOTE:** This is a manual backup, and is the **last resort** before the Restore Point. If you need to use it, double-click the .reg files **in Windows Safe Mode** to ensure conflict-free reversal.
+2.  Step 2: Second Lifesaver (Restore Point): Click the "Restore Point" button.
+    > **👍 Recommendation:** The Restore Point is the safest and easiest way to undo major changes.
+3.  Step 3: After applying any mode, RESTART YOUR PC.
+    The app will remind you, but it is essential that you do so for the changes to take effect.
+
+===============================================
+PROFILE 1: Beginner User / Work Laptop
+===============================================
+
+* Who are you?: You use your PC or laptop to browse, study, or play occasionally.
+  You want it to go faster, but you CANNOT afford for anything to fail.
+* Recommended Mode: Basic or Balanced.
+* Why: These modes clean the system, disable telemetry, and speed up daily tasks without touching anything that could break stability.
+* Tools: "System Cleanup" is 100% safe for you.
+
+================================
+PROFILE 2: Laptop Gamer
+================================
+
+* Who are you?: You play on a *gaming* laptop.
+  Battery and temperatures matter to you, but so do FPS.
+* Recommended Mode: Balanced, Extreme or Gamer Mode.
+* Why: "Balanced" gives you a great boost without risking anything.
+  "Extreme" optimizes GPU and system without aggressive network changes.
+  "Gamer Mode" is now 100% safe (it no longer breaks virtualization) and will give you the maximum possible performance.
+
+===============================================
+PROFILE 3: Desktop Gamer (Desktop PC)
+===============================================
+
+* Who are you?: You have a desktop PC for gaming.
+  You want the maximum possible FPS.
+* Recommended Mode: Gamer Mode.
+* Why: It's the ultimate mode. It applies all safe network, GPU, system, and power optimizations.
+* Tools: "Create Power Plan" and "Advanced Network" are made for you.
+
+===============================================
+PROFILE 4: Expert User / Tweak Enthusiast
+===============================================
+
+* Who are you?: You know what `bcdedit` is, understand the risks, and want total control.
+* Recommended Mode: Custom Mode.
+* Your route:
+    1.  DO NOT apply any 1-click mode (or apply one as a base).
+    2.  Go to the "Custom" menu.
+    3.  "Custom" allows you to select *exactly* what you want, including tweaks we removed from normal modes for safety (like disabling Hyper-V, CPU mitigations, or uninstalling Store apps).
+
+Little by little we are polishing this incredible Tool with your valuable Feedback
+
+Thank you for using ElmaxiShark Optimizer. I love you! Greetings Elmaxi

@@ -1,184 +1,117 @@
-// custom-renderer.js (v2.3 - Carga por Categoría)
+// custom-renderer.js (v1.6.2 - FIX: Error de 'invoke' corregido)
 
-// Botón de cierre
-document.getElementById('close-btn').addEventListener('click', () => {
-    window.electronCustom.closeWindow();
-});
+const container = document.getElementById('categories-container');
+let currentStrings = {};
 
-// Función para obtener los IDs de los checkboxes marcados
-function getSelectedTweaks() {
-    const checkboxes = document.querySelectorAll('#categories-container input[type="checkbox"]:checked');
-    const ids = Array.from(checkboxes)
-        .map(cb => cb.value)
-        .filter(val => val !== 'select-all'); 
-    return ids;
-}
+document.getElementById('close-btn').addEventListener('click', () => window.electronCustom.closeWindow());
 
-// Función para guardar el estado actual
-function saveCurrentState() {
-    const idsToSave = getSelectedTweaks();
-    window.electronCustom.saveTweakState(idsToSave);
-}
-
-// Actualiza el estado (marcado, desmarcado, o mixto) del checkbox de la cabecera
-function updateHeaderCheckbox(listContainer, headerCheckbox) {
-    const allCheckboxes = listContainer.querySelectorAll('input[type="checkbox"]');
-    const checkedCheckboxes = listContainer.querySelectorAll('input[type="checkbox"]:checked');
-    
-    if (allCheckboxes.length === 0) {
-        headerCheckbox.checked = false;
-        headerCheckbox.indeterminate = false; 
-    } else if (checkedCheckboxes.length === 0) {
-        headerCheckbox.checked = false;
-        headerCheckbox.indeterminate = false; 
-    } else if (checkedCheckboxes.length === allCheckboxes.length) {
-        headerCheckbox.checked = true;
-        headerCheckbox.indeterminate = false; 
-    } else {
-        headerCheckbox.checked = false;
-        headerCheckbox.indeterminate = true; // Estado mixto
+async function initCustomWindow() {
+    // Aseguramos que el puente existe
+    if (!window.electronCustom) {
+        console.error("FATAL: electronCustom no existe");
+        return;
     }
-}
 
-// --- INICIO: LÓGICA DE CARGA DE TWEAKS MODIFICADA ---
-
-// Esta nueva función se llama cuando la página HTML está lista
-async function loadAndRenderTweaks() {
-    
-    const container = document.getElementById('categories-container');
-    container.innerHTML = '';
-    
     try {
-        // 1. Pide solo la lista de categorías (muy rápido)
+        // 1. Cargar Idioma (USANDO LA NUEVA FUNCIÓN CORRECTA)
+        const langData = await window.electronCustom.getLanguage();
+        currentStrings = langData.strings || {};
+        applyStaticTranslations();
+
+        // 2. Cargar Categorías
         const categories = await window.electronCustom.getCategories();
-        
-        // 2. Pide el estado guardado (tweaks marcados)
-        const savedTweakIds = await window.electronCustom.loadTweakState();
+        if (!categories || categories.length === 0) {
+            throw new Error("No se recibieron categorías.");
+        }
 
-        // 3. Recorre cada categoría y pide sus tweaks uno por uno
-        for (const category of categories) {
-            
-            // 4. Pide los tweaks solo para esta categoría (muy rápido)
-            const tweaks = await window.electronCustom.getTweaksForCategory(category);
-            
-            // 5. Dibuja esta categoría (el código de antes)
-            const categoryBox = document.createElement('div');
-            categoryBox.className = 'category-box';
-            
-            const header = document.createElement('div');
-            header.className = 'category-header';
-            header.classList.add(`header-${category.toLowerCase()}`);
+        // 3. Cargar Estados
+        const savedState = await window.electronCustom.loadTweakState() || [];
+        const activeMode = await window.electronCustom.getTweaksForActiveMode() || [];
+        const activeSet = new Set([...savedState, ...activeMode]);
 
+        container.innerHTML = '';
+
+        for (const cat of categories) {
+            const tweaks = await window.electronCustom.getTweaksForCategory(cat);
+            if (!tweaks || tweaks.length === 0) continue;
+
+            const box = document.createElement('div');
+            box.className = 'category-box';
+            const catName = currentStrings[`cat_${cat}`] || cat.toUpperCase();
+
+            box.innerHTML = `<div class="category-header header-${cat}">
+                                <label class="category-select-all">
+                                    <input type="checkbox" class="header-checkbox" value="select-all">
+                                    <span>${catName}</span>
+                                </label>
+                             </div>`;
+            
             const list = document.createElement('div');
             list.className = 'tweaks-list';
 
-            const headerCheckboxLabel = document.createElement('label');
-            headerCheckboxLabel.className = 'category-select-all';
-            
-            const headerCheckbox = document.createElement('input');
-            headerCheckbox.type = 'checkbox';
-            headerCheckbox.title = 'Seleccionar/Deseleccionar todo en esta categoría';
-            headerCheckbox.value = 'select-all'; 
-
-            const headerSpan = document.createElement('span');
-            headerSpan.textContent = category.toUpperCase().replace('_', ' ');
-
-            headerCheckboxLabel.appendChild(headerCheckbox);
-            headerCheckboxLabel.appendChild(headerSpan);
-            
-            header.appendChild(headerCheckboxLabel);
-
             tweaks.forEach(tweak => {
-                const label = document.createElement('label');
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.id = tweak.id;
-                checkbox.value = tweak.id;
+                const div = document.createElement('div');
+                div.className = 'tweak-item';
+                const isChecked = activeSet.has(tweak.id) ? 'checked' : '';
+                const translatedMessage = currentStrings[tweak.id] || tweak.message;
 
-                if (savedTweakIds && savedTweakIds.includes(tweak.id)) {
-                    checkbox.checked = true;
-                }
-                
-                checkbox.addEventListener('click', () => {
-                    updateHeaderCheckbox(list, headerCheckbox);
-                });
-
-                const span = document.createElement('span');
-                span.textContent = tweak.message;
-                
-                label.appendChild(checkbox);
-                label.appendChild(span);
-                list.appendChild(label);
+                div.innerHTML = `<input type="checkbox" id="${tweak.id}" value="${tweak.id}" class="tweak-checkbox" ${isChecked}>
+                                 <label for="${tweak.id}">${translatedMessage}</label>`;
+                list.appendChild(div);
             });
 
-            headerCheckbox.addEventListener('click', () => {
-                const allCheckboxesInList = list.querySelectorAll('input[type="checkbox"]');
-                allCheckboxesInList.forEach(cb => {
-                    cb.checked = headerCheckbox.checked;
-                });
-                updateHeaderCheckbox(list, headerCheckbox);
-            });
-
-            updateHeaderCheckbox(list, headerCheckbox);
-
-            categoryBox.appendChild(header);
-            categoryBox.appendChild(list);
-            container.appendChild(categoryBox); // Añade la categoría terminada al DOM
+            box.appendChild(list);
+            container.appendChild(box);
         }
-    } catch (err) {
-        console.error("Error fatal al cargar categorías o tweaks:", err);
-        container.innerHTML = `<h2 style="color: #ff5050; text-align: center; margin-top: 20px;">Error al cargar tweaks</h2><p style="text-align: center; color: #ccc;">No se pudo comunicar con el proceso principal. Revisa la consola.</p>`;
+        attachCheckboxListeners();
+
+    } catch (e) {
+        console.error("Error Custom:", e);
+        container.innerHTML = `<p style="color: #ff5050; padding: 20px; text-align: center;">
+            ERROR AL CARGAR EL MENÚ<br>
+            <span style="font-size: 12px; color: #ccc;">${e.message}</span>
+        </p>`;
     }
 }
 
-// Ejecuta la función de carga cuando el DOM esté listo
-window.addEventListener('DOMContentLoaded', loadAndRenderTweaks);
+function applyStaticTranslations() {
+    if (currentStrings.custom_title) document.querySelector('h2').textContent = currentStrings.custom_title;
+    if (currentStrings.custom_subtitle) document.querySelector('.subtitle').textContent = currentStrings.custom_subtitle;
+    if (currentStrings.btn_apply_selected) document.getElementById('apply-btn').textContent = currentStrings.btn_apply_selected;
+    if (currentStrings.btn_revert_selected) document.getElementById('revert-btn').textContent = currentStrings.btn_revert_selected;
+    if (currentStrings.btn_select_all) document.getElementById('select-all-btn').textContent = currentStrings.btn_select_all;
+    if (currentStrings.btn_deselect_all) document.getElementById('deselect-all-btn').textContent = currentStrings.btn_deselect_all;
+}
 
-// --- FIN: LÓGICA DE CARGA DE TWEAKS MODIFICADA ---
-
-
-// --- Listeners Botones Principales (Aplicar/Revertir) ---
-// (No cambian, 'applyTweaks' ahora solo envía los IDs)
-document.getElementById('apply-btn').addEventListener('click', () => {
-    const ids = getSelectedTweaks();
-    if (ids.length > 0) {
-        saveCurrentState();
-        window.electronCustom.applyTweaks(ids);
-    } else {
-        saveCurrentState(); 
-    }
-});
-
-document.getElementById('revert-btn').addEventListener('click', () => {
-    const ids = getSelectedTweaks();
-    if (ids.length > 0) {
-        saveCurrentState();
-        window.electronCustom.revertTweaks(ids);
-    } else {
-        saveCurrentState();
-    }
-});
-
-
-// --- Listeners Botones Globales (Seleccionar/Deseleccionar) ---
-document.getElementById('select-all-btn').addEventListener('click', () => {
-    const checkboxes = document.querySelectorAll('#categories-container .tweaks-list input[type="checkbox"]');
-    checkboxes.forEach(cb => cb.checked = true);
-    
-    const headerCheckboxes = document.querySelectorAll('#categories-container .category-header input[type="checkbox"]');
-    headerCheckboxes.forEach(cb => {
-        cb.checked = true;
-        cb.indeterminate = false;
+function attachCheckboxListeners() {
+    document.querySelectorAll('.category-box').forEach(box => {
+        const headerCb = box.querySelector('.header-checkbox');
+        const tweakCbs = box.querySelectorAll('.tweak-checkbox');
+        const syncHeader = () => {
+            const checkedCount = box.querySelectorAll('.tweak-checkbox:checked').length;
+            headerCb.checked = (checkedCount === tweakCbs.length && tweakCbs.length > 0);
+            headerCb.indeterminate = (checkedCount > 0 && checkedCount < tweakCbs.length);
+        };
+        syncHeader();
+        headerCb.addEventListener('change', () => { tweakCbs.forEach(cb => cb.checked = headerCb.checked); saveState(); });
+        tweakCbs.forEach(cb => { cb.addEventListener('change', () => { syncHeader(); saveState(); }); });
     });
-});
+}
 
-document.getElementById('deselect-all-btn').addEventListener('click', () => {
-    const checkboxes = document.querySelectorAll('#categories-container .tweaks-list input[type="checkbox"]');
-    checkboxes.forEach(cb => cb.checked = false);
-    
-    const headerCheckboxes = document.querySelectorAll('#categories-container .category-header input[type="checkbox"]');
-    headerCheckboxes.forEach(cb => {
-        cb.checked = false;
-        cb.indeterminate = false;
+function saveState() {
+    window.electronCustom.saveTweakState(Array.from(document.querySelectorAll('.tweak-checkbox:checked')).map(cb => cb.value));
+}
+
+document.getElementById('apply-btn').addEventListener('click', () => window.electronCustom.applyTweaks(Array.from(document.querySelectorAll('.tweak-checkbox:checked')).map(cb => cb.value)));
+document.getElementById('revert-btn').addEventListener('click', () => window.electronCustom.revertTweaks(Array.from(document.querySelectorAll('.tweak-checkbox:checked')).map(cb => cb.value)));
+document.getElementById('select-all-btn').addEventListener('click', () => { document.querySelectorAll('input[type="checkbox"]').forEach(cb => { cb.checked = true; cb.indeterminate = false; }); saveState(); });
+document.getElementById('deselect-all-btn').addEventListener('click', () => { document.querySelectorAll('input[type="checkbox"]').forEach(cb => { cb.checked = false; cb.indeterminate = false; }); saveState(); });
+
+initCustomWindow();
+
+if (window.electronCustom?.on) {
+    window.electronCustom.on('set-language', (strings) => {
+        currentStrings = strings;
+        initCustomWindow();
     });
-});
+}

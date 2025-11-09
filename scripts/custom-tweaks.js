@@ -1,7 +1,5 @@
 // scripts/custom-tweaks.js
-// (v1.2 - MASTER LIST - Añadidos Mitigaciones, VRAM, NVIDIA y más)
-// Los tweaks CRÍTICOS (SysMain, BCDEDIT, Compresión) se mantienen
-// en su propia categoría con advertencias claras.
+// (v1.6 - MASTER LIST COMPLETA - Sintaxis Corregida)
 
 module.exports = {
   
@@ -11,67 +9,67 @@ module.exports = {
       id: 'clean_temp',
       message: "Limpiar archivos temporales (Usuario)",
       apply: 'del /f /s /q %TEMP%\\* >nul 2>&1',
-      revert: 'echo "No se puede revertir la limpieza de temporales."'
+      revert: 'echo "Irreversible"'
     },
     {
       id: 'clean_temp_win',
       message: "Limpiar archivos temporales (Windows)",
       apply: 'del /f /s /q C:\\Windows\\Temp\\* >nul 2>&1',
-      revert: 'echo "No se puede revertir la limpieza de temporales."'
+      revert: 'echo "Irreversible"'
     },
     {
       id: 'clean_prefetch',
       message: "Limpiar archivos Prefetch",
       apply: 'del /f /s /q C:\\Windows\\Prefetch\\* >nul 2>&1',
-      revert: 'echo "No se puede revertir la limpieza de temporales."'
+      revert: 'echo "Irreversible"'
     },
     {
       id: 'clean_d3dcache',
       message: "Limpiar cache DirectX generica (D3DSCache)",
       apply: 'rmdir /s /q "%LocalAppData%\\D3DSCache" >nul 2>&1',
-      revert: 'echo "No se puede revertir la limpieza de cache."'
+      revert: 'echo "Irreversible"'
     },
     {
       id: 'clean_nvidia_dx',
       message: "Limpiar cache DirectX de NVIDIA",
       apply: 'del /s /q "%LocalAppData%\\NVIDIA\\DXCache\\*.*" >nul 2>&1',
-      revert: 'echo "No se puede revertir la limpieza de cache."'
+      revert: 'echo "Irreversible"'
     },
     {
       id: 'clean_nvidia_gl',
       message: "Limpiar cache OpenGL de NVIDIA",
       apply: 'del /s /q "%LocalAppData%\\NVIDIA\\GLCache\\*.*" >nul 2>&1',
-      revert: 'echo "No se puede revertir la limpieza de cache."'
+      revert: 'echo "Irreversible"'
     },
     {
       id: 'clean_vulkan',
       message: "Limpiar cache Vulkan",
       apply: 'del /s /q "%AppData%\\Vulkan\\Cache\\*.*" >nul 2>&1',
-      revert: 'echo "No se puede revertir la limpieza de cache."'
+      revert: 'echo "Irreversible"'
     },
     {
       id: 'clean_wu',
       message: "Limpiar cache de Windows Update",
       apply: 'del /f /s /q %windir%\\SoftwareDistribution\\Download\\* >nul 2>&1',
-      revert: 'echo "No se puede revertir la limpieza de cache."'
+      revert: 'echo "Irreversible"'
     },
     {
       id: 'clean_iconcache',
       message: "Limpiar cache de Iconos",
       apply: 'del /f /s /q %LOCALAPPDATA%\\Microsoft\\Windows\\Explorer\\iconcache_* >nul 2>&1',
-      revert: 'echo "No se puede revertir la limpieza de cache."'
+      revert: 'echo "Irreversible"'
     },
     {
       id: 'clean_steam',
       message: "Limpiar cache de Steam",
       apply: 'rmdir /s /q "%LOCALAPPDATA%\\Steam\\htmlcache" >nul 2>&1 & rmdir /s /q "%LOCALAPPDATA%\\Steam\\appcache" >nul 2>&1',
-      revert: 'echo "No se puede revertir la limpieza de cache."'
+      revert: 'echo "Irreversible"'
     },
     {
       id: 'clean_epic',
       message: "Limpiar cache de Epic Games",
       apply: 'rmdir /s /q "%LOCALAPPDATA%\\EpicGamesLauncher\\Saved\\webcache" >nul 2>&1',
-      revert: 'echo "No se puede revertir la limpieza de cache."'
+      revert: 'echo "Irreversible"'
     },
     {
       id: 'net_flushdns',
@@ -125,7 +123,7 @@ module.exports = {
       apply: 'reg add "HKCU\\Control Panel\\Mouse" /v MouseSpeed /t REG_SZ /d 0 /f & reg add "HKCU\\Control Panel\\Mouse" /v MouseThreshold1 /t REG_SZ /d 0 /f & reg add "HKCU\\Control Panel\\Mouse" /v MouseThreshold2 /t REG_SZ /d 0 /f',
       revert: 'reg add "HKCU\\Control Panel\\Mouse" /v MouseSpeed /t REG_SZ /d 1 /f & reg add "HKCU\\Control Panel\\Mouse" /v MouseThreshold1 /t REG_SZ /d 6 /f & reg add "HKCU\\Control Panel\\Mouse" /v MouseThreshold2 /t REG_SZ /d 10 /f'
     },
-    { // --- NUEVO TWEAK (CUSTOM) ---
+    {
       id: 'qol_mouse_queue',
       message: "Optimizar cola de datos del raton (Para 1000Hz+)",
       apply: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters" /v MouseDataQueueSize /t REG_DWORD /d 100 /f',
@@ -151,7 +149,7 @@ module.exports = {
     }
   ],
   
-  // --- Categoría Privacidad (Añadida - Riesgo Bajo) ---
+  // --- Categoría Privacidad ---
   privacidad: [
     {
       id: 'privacy_cdp',
@@ -183,15 +181,15 @@ module.exports = {
       apply: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications" /v GlobalUserDisabled /t REG_DWORD /d 1 /f',
       revert: 'reg delete "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications" /v GlobalUserDisabled /f >nul 2>&1'
     },
-    { // --- NUEVO TWEAK (CUSTOM) ---
+    {
       id: 'privacy_nvidia_telemetry',
-      message: "Desactivar Telemetria de NVIDIA (Servicios y Tareas)",
+      message: "Desactivar Telemetria de NVIDIA",
       apply: 'sc config NvTelemetryContainer start= disabled & schtasks /Change /TN "\\NVIDIA\\NvDriverUpdateCheckDaily" /Disable & schtasks /Change /TN "\\NVIDIA\\NvProfileUpdaterDaily" /Disable & reg add "HKLM\\SOFTWARE\\NVIDIA Corporation\\Global\\NvTelemetry" /v NvTelemetryEnable /t REG_DWORD /d 0 /f',
       revert: 'sc config NvTelemetryContainer start= auto & schtasks /Change /TN "\\NVIDIA\\NvDriverUpdateCheckDaily" /Enable & schtasks /Change /TN "\\NVIDIA\\NvProfileUpdaterDaily" /Enable & reg delete "HKLM\\SOFTWARE\\NVIDIA Corporation\\Global\\NvTelemetry" /v NvTelemetryEnable /f >nul 2>&1'
     }
   ],
 
-  // --- Categoría Servicios (Riesgo Bajo/Medio) ---
+  // --- Categoría Servicios ---
   servicios: [
     {
       id: 'serv_telemetria',
@@ -267,7 +265,7 @@ module.exports = {
     }
   ],
   
-  // --- Categoría Sistema (Riesgo Bajo/Medio) ---
+  // --- Categoría Sistema ---
   sistema: [
     {
       id: 'sys_longpaths',
@@ -281,7 +279,7 @@ module.exports = {
       apply: 'fsutil behavior set DisableDeleteNotify 0',
       revert: 'fsutil behavior set DisableDeleteNotify 0'
     },
-    { // --- NUEVO TWEAK (CUSTOM) ---
+    {
       id: 'sys_ntfs_8dot3',
       message: "Desactivar Nombres 8.3 de NTFS (Mejora E/S)",
       apply: 'fsutil behavior set disable8dot3 1',
@@ -339,7 +337,7 @@ module.exports = {
       id: 'sys_vulkan_icd',
       message: "Limpiar configuracion de drivers Vulkan (ICD)",
       apply: 'setx VK_ICD_FILENAMES ""',
-      revert: 'echo "La reversion es manual (reinstalar drivers de GPU)"'
+      revert: 'echo "Irreversible (Reinstalar driver)"'
     },
     {
       id: 'sys_lastaccess',
@@ -349,7 +347,7 @@ module.exports = {
     }
   ],
   
-  // --- Categoría Rendimiento/Energía (Riesgo Medio) ---
+  // --- Categoría Rendimiento/Energía ---
   rendimiento: [
     {
       id: 'rend_prioridad_gpu',
@@ -357,9 +355,9 @@ module.exports = {
       apply: 'reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile" /v SystemResponsiveness /t REG_DWORD /d 0 /f & reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games" /v "GPU Priority" /t REG_DWORD /d 8 /f & reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games" /v Priority /t REG_DWORD /d 6 /f',
       revert: 'reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile" /v SystemResponsiveness /t REG_DWORD /d 20 /f & reg delete "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games" /f >nul 2>&1'
     },
-    { // --- NUEVO TWEAK (CUSTOM) ---
+    {
       id: 'rend_priority_separation',
-      message: "Optimizar prioridades de aplicaciones (Foreground Boost)",
+      message: "Optimizar prioridades (Foreground Boost)",
       apply: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl" /v Win32PrioritySeparation /t REG_DWORD /d 26 /f',
       revert: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl" /v Win32PrioritySeparation /t REG_DWORD /d 2 /f'
     },
@@ -387,13 +385,13 @@ module.exports = {
       apply: 'fsutil behavior set disableLastAccess 1 & for %%i in (EnableHIPM EnableDIPM) do for /f %%a in (\'reg query "HKLM\\SYSTEM\\CurrentControlSet\\Services" /s /f "%%i" ^| findstr "HKEY"\') do reg add "%%a" /v "%%i" /t REG_DWORD /d 0 /f & reg add "HKLM\\SYSTEM\\CurrentControlSet\\Services\\USB" /v "DisableSelectiveSuspend" /t REG_DWORD /d 1 /f',
       revert: 'fsutil behavior set disableLastAccess 2 & for %%i in (EnableHIPM EnableDIPM) do for /f %%a in (\'reg query "HKLM\\SYSTEM\\CurrentControlSet\\Services" /s /f "%%i" ^| findstr "HKEY"\') do reg add "%%a" /v "%%i" /t REG_DWORD /d 1 /f & reg add "HKLM\\SYSTEM\\CurrentControlSet\\Services\\USB" /v "DisableSelectiveSuspend" /t REG_DWORD /d 0 /f'
     },
-    { // --- NUEVO TWEAK (CUSTOM) ---
+    {
       id: 'rend_vram_compression',
-      message: "[ADVERTENCIA] Desactivar Compresión de VRAM (Puede usar MAS VRAM)",
+      message: "[ADVERTENCIA] Desactivar Compresión de VRAM",
       apply: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers" /v DisableGpuMemoryCompression /t REG_DWORD /d 1 /f',
       revert: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers" /v DisableGpuMemoryCompression /t REG_DWORD /d 0 /f'
     },
-    { // --- NUEVO TWEAK (CUSTOM) ---
+    {
       id: 'rend_tdr_delay',
       message: "Aumentar TdrDelay (Estabilidad de GPU)",
       apply: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers" /v TdrDelay /t REG_DWORD /d 10 /f',
@@ -401,11 +399,11 @@ module.exports = {
     }
   ],
   
-  // --- Categoría Red (Riesgo Medio/Funcional) ---
+  // --- Categoría Red ---
   red: [
      {
       id: 'net_dns_cloudflare',
-      message: "Cambiar DNS a Cloudflare/Google (Ethernet/Wi-Fi)",
+      message: "Cambiar DNS a Cloudflare/Google",
       apply: 'netsh interface ipv4 set dnsserver name="Ethernet" static 1.1.1.1 primary >nul 2>&1 & netsh interface ipv4 add dnsserver name="Ethernet" address=8.8.8.8 index=2 >nul 2>&1 & netsh interface ipv4 set dnsserver name="Wi-Fi" static 1.1.1.1 primary >nul 2>&1 & netsh interface ipv4 add dnsserver name="Wi-Fi" address=8.8.8.8 index=2 >nul 2>&1',
       revert: 'netsh interface ipv4 set dnsserver name="Ethernet" source=dhcp >nul 2>&1 & netsh interface ipv4 set dnsserver name="Wi-Fi" source=dhcp >nul 2>&1'
     },
@@ -417,7 +415,7 @@ module.exports = {
     },
     {
       id: 'net_probing',
-      message: "Desactivar sondeo de internet (Internet Probing)",
+      message: "Desactivar sondeo de internet",
       apply: 'reg add "HKLM\\System\\ControlSet001\\services\\NlaSvc\\Parameters\\Internet" /v "EnableActiveProbing" /t REG_DWORD /d 0 /f',
       revert: 'reg add "HKLM\\System\\ControlSet001\\services\\NlaSvc\\Parameters\\Internet" /v "EnableActiveProbing" /t REG_DWORD /d 1 /f'
     },
@@ -451,12 +449,54 @@ module.exports = {
       apply: 'powershell -Command "Set-NetOffloadGlobalSetting -ReceiveSegmentCoalescing disabled -ReceiveSideScaling disabled -Chimney disabled; Disable-NetAdapterLso -Name *; Disable-NetAdapterChecksumOffload -Name *"',
       revert: 'powershell -Command "Set-NetOffloadGlobalSetting -ReceiveSegmentCoalescing enabled -ReceiveSideScaling enabled -Chimney enabled; Enable-NetAdapterLso -Name *; Enable-NetAdapterChecksumOffload -Name *"'
     },
+    // --- SCRIPT DE ADAPTADOR (FIXED CON BACKTICKS) ---
     {
       id: 'script_net_adapter',
       message: "[ADVERTENCIA] Optimizar Adaptador de Red (Script)",
-      apply: '@echo off\nchcp 65001 >nul\nfor /f %%n in (\'Reg query "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}" /v "*SpeedDuplex" /s ^| findstr "HKEY"\') do (\n    reg add "%%n" /v "AdvancedEEE" /t REG_SZ /d 0 /f >nul 2>&1\n    reg add "%%n" /v "*EEE" /t REG_SZ /d 0 /f >nul 2>&1\n    reg add "%%n" /v "EEE" /t REG_SZ /d 0 /f >nul 2>&1\n    reg add "%%n" /v "EnableGreenEthernet" /t REG_SZ /d 0 /f >nul 2>&1\n    reg add "%%n" /v "EnablePME" /t REG_SZ /d 0 /f >nul 2>&1\n    reg add "%%n" /v "*WakeOnMagicPacket" /t REG_SZ /d 0 /f >nul 2>&1\n    reg add "%%n" /v "*WakeOnPattern" /t REG_SZ /d 0 /f >nul 2>&1\n    reg add "%%n" /v "EnableWakeOnLan" /t REG_SZ /d 0 /f >nul 2>&1\n    reg add "%%n" /v "*FlowControl" /t REG_SZ /d 0 /f >nul 2>&1\n    reg add "%%n" /v "RxAbsIntDelay" /t REG_SZ /d 0 /f >nul 2>&1\n    reg add "%%n" /v "TxAbsIntDelay" /t REG_SZ /d 0 /f >nul 2>&1\n    reg add "%%n" /v "IPChecksumOffloadIPv4" /t REG_SZ /d 0 /f >nul 2>&1\n    reg add "%%n" /v "TCPChecksumOffloadIPv4" /t REG_SZ /d 0 /f >nul 2>&1\n    reg add "%%n" /v "TCPChecksumOffloadIPv6" /t REG_SZ /d 0 /f >nul 2>&1\n    reg add "%%n" /v "UDPChecksumOffloadIPv4" /t REG_SZ /d 0 /f >nul 2>&1\n    reg add "%%n" /v "UDPChecksumOffloadIPv6" /t REG_SZ /d 0 /f >nul 2>&1\n)',
-      revert: '@echo off\nchcp 65001 >nul\nfor /f %%n in (\'Reg query "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}" /v "*SpeedDuplex" /s ^| findstr "HKEY"\') do (\n    reg delete "%%n" /v "AdvancedEEE" /f >nul 2>&1\n    reg delete "%%n" /v "*EEE" /f >nul 2>&1\n    reg delete "%%n" /v "EEE" /f >nul 2>&1\n    reg delete "%%n" /v "EnableGreenEthernet" /f >nul 2>&1\n    reg delete "%%n" /v "EnablePME" /f >nul 2>&1\n    reg delete "%%n" /v "*WakeOnMagicPacket" /f >nul 2>&1\n    reg delete "%%n" /v "*WakeOnPattern" /f >nul 2>&1\n    reg delete "%%n" /v "EnableWakeOnLan" /f >nul 2>&1\n    reg delete "%%n" /v "*FlowControl" /f >nul 2>&1\n    reg delete "%%n" /v "RxAbsIntDelay" /f >nul 2>&1\n    reg delete "%%n" /v "TxAbsIntDelay" /f >nul 2>&1\n    reg delete "%%n" /v "IPChecksumOffloadIPv4" /f >nul 2>&1\n    reg delete "%%n" /v "TCPChecksumOffloadIPv4" /f >nul 2>&1\n    reg delete "%%n" /v "TCPChecksumOffloadIPv6" /f >nul 2>&1\n    reg delete "%%n" /v "UDPChecksumOffloadIPv4" /f >nul 2>&1\n    reg delete "%%n" /v "UDPChecksumOffloadIPv6" /f >nul 2>&1\n)'
+      apply: `
+@echo off
+chcp 65001 >nul
+for /f %%n in ('Reg query "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}" /v "*SpeedDuplex" /s ^| findstr "HKEY"') do (
+    reg add "%%n" /v "AdvancedEEE" /t REG_SZ /d 0 /f >nul 2>&1
+    reg add "%%n" /v "*EEE" /t REG_SZ /d 0 /f >nul 2>&1
+    reg add "%%n" /v "EEE" /t REG_SZ /d 0 /f >nul 2>&1
+    reg add "%%n" /v "EnableGreenEthernet" /t REG_SZ /d 0 /f >nul 2>&1
+    reg add "%%n" /v "EnablePME" /t REG_SZ /d 0 /f >nul 2>&1
+    reg add "%%n" /v "*WakeOnMagicPacket" /t REG_SZ /d 0 /f >nul 2>&1
+    reg add "%%n" /v "*WakeOnPattern" /t REG_SZ /d 0 /f >nul 2>&1
+    reg add "%%n" /v "EnableWakeOnLan" /t REG_SZ /d 0 /f >nul 2>&1
+    reg add "%%n" /v "*FlowControl" /t REG_SZ /d 0 /f >nul 2>&1
+    reg add "%%n" /v "RxAbsIntDelay" /t REG_SZ /d 0 /f >nul 2>&1
+    reg add "%%n" /v "TxAbsIntDelay" /t REG_SZ /d 0 /f >nul 2>&1
+    reg add "%%n" /v "IPChecksumOffloadIPv4" /t REG_SZ /d 0 /f >nul 2>&1
+    reg add "%%n" /v "TCPChecksumOffloadIPv4" /t REG_SZ /d 0 /f >nul 2>&1
+    reg add "%%n" /v "TCPChecksumOffloadIPv6" /t REG_SZ /d 0 /f >nul 2>&1
+    reg add "%%n" /v "UDPChecksumOffloadIPv4" /t REG_SZ /d 0 /f >nul 2>&1
+    reg add "%%n" /v "UDPChecksumOffloadIPv6" /t REG_SZ /d 0 /f >nul 2>&1
+)`.trim(),
+      revert: `
+@echo off
+chcp 65001 >nul
+for /f %%n in ('Reg query "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4D36E972-E325-11CE-BFC1-08002bE10318}" /v "*SpeedDuplex" /s ^| findstr "HKEY"') do (
+    reg delete "%%n" /v "AdvancedEEE" /f >nul 2>&1
+    reg delete "%%n" /v "*EEE" /f >nul 2>&1
+    reg delete "%%n" /v "EEE" /f >nul 2>&1
+    reg delete "%%n" /v "EnableGreenEthernet" /f >nul 2>&1
+    reg delete "%%n" /v "EnablePME" /f >nul 2>&1
+    reg delete "%%n" /v "*WakeOnMagicPacket" /f >nul 2>&1
+    reg delete "%%n" /v "*WakeOnPattern" /f >nul 2>&1
+    reg delete "%%n" /v "EnableWakeOnLan" /f >nul 2>&1
+    reg delete "%%n" /v "*FlowControl" /f >nul 2>&1
+    reg delete "%%n" /v "RxAbsIntDelay" /f >nul 2>&1
+    reg delete "%%n" /v "TxAbsIntDelay" /f >nul 2>&1
+    reg delete "%%n" /v "IPChecksumOffloadIPv4" /f >nul 2>&1
+    reg delete "%%n" /v "TCPChecksumOffloadIPv4" /f >nul 2>&1
+    reg delete "%%n" /v "TCPChecksumOffloadIPv6" /f >nul 2>&1
+    reg delete "%%n" /v "UDPChecksumOffloadIPv4" /f >nul 2>&1
+    reg delete "%%n" /v "UDPChecksumOffloadIPv6" /f >nul 2>&1
+)`.trim()
     },
+    // --- FIN SCRIPT DE ADAPTADOR ---
     {
       id: 'net_nagle',
       message: "Desactivar Algoritmo de Nagle (Baja latencia)",
@@ -483,57 +523,57 @@ module.exports = {
     }
   ],
 
-  // --- Categoría Debloat (Riesgo Alto/Funcional) ---
+  // --- Categoría Debloat ---
   debloat: [
     {
       id: 'debloat_store',
-      message: "[ADVERTENCIA] Desactivar Microsoft Store (Impide descargar apps)",
+      message: "[ADVERTENCIA] Desactivar Microsoft Store",
       apply: 'reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\WindowsStore" /v "DisableStoreApps" /t REG_DWORD /d 1 /f',
       revert: 'reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\WindowsStore" /v "DisableStoreApps" /t REG_DWORD /d 0 /f'
     },
     {
       id: 'debloat_uwp',
-      message: "[RIESGO MÁXIMO] Desinstalar Apps UWP (Cortana, Mapas, Clima...)",
+      message: "[RIESGO MÁXIMO] Desinstalar Apps UWP (Clima, Mapas...)",
       apply: 'powershell -Command "Get-appxpackage -allusers *Microsoft.549981C3F5F10* | Remove-AppxPackage; Get-AppxPackage Microsoft.Windows.Ai.Copilot.Provider | Remove-AppxPackage; Get-AppxPackage *Microsoft.BingWeather* | Remove-AppxPackage; Get-AppxPackage *Microsoft.GetHelp* | Remove-AppxPackage; Get-AppxPackage *Microsoft.WindowsMaps* | Remove-AppxPackage; Get-AppxPackage *Microsoft.Messaging* | Remove-AppxPackage; Get-AppxPackage *Microsoft.People* | Remove-AppxPackage; Get-AppxPackage *Microsoft.WindowsFeedbackHub* | Remove-AppxPackage; Get-AppxPackage *Microsoft.YourPhone* | Remove-AppxPackage"',
       revert: 'powershell -Command "Get-AppxPackage -allusers | foreach {Add-AppxPackage -register \\"$($_.InstallLocation)\\appxmanifest.xml\\" -DisabledevelopmentMode}"'
     }
   ],
   
-  // --- Categoría RIESGO CRÍTICO (Solo Expertos) ---
+  // --- Categoría RIESGO CRÍTICO ---
   criticos: [
     {
       id: 'crit_sysmain',
-      message: "[RIESGO CRÍTICO] Desactivar SysMain (Causa lag en portátiles)",
+      message: "[CRÍTICO] Desactivar SysMain (Superfetch)",
       apply: 'sc config SysMain start= disabled',
       revert: 'sc config SysMain start= auto'
     },
     {
       id: 'crit_compression',
-      message: "[RIESGO CRÍTICO] Desactivar Compresión de Memoria (Causa lag)",
+      message: "[CRÍTICO] Desactivar Compresión de Memoria",
       apply: 'powershell -Command "Disable-MMAgent -MemoryCompression; Disable-MMAgent -PageCombining"',
       revert: 'powershell -Command "Enable-MMAgent -MemoryCompression; Enable-MMAgent -PageCombining"'
     },
-    { // --- NUEVO TWEAK (CUSTOM) ---
+    {
       id: 'crit_mitigations',
-      message: "[RIESGO CRÍTICO] Desactivar Mitigaciones (Spectre/Meltdown)",
+      message: "[CRÍTICO] Desactivar Mitigaciones (Spectre/Meltdown)",
       apply: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management" /v FeatureSettingsOverride /t REG_DWORD /d 3 /f & reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management" /v FeatureSettingsOverrideMask /t REG_DWORD /d 3 /f',
       revert: 'reg delete "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management" /v FeatureSettingsOverride /f >nul 2>&1 & reg delete "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management" /v FeatureSettingsOverrideMask /f >nul 2>&1'
     },
     {
       id: 'crit_dynamictick',
-      message: "[RIESGO CRÍTICO] Desactivar DynamicTick (Riesgo de Kernel)",
+      message: "[CRÍTICO] Desactivar DynamicTick (Kernel)",
       apply: 'bcdedit /set disabledynamictick yes',
       revert: 'bcdedit /deletevalue disabledynamictick'
     },
     {
       id: 'crit_hpet',
-      message: "[RIESGO CRÍTICO] Optimizar HPET/TSC (Riesgo de Kernel)",
+      message: "[CRÍTICO] Optimizar HPET/TSC (Kernel)",
       apply: 'bcdedit /deletevalue useplatformclock & bcdedit /set tscsyncpolicy Enhanced',
       revert: 'bcdedit /set useplatformclock true & bcdedit /deletevalue tscsyncpolicy'
     },
     {
       id: 'crit_svchost',
-      message: "[RIESGO CRÍTICO] Optimizar SvcHost (Riesgo de RAM)",
+      message: "[CRÍTICO] Optimizar SvcHost (RAM)",
       apply: 'for /f "tokens=2 delims==" %%R in (\'wmic ComputerSystem get TotalPhysicalMemory /value\') do set "RAM_BYTES=%%R" & reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control" /v SvcHostSplitThresholdInKB /t REG_DWORD /d %RAM_BYTES:~0,-3% /f',
       revert: 'reg delete "HKLM\\SYSTEM\\CurrentControlSet\\Control" /v SvcHostSplitThresholdInKB /f'
     }

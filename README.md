@@ -1,4 +1,4 @@
-# ElmaxiShark Optimizer v1.2.0
+# ElmaxiShark Optimizer v1.3.0
 
 Creado por Elmaxi ([@Elmaxizone en YouTube](https://www.youtube.com/@Elmaxizone))
 
@@ -6,25 +6,22 @@ Creado por Elmaxi ([@Elmaxizone en YouTube](https://www.youtube.com/@Elmaxizone)
 >
 > Esta es una herramienta potente. Aunque ha sido probada, podrían existir comportamientos inesperados dependiendo de tu hardware y software.
 >
-> **SE RECOMIENDA ENCARECIDAMENTE CREAR UN PUNTO DE RESTAURACIÓN MANUAL** usando el botón "Punto Restauracion" ANTES de aplicar cualquier modo de optimización.
+> **SE RECOMIENDA ENCARECIDAMENTE USAR EL BOTÓN "BACKUP REGISTRO" Y LUEGO "PUNTO RESTAURACION"** ANTES de aplicar cualquier modo de optimización.
 >
 > El uso de esta herramienta es bajo tu propia responsabilidad. El autor no se hace responsable de posibles daños o pérdidas de datos.
 
 ---
 
-## 🚀 Novedades de la v1.2.0
+## 🚀 Novedades de la v1.3.0 GOLD
 
-¡Esta versión se centra en la **seguridad**, la **funcionalidad** y las **peticiones de la comunidad**!
+¡La actualización más grande hasta la fecha! Nos hemos centrado en la seguridad, la usabilidad internacional y un diseño más profesional.
 
-* **¡Buscador de Actualizaciones!** Se ha añadido un botón ("Buscar Actualización") para comprobar manualmente si hay una nueva versión en GitHub.
-* **Filosofía "Seguro por Defecto":** Los botones de 1-clic (Básico, Equilibrado, Extremo, Modo Dios) han sido revisados para mejorar la seguridad y estabilidad. Ya no desactivan funciones clave del sistema (Store, Búsqueda, Impresoras, etc.).
-* **Modo "Custom" Mejorado:** Todos los tweaks "agresivos" (Debloat, Mitigaciones de CPU, Desactivar VRAM, etc.) se han movido al menú "Custom" para usuarios expertos.
-* **Arreglado (Bug de Bluetooth):** El "Modo Dios" ya no desactiva el servicio de Radio (RmSvc), por lo que los mandos de PS5 y otros dispositivos Bluetooth funcionan perfectamente.
-* **Arreglado (Bug Plan de Energía):** Los modos de optimización ya no fuerzan el plan "Equilibrado" al revertir o cambiar entre modos.
-* **Nuevos Tweaks Seguros:** Se han añadido optimizaciones seguras para NTFS, prioridad de tareas y estabilidad de la GPU (TdrDelay) a los botones de 1-clic.
-* **Aviso de Reinicio:** La aplicación ahora recomienda reiniciar el PC después de aplicar una optimización para asegurar que todos los cambios surtan efecto.
-* **Versión en la App:** La versión actual (v1.2.0) ahora se muestra en el pie de página.
-* **Guía de Recomendaciones:** Se ha añadido un botón "Descargar Guía" en la app para ayudarte a elegir el modo correcto para tu PC.
+* **🌍 Soporte Multi-idioma:** Ahora ElmaxiShark Optimizer está disponible completamente en Español e Inglés. Cambia el idioma al instante con el nuevo botón global (🌐).
+* **🛡️ "Modo Dios" ahora es "Modo Gamer":** Hemos renombrado este modo y lo hemos hecho **100% seguro**. Ya no desactiva la virtualización (Hyper-V), por lo que puedes usarlo sin miedo a romper Docker o máquinas virtuales.
+* **💾 Nueva Herramienta "Backup Registro":** Botón salvavidas (color cian) que guarda una copia de tus configuraciones clave en Documentos antes de que toques nada.
+* **🌐 Nueva Herramienta "Red Avanzada":** Para aplicar solo las optimizaciones de red más agresivas sin tocar el resto del sistema.
+* **✨ Interfaz Profesional:** Botones perfectamente alineados con colores temáticos que relacionan cada herramienta con su modo correspondiente.
+* **🔧 Mejoras Técnicas:** Solucionado el bug del menú "Custom" y ahora todos los logs se traducen correctamente.
 
 ---
 
@@ -36,18 +33,11 @@ Esto guardará un archivo `GUIA_RECOMENDACIONES.txt` en tu carpeta de Descargas 
 
 ### Antes de Empezar (¡OBLIGATORIO!)
 
-1.  **Paso 1:** Haz clic en el botón **"Punto Restauracion"**.
-2.  **Paso 2:** Después de aplicar cualquier modo, **REINICIA EL EQUIPO**.
-
-### Perfil 4: Usuario Experto / Entusiasta del Tweak
-*(Extracto de la Guía)*
-
-* **¿Quién eres?:** Sabes lo que es `bcdedit`, entiendes los riesgos y quieres control total.
-* **Modo Recomendado:** **Modo Custom**.
-* **Tu ruta:**
-    * NO apliques ningún modo de 1-clic. Ve directamente al menú "Custom".
-    * "Custom" es un lienzo en blanco que te permite seleccionar exactamente lo que quieres (tweaks críticos, debloat, etc.).
-    * **RECUERDA:** El modo "Custom" es un estado separado. Si aplicas "Custom" y luego "Modo Dios", tus ajustes de Custom se revertirán (y viceversa).
+1.  **Paso 1: Primer Salvavidas (Backup de Registro):** Haz clic en **"Backup Registro"** (guardará tu config actual en Documentos).
+    > **⚠️ NOTA IMPORTANTE:** Este es un backup manual, y es el **último recurso** antes del Punto de Restauración. Si tienes que usarlo, haz doble clic en los archivos `.reg` **en Modo Seguro de Windows** para garantizar la reversión sin conflictos.
+2.  **Paso 2: Segundo Salvavidas (Punto de Restauración):** Haz clic en **"Punto Restauracion"**.
+    > **👍 Recomendación:** El Punto de Restauración es la forma más fácil y segura de deshacer cambios grandes.
+3.  **Paso 3:** Después de aplicar cualquier modo, **REINICIA EL EQUIPO**.
 
 ---
 
@@ -55,10 +45,9 @@ Esto guardará un archivo `GUIA_RECOMENDACIONES.txt` en tu carpeta de Descargas 
 
 1.  Descarga el `ElmaxiShark Optimizer.exe` desde la sección de **[Releases](https://github.com/Elmaxiyt/ElmaxiShark-Optimizer/releases)** de este repositorio.
 2.  Ejecuta el archivo `.exe`. La aplicación te pedirá permisos de Administrador (UAC).
-3.  **(Recomendado)** Haz clic en **"Punto Restauracion"** primero.
-4.  Elige un modo de optimización siguiendo la guía de recomendaciones de arriba.
+3.  **(Recomendado)** Usa las herramientas de backup primero.
+4.  Elige un modo de optimización siguiendo la guía de recomendaciones.
 5.  Para revertir los cambios de un modo, simplemente **vuelve a hacer clic en el botón que esté activo**.
-6.  Al cambiar de modo, se revertirán los cambios del modo anterior y se aplicarán los del nuevo.
 
 ---
 
@@ -66,9 +55,11 @@ Esto guardará un archivo `GUIA_RECOMENDACIONES.txt` en tu carpeta de Descargas 
 
 ### Herramientas Individuales
 
-* **Punto Restauracion:** Crea un punto de restauración del sistema llamado 'ElmaxiShark - Punto Manual'.
-* **Crear Plan Energia:** Crea un plan de energía optimizado llamado 'Modo Gaming Extremo' y lo activa.
-* **Limpieza Sistema:** Ejecuta solamente las tareas de limpieza profundas (Temp, Prefetch, Cachés de Shaders, etc.).
+* **Backup Registro:** Guarda claves críticas del registro (Usuario, Sistema, Gaming) en `Documentos\Elmaxi_Backups`.
+* **Punto Restauracion:** Crea un punto de restauración del sistema de Windows.
+* **Crear Plan Energia:** Crea y activa el plan de energía 'Modo Gaming Extremo'.
+* **Limpieza Sistema:** Ejecuta tareas de limpieza profundas (Temp, Prefetch, Cachés de Shaders, etc.).
+* **Red Avanzada:** Aplica únicamente las optimizaciones de TCP, Nagle, y adaptador de red.
 
 ### Modo Básico
 *(Aplica todos estos comandos)*
@@ -93,40 +84,36 @@ Esto guardará un archivo `GUIA_RECOMENDACIONES.txt` en tu carpeta de Descargas 
 *(Aplica todo lo de Equilibrado **MÁS** lo siguiente)*
 
 * **Sistema:** Prioriza CPU/GPU para juegos (SystemResponsiveness = 0), Activa Programación de GPU (HwSchMode).
-* **Red:** Optimiza Network Throttling (NetworkThrottlingIndex), Desactiva Autotuning, Optimiza TCP (MaxUserPort, etc.), Desactiva ECN Capability.
+* **Red:** Optimiza Network Throttling, Desactiva Autotuning, Optimiza TCP (MaxUserPort, etc.), Desactiva ECN Capability.
 * **Red (Script):** Optimiza propiedades de adaptador de red (desactiva EEE, Flow Control, WakeOnLan).
 * **Energía/Almacenamiento:** Desactiva Power Throttling, Desactiva Inicio Rápido, Desactiva Last Access Time (NTFS), Desactiva ahorro de energía SSD/USB.
 * **Estabilidad de GPU:** Aumenta el TdrDelay a 10 segundos para prevenir cuelgues del controlador gráfico.
 
-### Modo Dios (Optimización Avanzada)
-*(Aplica todo lo de Extremo **MÁS** lo siguiente)*
+### Modo Gamer (Máximo Rendimiento Seguro)
+*(Antiguo "Modo Dios". Aplica todo lo de Extremo **MÁS** lo siguiente)*
 
-> **ADVERTENCIA (Experto):** Este modo aplica tweaks de red y sistema de bajo nivel. Está pensado para usuarios avanzados que buscan el máximo rendimiento. (Ver Guía para más detalles).
+> **NOTA:** Este modo ahora es 100% seguro para uso diario.
 
 * **Red Agresiva:** Desactiva Algoritmo de Nagle y optimiza TCP (para latencia mínima), Desactiva IPv6, Desactiva NDU (Diagnóstico de Red).
-* **Sistema:** Desactiva Hyper-V (virtualización).
 * **Servicios:** Desactiva servicios avanzados (Notas, Tablet).
-* **¡ARREGLADO!** Ya **NO** desactiva el servicio de Radio (RmSvc), por lo que el Bluetooth y los mandos funcionan correctamente.
-* **¡NOTA!** Los tweaks de Debloat (Store, Search, Impresoras, Xbox) han sido eliminados de este modo y movidos al menú **Custom**.
+* **Seguridad:** Ya NO desactiva Hyper-V (virtualización), por lo que no rompe WSL2 ni emuladores.
 
 ### Modo Personalizado (Custom)
 
 * **Propósito:** Para usuarios expertos que quieren control total.
 * **Qué hace:** Abre un menú que te permite seleccionar tweaks individuales que son demasiado agresivos o específicos para los modos de 1-clic.
 * **Incluye (y más):**
-    * Desactivar Servicios (Xbox, Impresoras, Búsqueda, etc.).
-    * Desactivar Microsoft Store.
-    * Desinstalar Apps UWP (Debloat).
-    * Desactivar Mitigaciones de CPU (Spectre/Meltdown).
-    * Desactivar Compresión de VRAM.
-    * Desactivar Telemetría de NVIDIA.
-    * Tweaks de Kernel (DynamicTick, HPET, etc.).
+    * **[NUEVO]** Desactivar Hyper-V (Virtualización).
+    * Desactivar Servicios (Xbox, Impresoras, Búsqueda, etc.).
+    * Desactivar Microsoft Store y Desinstalar Apps UWP (Debloat).
+    * Desactivar Mitigaciones de CPU (Spectre/Meltdown).
+    * Tweaks de Kernel (DynamicTick, HPET, etc.).
 
 ---
 
 ## ©️ Licencia y Créditos
 
-ElmaxiShark Optimizer v1.2.0 es una herramienta gratuita (freeware). Creada y propiedad de Elmaxi.
+ElmaxiShark Optimizer es una herramienta gratuita (freeware). Creada y propiedad de Elmaxi.
 
 * Puedes usar esta aplicación libremente para fines personales y no comerciales.
 * Puedes distribuir la aplicación (en su forma original, sin modificar) siempre y cuando des crédito claro y visible al creador (Elmaxi) e incluyas este archivo `README.md` sin modificar.

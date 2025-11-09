@@ -1,322 +1,152 @@
-// renderer.js (v1.8.1 - Mensaje de Timeout Amigable)
-
-// TÍTULO (Efecto escritura)
+// renderer.js (v2.0.3 GOLD - Final con PayPal Listener)
 const tituloEl = document.getElementById('titulo');
-const textoTitulo = '¿PREPARADO PARA EL SIGUIENTE NIVEL?';
-tituloEl.textContent = '';
-let idx = 0;
-function startTypingEffect() {
-  if (idx < textoTitulo.length) {
-    tituloEl.textContent += textoTitulo.charAt(idx);
-    idx++;
-    setTimeout(startTypingEffect, 45);
-  }
+let typingTimeout;
+let currentStrings = {};
+
+function applyLanguage(strings) {
+    currentStrings = strings;
+    document.querySelectorAll('[data-i18n]').forEach(el => { 
+        const key = el.getAttribute('data-i18n');
+        if (currentStrings[key]) el.textContent = currentStrings[key]; 
+    });
+    document.querySelectorAll('[data-i18n-tip]').forEach(el => { 
+        const key = el.getAttribute('data-i18n-tip');
+        if (currentStrings[key]) { 
+            el.setAttribute('data-tooltip', currentStrings[key]); 
+            el.setAttribute('title', currentStrings[key]); 
+        } 
+    });
+    startTypingEffect(currentStrings.subtitle || 'Potencia tu sistema con un CLICK');
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  startTypingEffect();
+function startTypingEffect(txt) {
+    clearTimeout(typingTimeout);
+    tituloEl.textContent = '';
+    let idx = 0;
+    (function type() { 
+        if (idx < txt.length) { 
+            tituloEl.textContent += txt.charAt(idx++); 
+            typingTimeout = setTimeout(type, 45); 
+        } 
+    })();
+}
 
-  // --- CONTROLES DE VENTANA Y LINKS ---
-  document.getElementById('minimize-btn').addEventListener('click', () => window.electronAPI.send('minimize-app'));
-  document.getElementById('close-btn').addEventListener('click', () => window.electronAPI.send('close-app'));
-  document.getElementById('yt-link-footer').addEventListener('click', (e) => {
-    e.preventDefault();
-    window.electronAPI.send('open-external-link', e.currentTarget.href);
-  });
-
-  // --- BOTÓN DESCARGAR GUÍA ---
-  document.getElementById('download-guide-btn').addEventListener('click', () => {
-    window.electronAPI.send('download-guide');
-  });
-
-  // --- LÓGICA DE ACTUALIZACIÓN MEJORADA ---
-  const log = document.getElementById('log'); // Obtener el elemento log aquí
-  let updateLogEntryId = 0; // Para identificar el mensaje de búsqueda de actualización
-  let loadingDotsInterval = null; // Para la animación de puntos suspensivos
-  let updateTimeout = null; // Para el temporizador de seguridad de 10s
-
-  // Función para añadir mensajes al log
-  const addLogMessage = (message, type = '', command = '') => {
-    let messageClass = '';
-    if (type === 'error') messageClass = 'log-error';
-    if (type === 'info-update') messageClass = 'log-info-update'; 
-    if (type === 'success') messageClass = 'log-success'; // Asegurarse que se aplica
-
-    let finalCommand = '';
-    if (command) {
-        finalCommand = `<div class="log-command">${command.replace(/ >nul 2>&1/g, '').replace(/@echo off/g, '').replace(/chcp \d+ >nul/g, '').replace(/^@/i, '')}</div>`;
+window.addEventListener('DOMContentLoaded', async () => {
+    try { 
+        const d = await window.electronAPI.invoke('request-language'); 
+        applyLanguage(d.strings); 
+        window.electronAPI.on('set-language', applyLanguage); 
+    } catch (e) { 
+        startTypingEffect(document.getElementById('subtitulo').textContent); 
     }
 
-    const logEntry = `<div class="${messageClass}" data-log-id="${updateLogEntryId}">${message}</div>${finalCommand}`;
-    log.innerHTML = logEntry + log.innerHTML;
-    log.scrollTop = 0;
-  };
+    document.getElementById('minimize-btn').addEventListener('click', () => window.electronAPI.send('minimize-app'));
+    document.getElementById('close-btn').addEventListener('click', () => window.electronAPI.send('close-app'));
+    document.getElementById('download-guide-btn').addEventListener('click', () => window.electronAPI.send('download-guide'));
 
-  // Función para limpiar/actualizar un mensaje específico del log
-  const updateLogMessage = (messageId, newMessage, type = '', actionButton = '') => {
-    const entry = log.querySelector(`[data-log-id="${messageId}"]`);
-    if (entry) {
-        entry.innerHTML = newMessage + actionButton;
-        entry.className = type === 'error' ? 'log-error' : type === 'success' ? 'log-success' : 'log-info-update';
-        // Si hay botón de reiniciar, lo adjuntamos y agregamos listener
-        if (actionButton) {
-            const restartBtn = entry.querySelector('#restart-btn');
-            if (restartBtn) {
-                restartBtn.addEventListener('click', () => {
-                    window.electronAPI.send('restart-app-to-update');
-                });
-            }
+    // LISTENERS DE FOOTER (YouTube + PayPal)
+    document.getElementById('yt-link-footer').addEventListener('click', (e) => { e.preventDefault(); window.electronAPI.send('open-external-link', e.currentTarget.href); });
+    document.getElementById('paypal-link-footer').addEventListener('click', (e) => { e.preventDefault(); window.electronAPI.send('open-external-link', e.currentTarget.href); });
+
+    const log = document.getElementById('log');
+    const progressBarContainer = document.getElementById('progress-container');
+    const progressBarFill = document.getElementById('progress-bar-fill');
+    const progressBarText = document.getElementById('progress-bar-text');
+
+    window.electronAPI.on('log-update', (data) => {
+        const cls = (data.message && data.message.includes('[ERROR]')) ? 'log-error' : '';
+        const cmd = data.command.replace(/ >nul 2>&1/g, '').replace(/@echo off/g, '').replace(/chcp \d+ >nul/g, '').replace(/^@/i, '');
+        let logText = data.message;
+        if (data.id && currentStrings[data.id]) {
+            logText = `[${currentStrings[data.id]}]`;
+        } else if (data.message && !data.message.startsWith('[') && data.command !== "=== FIN ===") {
+             logText = `[${data.message}]`;
         }
-    }
-  };
+        log.innerHTML = `<div class="${cls}">${logText}</div><div class="log-command">${cmd}</div>` + log.innerHTML;
+    });
 
-
-  document.getElementById('btn-check-update').addEventListener('click', () => {
-    // Limpiar temporizadores y animaciones previas
-    if (updateTimeout) clearTimeout(updateTimeout);
-    if (loadingDotsInterval) clearInterval(loadingDotsInterval);
-    
-    updateLogEntryId++; // Nuevo ID para este ciclo de búsqueda
-    const currentLogId = updateLogEntryId;
-
-    // Mensaje inicial en el log
-    addLogMessage(`Buscando actualizaciones<span class="log-loading-dots"><span>.</span><span>.</span><span>.</span></span>`, 'info-update', 'Verificando repositorio...');
-
-    // Iniciar animación de puntos suspensivos (solo para el mensaje de búsqueda)
-    const loadingMessageSpan = log.querySelector(`[data-log-id="${currentLogId}"] .log-loading-dots`);
-    if (loadingMessageSpan) {
-        let dotsCount = 0;
-        loadingDotsInterval = setInterval(() => {
-            dotsCount = (dotsCount + 1) % 4; // 0, 1, 2, 3
-            let dots = '';
-            for (let i = 0; i < 3; i++) {
-                dots += `<span style="opacity:${i < dotsCount ? '1' : '0.2'}">.</span>`;
-            }
-            loadingMessageSpan.innerHTML = dots;
-        }, 300); // Cambia cada 300ms
-    }
-
-    // Envía el comando al main process
-    window.electronAPI.send('check-for-updates-manual');
-
-    // --- CAMBIO EN EL TEMPORIZADOR DE SEGURIDAD ---
-    updateTimeout = setTimeout(() => {
-      // Solo si el mensaje sigue siendo el de "Buscando..."
-      const currentEntry = log.querySelector(`[data-log-id="${currentLogId}"]`);
-      if (currentEntry && currentEntry.textContent.includes('Buscando actualizaciones')) {
-          if (loadingDotsInterval) clearInterval(loadingDotsInterval);
-          
-          // Mostramos un mensaje amigable en lugar de un error
-          updateLogMessage(currentLogId, `No se encontraron actualizaciones recientes.`, 'success');
-          console.log('Timeout del mensaje de actualización (10s), mostrando mensaje amigable.');
-
-          // Oculta el mensaje después de 3 segundos
-          setTimeout(() => { 
-            const entry = log.querySelector(`[data-log-id="${currentLogId}"]`);
-            if (entry) entry.remove(); // Elimina la entrada del log
-          }, 3000);
-      }
-    }, 10000); // 10 segundos
-    // --- FIN DEL CAMBIO ---
-  });
-
-
-  const botonesNiveles = document.querySelectorAll('#niveles .boton');
-  
-  // --- ELEMENTOS BARRA DE PROGRESO ---
-  const progressBarContainer = document.getElementById('progress-container');
-  const progressBarFill = document.getElementById('progress-bar-fill');
-  const progressBarText = document.getElementById('progress-bar-text');
-
-  
-  // --- AÑADIDO: LISTENER PARA MOSTRAR VERSIÓN ---
-  window.electronAPI.on('set-app-version', (version) => {
-    const versionEl = document.getElementById('app-version');
-    if (versionEl) {
-      versionEl.textContent = `v${version}`;
-    }
-  });
-
-  // --- RECIBIR Y APLICAR ESTADO INICIAL (DUAL) ---
-  window.electronAPI.on('set-initial-mode', (initialState) => {
-    console.log(`Estado DUAL recibido:`, initialState);
-    
-    // 1. Manejar botones de 1-Clic (Básico, Dios, etc.)
-    botonesNiveles.forEach(btn => {
-        const mode = getModeFromButton(btn); // Esta función ignora 'custom'
-        if (mode) { // Si es un botón de 1-clic
-            if (initialState.activeMode === mode) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
+    window.electronAPI.on('progress-update', (data) => {
+        if (data.isRunning) {
+            progressBarContainer.style.display = 'block';
+            progressBarFill.style.width = `${data.percentage}%`;
+            progressBarText.textContent = `${data.percentage}%` + (data.totalCommands ? ` (${data.currentCommand}/${data.totalCommands})` : '');
+        } else {
+            progressBarFill.style.width = `${data.percentage}%`;
+            progressBarText.textContent = data.text;
+            setTimeout(() => { 
+                progressBarContainer.style.display = 'none'; 
+                progressBarFill.style.width = '0%'; 
+            }, 2000);
         }
     });
-    
-    // 2. Manejar botón Custom (separado)
+
+    const botonesNiveles = document.querySelectorAll('#niveles .boton');
+    const btnRed = document.getElementById('btn-network-tool');
     const customBtn = document.querySelector('#niveles .boton.overdrive');
-    if (customBtn) {
-        if (initialState.customTweaksActive) {
-            customBtn.classList.add('active');
-            console.log(`Botón Custom activado visualmente.`);
-        } else {
-            customBtn.classList.remove('active');
-        }
-    }
-  });
-  // --- FIN ESTADO DUAL ---
 
-  // --- LISTENER LOG ---
-  window.electronAPI.on('log-update', (data) => {
-    let messageClass = '';
-    if (data.message.includes('[ERROR]')) messageClass = 'log-error';
-    
-    let cleanCommand = data.command.replace(/ >nul 2>&1/g, '').replace(/@echo off/g, '').replace(/chcp \d+ >nul/g, '').replace(/^@/i, '');
-    
-    const logEntry = `<div class="${messageClass}">${data.message}</div><div class="log-command">${cleanCommand}</div>`;
-    log.innerHTML = logEntry + log.innerHTML;
-    log.scrollTop = 0;
-  });
-
-  // --- LISTENER BARRA DE PROGRESO ---
-  window.electronAPI.on('progress-update', (data) => {
-    if (data.isRunning) {
-      progressBarContainer.style.display = 'block';
-      progressBarFill.style.width = `${data.percentage}%`;
-      progressBarText.textContent = data.text;
-    } else {
-      progressBarFill.style.width = `${data.percentage}%`;
-      progressBarText.textContent = data.text;
-      
-      setTimeout(() => {
-        progressBarContainer.style.display = 'none';
-        progressBarFill.style.width = '0%';
-        progressBarText.textContent = '';
-      }, 2000);
-    }
-  });
-
-  // --- LÓGICA BOTONES DE MODO (HÍBRIDA V1.4) ---
-  const getModeFromButton = (btn) => {
-    if (!btn) return null;
-    if (btn.classList.contains('minimo')) return 'basico';
-    if (btn.classList.contains('equilibrado')) return 'equilibrado';
-    if (btn.classList.contains('extremo')) return 'extremo';
-    if (btn.classList.contains('mododios')) return 'mododios';
-    return null; 
-  };
-
-  botonesNiveles.forEach(btn => {
-    
-    // --- BOTÓN CUSTOM (Overdrive) ---
-    if (btn.classList.contains('overdrive')) {
-        btn.addEventListener('click', () => {
-            console.log("Botón Custom (Overdrive) presionado.");
-            window.electronAPI.send('open-custom-menu');
+    window.electronAPI.on('set-initial-mode', (state) => {
+        botonesNiveles.forEach(btn => {
+            let mode = null;
+            if (btn.classList.contains('minimo')) mode = 'basico';
+            else if (btn.classList.contains('equilibrado')) mode = 'equilibrado';
+            else if (btn.classList.contains('extremo')) mode = 'extremo';
+            else if (btn.classList.contains('mododios')) mode = 'mododios';
+            if (mode) btn.classList.toggle('active', state.activeMode === mode);
         });
-        return; 
-    }
-
-    // --- BOTONES DE 1 CLIC (Básico, Equilibrado, Extremo, Dios) ---
-    btn.addEventListener('click', () => {
-      const clickedMode = getModeFromButton(btn);
-      if (!clickedMode) return;
-      
-      const activeBtn = document.querySelector('#niveles .boton.active:not(.overdrive)');
-      
-      const activeMode = getModeFromButton(activeBtn);
-      let payload = { applyMode: null, revertMode: null };
-
-      if (activeBtn && activeBtn === btn) { // Desactivar
-        btn.classList.remove('active');
-        payload.revertMode = clickedMode;
-      } else if (activeBtn && activeBtn !== btn) { // Cambiar
-        activeBtn.classList.remove('active');
-        btn.classList.add('active');
-        payload.revertMode = activeMode;
-        payload.applyMode = clickedMode;
-      } else { // Activar
-        btn.classList.add('active');
-        payload.applyMode = clickedMode;
-      }
-      
-      if (payload.applyMode || payload.revertMode) {
-        const customBtn = document.querySelector('#niveles .boton.overdrive');
-        if (customBtn) customBtn.classList.remove('active');
-        
-        window.electronAPI.send('run-optimization', payload);
-      }
+        if (customBtn) customBtn.classList.toggle('active', state.customTweaksActive);
+        if (btnRed) btnRed.classList.toggle('active', state.networkToolActive);
     });
-  });
 
-  // --- Listeners Herramientas ---
-  document.getElementById('btn-restore').addEventListener('click', () => window.electronAPI.send('run-tool', { tool: 'restauracion' }));
-  document.getElementById('btn-energy').addEventListener('click', () => window.electronAPI.send('run-tool', { tool: 'energia' }));
-  document.getElementById('btn-clean').addEventListener('click', () => window.electronAPI.send('run-tool', { tool: 'limpieza-sistema' }));
-
-  // --- Placeholder Traducción ---
-  document.getElementById('btn-translate').addEventListener('click', () => {
-    console.log('Botón de traducción pulsado (funcionalidad futura)');
-  });
-
-
-  // --- LISTENER DE MENSAJES DE ACTUALIZACIÓN ---
-  window.electronAPI.on('update-message', (data) => {
-    console.log('Mensaje de actualización recibido:', data.status);
-
-    // Limpiar temporizadores y animaciones al recibir cualquier respuesta
-    if (updateTimeout) clearTimeout(updateTimeout);
-    if (loadingDotsInterval) clearInterval(loadingDotsInterval);
-    
-    let message = '';
-    let actionButton = '';
-    let messageType = 'log-info-update';
-  
-    switch(data.status) {
-      case 'available':
-        message = `Descargando actualización v${data.version}...`;
-        messageType = 'log-info-update';
-        break;
-  
-      case 'error':
-        if (data.message && data.message.includes('ENOENT')) {
-          message = 'Error al buscar actualizaciones (no se encontró .yml).';
-        } else {
-          message = `Error al actualizar: ${data.message || 'Error desconocido'}`;
+    botonesNiveles.forEach(btn => {
+        if (btn.classList.contains('overdrive')) { 
+            btn.addEventListener('click', () => window.electronAPI.send('open-custom-menu')); 
+            return; 
         }
-        messageType = 'error';
-        break;
-      
-      case 'downloaded':
-        message = `¡Actualización v${data.version} lista! Reinicia para instalar.`;
-        messageType = 'success';
-        actionButton = `<button id="restart-btn" style="
-            background: linear-gradient(180deg,#62ffb8,#18d77e);
-            color: black;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-family: 'Russo One', sans-serif;
-            font-size: 11px;
-            cursor: pointer;
-            margin-left: 10px;
-            transition: background 0.2s;
-        ">Reiniciar Ahora</button>`;
-        break;
-        
-      case 'not-available':
-        message = '¡Ya tienes la última versión!';
-        messageType = 'success'; 
-        // Oculta el mensaje después de 3 segundos
-        setTimeout(() => { 
-          const entry = log.querySelector(`[data-log-id="${updateLogEntryId}"]`);
-          if (entry) entry.remove(); // Elimina la entrada del log
-        }, 3000);
-        break;
-    }
-  
-    // Actualizamos el mensaje en el log o lo añadimos si no existe
-    updateLogMessage(updateLogEntryId, message, messageType, actionButton);
-  });
+        btn.addEventListener('click', () => {
+            let mode = null;
+            if (btn.classList.contains('minimo')) mode = 'basico';
+            else if (btn.classList.contains('equilibrado')) mode = 'equilibrado';
+            else if (btn.classList.contains('extremo')) mode = 'extremo';
+            else if (btn.classList.contains('mododios')) mode = 'mododios';
+            if (!mode) return;
+            const activeBtn = document.querySelector('#niveles .boton.active:not(.overdrive)');
+            let activeMode = null;
+            if (activeBtn) {
+                 if (activeBtn.classList.contains('minimo')) activeMode = 'basico';
+                 else if (activeBtn.classList.contains('equilibrado')) activeMode = 'equilibrado';
+                 else if (activeBtn.classList.contains('extremo')) activeMode = 'extremo';
+                 else if (activeBtn.classList.contains('mododios')) activeMode = 'mododios';
+            }
+            let payload = { applyMode: null, revertMode: null };
+            if (activeBtn === btn) { 
+                btn.classList.remove('active'); 
+                payload.revertMode = mode; 
+            } else { 
+                if (activeBtn) activeBtn.classList.remove('active'); 
+                btn.classList.add('active'); 
+                payload.revertMode = activeMode; 
+                payload.applyMode = mode; 
+            }
+            window.electronAPI.send('run-optimization', payload);
+        });
+    });
 
-}); // Fin DOMContentLoaded
+    document.getElementById('btn-backup-reg').addEventListener('click', () => window.electronAPI.send('run-tool', { tool: 'backup-reg' }));
+    document.getElementById('btn-restore').addEventListener('click', () => window.electronAPI.send('run-tool', { tool: 'restauracion' }));
+    document.getElementById('btn-energy').addEventListener('click', () => window.electronAPI.send('run-tool', { tool: 'energia' }));
+    document.getElementById('btn-clean').addEventListener('click', () => window.electronAPI.send('run-tool', { tool: 'limpieza-sistema' }));
+    if (btnRed) btnRed.addEventListener('click', () => window.electronAPI.send('toggle-network-tool'));
+
+    window.electronAPI.on('set-app-version', (v) => { const el = document.getElementById('version-display'); if (el) el.textContent = `v${v}`; });
+    document.getElementById('btn-check-update').addEventListener('click', () => { 
+        log.innerHTML = `<div class="log-info-update">[UPDATE] Buscando...</div>` + log.innerHTML; 
+        window.electronAPI.send('check-for-updates-manual'); 
+    });
+    window.electronAPI.on('update-message', (d) => { 
+        const cls = d.type === 'error' ? 'log-error' : d.type === 'success' ? 'log-success' : 'log-info-update'; 
+        log.innerHTML = `<div class="${cls}">${d.text}</div>` + log.innerHTML; 
+    });
+    document.getElementById('btn-translate').addEventListener('click', () => { 
+        window.electronAPI.send('change-language', 'toggle'); 
+    });
+});

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ElmaxiShark Optimizer</title>
+  <title data-i18n="main_title">ElmaxiShark Optimizer</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,13 +11,13 @@
 
   <div id="main-title-container">
     <div class="line"></div>
-    <div id="main-title">ELMAXISHARK OPTIMIZER</div>
+    <div id="main-title" data-i18n="main_title">ELMAXISHARK OPTIMIZER</div>
     <div class="line"></div>
   </div>
 
   <div id="topbar">
     <div id="left-top">
-       <div id="btn-translate" class="control-btn" title="Language (Coming Soon)">🌐</div>
+       <div id="btn-translate" class="control-btn" data-i18n-tip="language_title" title="Idioma (Versión Pro)">🌐</div>
     </div>
     <div id="right-top">
       <div id="window-controls">
@@ -28,53 +28,59 @@
   </div>
 
   <div id="widget">
-    <img id="logo" src="assets/logo.png" alt="Logo ElmaxiShark Optimizer">
+    <img id="logo" src="assets/logo.png" alt="Logo" draggable="false">
     <h1 id="titulo"></h1>
-    <p id="subtitulo">Potencia tu sistema con un CLICK</p>
+    <p id="subtitulo" data-i18n="subtitle">Potencia tu sistema con un CLICK</p>
 
-    <div id="info-herramientas">Herramientas Individuales:</div>
+    <div id="info-herramientas" data-i18n="tools_info">Herramientas Individuales:</div>
+    
     <div id="herramientas">
-      <button id="btn-restore" class="boton tool" data-tooltip="Crea un punto antes de optimizar">Punto Restauracion</button>
-      <button id="btn-energy" class="boton tool" data-tooltip="Crea Plan Modo Gaming Extremo">Crear Plan Energia</button>
-      <button id="btn-clean" class="boton tool" data-tooltip="Borra archivos temporales y cachés">Limpieza Sistema</button>
+      <button id="btn-clean" class="boton tool" data-mode="limpieza-sistema" data-i18n="tool_clean" data-i18n-tip="tool_clean_tip">Limpieza Sistema</button>
+      <button id="btn-restore" class="boton tool" data-mode="restauracion" data-i18n="tool_restore" data-i18n-tip="tool_restore_tip">Punto Restauracion</button>
+      <button id="btn-energy" class="boton tool" data-mode="energia" data-i18n="tool_energy" data-i18n-tip="tool_energy_tip">Crear Plan Energia</button>
+      <button id="btn-network-tool" class="boton tool" data-mode="net-adv" data-i18n="tool_net_adv" data-i18n-tip="tool_net_adv_tip">Red Avanzada</button>
+      <button id="btn-backup-reg" class="boton tool tool-reg" data-mode="backup-reg" data-i18n="tool_backup" data-i18n-tip="tool_backup_tip">Backup Registro</button>
     </div>
 
-    <div id="info-niveles">Elige un modo de optimizacion:</div>
+    <div id="info-niveles" data-i18n="mode_info">Elige un modo de optimizacion:</div>
     
     <div id="niveles">
-      <button class="boton minimo" data-tooltip="Optimizacion minima">Básico</button>
-      <button class="boton equilibrado" data-tooltip="Buen balance rendimiento/estabilidad">Equilibrado</button>
-      <button class="boton extremo" data-tooltip="Optimización Agresiva (GPU/Red/Energía)">Extremo</button>
-      
-      <button class="boton mododios" data-tooltip="El modo más potente (Extremo/Tweaks Avanzados)">Modo Dios</button>
-      
-      <button class="boton overdrive" data-tooltip="Tweaks personalizados">Custom</button>
+      <button class="boton minimo" data-mode="basico" data-i18n="mode_basic" data-i18n-tip="mode_basic_tip">Básico</button>
+      <button class="boton equilibrado" data-mode="equilibrado" data-i18n="mode_balanced" data-i18n-tip="mode_balanced_tip">Equilibrado</button>
+      <button class="boton extremo" data-mode="extremo" data-i18n="mode_extreme" data-i18n-tip="mode_extreme_tip">Extremo</button>
+      <button class="boton mododios" data-mode="mododios" data-i18n="mode_god" data-i18n-tip="mode_god_tip">Modo Gamer</button>
+      <button class="boton overdrive" data-mode="overdrive" data-i18n="mode_custom" data-i18n-tip="mode_custom_tip">Custom</button>
     </div>
 
     <div class="utility-links">
-      <span id="download-guide-btn" class="text-link color-hielo">Descargar Guía</span>
-      <span id="btn-check-update" class="text-link color-hielo">Buscar Actualización</span>
+      <span id="download-guide-btn" class="text-link color-hielo" data-i18n="utility_guide">Descargar Guía</span>
+      <span id="btn-check-update" class="text-link color-hielo" data-i18n="utility_update">Buscar Actualización</span>
     </div>
 
     <div id="comandos">
-      <div id="log">Aquí se mostrarán las acciones realizadas...</div>
-      
+      <div id="log" data-i18n="log_initial">Esperando acciones...</div>
       <div id="progress-container">
         <div id="progress-bar-fill"></div>
-        <span id="progress-bar-text"></span>
+        <span id="progress-bar-text">0%</span>
       </div>
     </div>
   </div>
 
   <footer id="copyright">
-    <a id="yt-link-footer" href="https." target="_blank" rel="noreferrer">
-      <img id="yt-icon" src="assets/youtube.png" alt="YouTube">
-    </a>
-    <span>© 2025 ElmaxiZone. Todos los derechos reservados.</span>
-    <span id="app-version"></span>
+      <div id="footer-icons">
+          <a id="yt-link-footer" href="https://www.youtube.com/@ElmaxiShark" target="_blank" title="YouTube">
+            <img id="yt-icon" src="assets/youtube.png" alt="YouTube" draggable="false">
+          </a>
+          <a id="paypal-link-footer" href="https://paypal.me/Elmaxizone" target="_blank" title="Donar (PayPal)">
+            <img id="paypal-icon" src="assets/paypal.png" alt="Donar" draggable="false">
+          </a>
+      </div>
+
+      <span data-i18n="copyright">© 2025 ElmaxiZone. Todos los derechos reservados.</span>
+      <span id="version-display">v1.3.0</span>
   </footer>
 
-  <script src="renderer.js"></script>
   <script src="particles.js"></script>
+  <script src="renderer.js"></script>
 </body>
 </html>

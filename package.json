@@ -1,6 +1,6 @@
 {
   "name": "elmaxishark-optimizer",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Optimizador de Windows para Gaming por ElmaxiShark",
   "main": "main.js",
   "scripts": {
@@ -41,7 +41,8 @@
       "custom.html",
       "custom-preload.js",
       "custom-renderer.js",
-      "GUIA_RECOMENDACIONES.txt"
+      "GUIA_RECOMENDACIONES.txt",
+      "lang/**/*"
     ],
     "win": {
       "target": "portable",

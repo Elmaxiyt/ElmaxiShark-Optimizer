@@ -2,6 +2,7 @@
 module.exports = {
   apply: [
     {
+      id: 'tool_energy_creating',
       message: "Creando Plan de Energia 'Modo Gaming Extremo'...",
       isScript: true,
       command: `@echo off
@@ -35,6 +36,7 @@ powercfg -setactive %PLAN_GUID%
 `
     },
     {
+      id: 'tool_energy_contextual',
       message: "Anadiendo 'Planes de Energia' al menu contextual...",
       command: 'reg add "HKCU\\Software\\Classes\\DesktopBackground\\Shell\\PowerOptions" /v "Icon" /t REG_SZ /d "powercpl.dll" /f & reg add "HKCU\\Software\\Classes\\DesktopBackground\\Shell\\PowerOptions" /v "MUIVerb" /t REG_SZ /d "Planes de Energia" /f & reg add "HKCU\\Software\\Classes\\DesktopBackground\\Shell\\PowerOptions\\command" /v "" /t REG_SZ /d "control.exe powercfg.cpl" /f'
     }
