@@ -4,7 +4,7 @@ const path = require('path');
 const { spawn, execSync, exec } = require('child_process');
 const os = require('os');
 const fs = require('fs');
-const { autoUpdater } = require('electron-updater');
+// const { autoUpdater } = require('electron-updater'); // <-- Línea de dependencia eliminada
 
 // 1. VARIABLES
 let mainWindow = null;
@@ -213,7 +213,7 @@ ipcMain.on('run-custom-tweaks', (e, { action, ids }) => {
     }
     if (cmds.length > 0) { customWindow?.hide(); executeCommands(mainWindow, cmds, action, 'custom'); }
 });
-
-autoUpdater.on('update-available', () => mainWindow?.webContents.send('update-message', { text: 'Actualización disponible!', type: 'info' }));
-autoUpdater.on('update-not-available', () => mainWindow?.webContents.send('update-message', { text: 'Tu versión está al día.', type: 'success' }));
-ipcMain.on('check-for-updates-manual', () => autoUpdater.checkForUpdates());
+// Lógica de autoUpdater eliminada y sus listeners IPC eliminados (Correcto)
+// autoUpdater.on('update-available', () => mainWindow?.webContents.send('update-message', { text: 'Actualización disponible!', type: 'info' }));
+// autoUpdater.on('update-not-available', () => mainWindow?.webContents.send('update-message', { text: 'Tu versión está al día.', type: 'success' }));
+// ipcMain.on('check-for-updates-manual', () => autoUpdater.checkForUpdates());

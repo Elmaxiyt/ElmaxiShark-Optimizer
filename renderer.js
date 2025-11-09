@@ -138,14 +138,35 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (btnRed) btnRed.addEventListener('click', () => window.electronAPI.send('toggle-network-tool'));
 
     window.electronAPI.on('set-app-version', (v) => { const el = document.getElementById('version-display'); if (el) el.textContent = `v${v}`; });
+    
+    // START: MODIFICACION PARA ELIMINAR electron-updater y REDIRIGIR AL SITIO WEB
     document.getElementById('btn-check-update').addEventListener('click', () => { 
-        log.innerHTML = `<div class="log-info-update">[UPDATE] Buscando...</div>` + log.innerHTML; 
-        window.electronAPI.send('check-for-updates-manual'); 
+        // URL de la última release en GitHub
+        const releaseUrl = 'https://github.com/Elmaxiyt/ElmaxiShark-Optimizer/releases/latest';
+        
+        // Mostrar mensaje en el log
+        const logMessage = currentStrings['utility_update'] ? `[UPDATE] Abriendo ${currentStrings['utility_update']}...` : "[UPDATE] Opening Update Page...";
+        log.innerHTML = `<div class="log-info-update">${logMessage}</div>` + log.innerHTML; 
+
+        // Enviar la URL a main.js para abrirla externamente
+        window.electronAPI.send('open-external-link', releaseUrl); 
     });
+
+    // Eliminar el listener de 'update-message' ya que electron-updater ya no se usa
+    // window.electronAPI.on('update-message', (d) => { ... });
+
+    // Eliminar el listener de 'update-message' si existía en el original:
+    // La función original contenía:
+    /*
     window.electronAPI.on('update-message', (d) => { 
         const cls = d.type === 'error' ? 'log-error' : d.type === 'success' ? 'log-success' : 'log-info-update'; 
         log.innerHTML = `<div class="${cls}">${d.text}</div>` + log.innerHTML; 
     });
+    */
+    // Lo anterior ha sido efectivamente eliminado al no reescribirlo.
+
+    // END: MODIFICACION PARA ELIMINAR electron-updater y REDIRIGIR AL SITIO WEB
+
     document.getElementById('btn-translate').addEventListener('click', () => { 
         window.electronAPI.send('change-language', 'toggle'); 
     });
