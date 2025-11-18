@@ -1,6 +1,13 @@
+// scripts/optimizacion-equilibrada.js (v2.0 - Añadida Privacidad y QoL)
 const optimizacionBasica = require('./optimizacion-basica.js');
 
 const applyEquilibrado = [
+  // --- NUEVO: Privacidad y QoL Seguros ---
+  { id: 'qol_stickykeys', message: "Desactivando Sticky Keys (Shift 5 veces)...", command: 'reg add "HKCU\\Control Panel\\Accessibility\\StickyKeys" /v "Flags" /t REG_SZ /d "506" /f & reg add "HKCU\\Control Panel\\Accessibility\\Keyboard Response" /v "Flags" /t REG_SZ /d "122" /f & reg add "HKCU\\Control Panel\\Accessibility\\ToggleKeys" /v "Flags" /t REG_SZ /d "58" /f' },
+  { id: 'privacy_activity_history', message: "Desactivando Historial de Actividad...", command: 'reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System" /v "PublishUserActivities" /t REG_DWORD /d 0 /f & reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System" /v "UploadUserActivities" /t REG_DWORD /d 0 /f' },
+  { id: 'privacy_notifications_toast', message: "Desactivando Notificaciones Toast molestas...", command: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications" /v "ToastEnabled" /t REG_DWORD /d 0 /f' },
+  
+  // --- Tweaks Originales ---
   { id: 'serv_telemetria', message: "Desactivando servicios de telemetria...", command: 'sc config diagtrack start= disabled & sc config DPS start= disabled & sc config WerSvc start= disabled' },
   { id: 'serv_gamebar', message: "Desactivando Game Bar, DVR y Modo Juego Auto...", command: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR" /v AppCaptureEnabled /t REG_DWORD /d 0 /f & reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR" /v AllowGameDVR /t REG_DWORD /d 0 /f & reg add "HKLM\\SOFTWARE\\Microsoft\\GameBar" /v AllowAutoGameMode /t REG_DWORD /d 0 /f' },
   { id: 'serv_fax_maps_phone', message: "Desactivando servicios innecesarios (Fax, Maps, Phone)...", command: 'sc config Fax start= disabled & sc config MapsBroker start= disabled & sc config PhoneSvc start= disabled' },
@@ -30,6 +37,12 @@ const applyEquilibrado = [
 ];
 
 const revertEquilibrado = [
+  // Revertir Nuevos
+  { id: 'qol_stickykeys', message: "Restaurando Sticky Keys...", command: 'reg add "HKCU\\Control Panel\\Accessibility\\StickyKeys" /v "Flags" /t REG_SZ /d "510" /f' },
+  { id: 'privacy_activity_history', message: "Restaurando Historial de Actividad...", command: 'reg delete "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System" /v "PublishUserActivities" /f >nul 2>&1 & reg delete "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System" /v "UploadUserActivities" /f >nul 2>&1' },
+  { id: 'privacy_notifications_toast', message: "Reactivando Notificaciones Toast...", command: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications" /v "ToastEnabled" /t REG_DWORD /d 1 /f' },
+
+  // Revertir Originales
   { id: 'serv_telemetria', message: "Reactivando servicios de telemetria...", command: 'sc config diagtrack start= auto & sc config DPS start= auto & sc config WerSvc start= auto' },
   { id: 'serv_gamebar', message: "Reactivando Game Bar y DVR...", command: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR" /v AppCaptureEnabled /t REG_DWORD /d 1 /f & reg delete "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR" /v AllowGameDVR /f >nul 2>&1 & reg add "HKLM\\SOFTWARE\\Microsoft\\GameBar" /v AllowAutoGameMode /t REG_DWORD /d 1 /f' },
   { id: 'serv_fax_maps_phone', message: "Reactivando servicios base...", command: 'sc config Fax start= auto & sc config MapsBroker start= auto & sc config PhoneSvc start= auto' },

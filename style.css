@@ -1,4 +1,4 @@
-/* style.css (v2.3 GOLD - Final con PayPal) */
+/* style.css (v2.4 - GOLD - Colores Finales & PayPal) */
 
 @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
 * { box-sizing: border-box; margin:0; padding:0; }
@@ -94,17 +94,21 @@ body::before {
 .boton:not(.active):hover { transform: translateY(-4px); filter:brightness(1.15); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
 .boton:active { transform: scale(.97); }
 
-#btn-clean { background: linear-gradient(180deg, #ffffff, #dcdcdc); }
-#btn-restore { background: linear-gradient(180deg,#62ffb8,#18d77e); }
-#btn-energy { background: linear-gradient(180deg,#ffd38a,#ff9a2b); }
-#btn-network-tool { background: linear-gradient(180deg, #ff7b7b, #ff2b2b); }
-#btn-backup-reg { background: linear-gradient(180deg, #c864ff, #9400D3); }
+/* --- COLORES DE HERRAMIENTAS ACTUALIZADOS --- */
+#btn-clean { background: linear-gradient(180deg, #ffffff, #dcdcdc); } /* Blanco */
+#btn-restore { background: linear-gradient(180deg, #62ffb8, #18d77e); } /* Verde */
+#btn-energy { background: linear-gradient(180deg, #ffd38a, #ff9a2b); } /* Naranja */
+#btn-shell-tools { background: linear-gradient(180deg, #00d1ff, #0099cc); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); } /* ⬅️ CIAN/HIELO */
+#btn-debloat-tool { background: linear-gradient(180deg, #c864ff, #9400D3); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); } /* Morado */
+#btn-network-tool { background: linear-gradient(180deg, #ff7b7b, #ff2b2b); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); } /* Rojo */
+#btn-backup-reg { background: linear-gradient(180deg, #4a5e75, #2c3e50); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); } /* Azul Oscuro/Gris */
 
+/* --- COLORES DE MODOS --- */
 .boton.minimo { background: linear-gradient(180deg, #ffffff, #dcdcdc); }
-.boton.equilibrado { background: linear-gradient(180deg,#62ffb8,#18d77e); }
-.boton.extremo { background: linear-gradient(180deg,#ffd38a,#ff9a2b); }
-.boton.mododios { background: linear-gradient(180deg,#ff7b7b,#ff2b2b); }
-.boton.overdrive { background: linear-gradient(180deg, #c864ff, #9400D3); }
+.boton.equilibrado { background: linear-gradient(180deg, #62ffb8, #18d77e); }
+.boton.extremo { background: linear-gradient(180deg, #ffd38a, #ff9a2b); }
+.boton.mododios { background: linear-gradient(180deg, #ff7b7b, #ff2b2b); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+.boton.overdrive { background: linear-gradient(180deg, #c864ff, #9400D3); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
 
 .boton::after {
     content: attr(data-tooltip);
@@ -141,11 +145,14 @@ body::before {
 .boton:hover::after, .boton:hover::before { opacity: 1; transform: translateX(-50%) translateY(0px) rotate(0deg); }
 .boton:hover::before { transform: translateX(-50%) translateY(5px) rotate(45deg); }
 
+/* --- COLORES DE TOOLTIPS ACTUALIZADOS --- */
 #btn-clean::after, .boton.minimo::after { color: #fff; border-color: #fff; }
 #btn-restore::after, .boton.equilibrado::after { color: #62ffb8; border-color: #62ffb8; }
-#btn-energy::after, .boton.extremo::after { color: #ffd38a; border-color: #ffd38a; }
+#btn-energy::after, .boton.extremo::after { color: #ffd38a; border-color: #ffd38a; } 
+#btn-shell-tools::after { color: #00d1ff; border-color: #00d1ff; } /* ⬅️ Cian */
+#btn-debloat-tool::after, .boton.overdrive::after { color: #c864ff; border-color: #c864ff; } 
 #btn-network-tool::after, .boton.mododios::after { color: #ff5050; border-color: #ff5050; }
-#btn-backup-reg::after, .boton.overdrive::after { color: #c864ff; border-color: #c864ff; }
+#btn-backup-reg::after { color: #aabccf; border-color: #aabccf; }
 
 .utility-links { display: flex; justify-content: space-between; padding: 0 15px; margin-top: 15px; }
 #comandos { margin-top: 15px; }
@@ -155,7 +162,7 @@ body::before {
 #copyright { 
     position: absolute; bottom: 10px; left: 0; right: 0; 
     display: flex; justify-content: center; align-items: center; 
-    gap: 10px; /* Más espacio entre bloques */
+    gap: 10px; 
     font-size: 12px; z-index: 4; 
 }
 #footer-icons {
@@ -163,9 +170,9 @@ body::before {
 }
 #copyright span { background: linear-gradient(to right, #ff5050, #00d1ff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; font-weight: bold; }
 #yt-icon, #paypal-icon { 
-    width: 55px; /* Tamaño unificado */
+    width: 55px; 
     height: auto; cursor:pointer; transition: transform .18s ease, filter .18s ease; 
-    opacity: 0.85; /* Un poco sutil por defecto */
+    opacity: 0.85; 
 }
 #yt-icon:hover, #paypal-icon:hover { transform: scale(1.15); opacity: 1; filter: brightness(1.2); }
 

@@ -1,8 +1,10 @@
-// custom-renderer.js (v1.6.2 - FIX: Error de 'invoke' corregido)
+// custom-renderer.js (v1.6.5 - FIX FINAL: Listener de Cierre Asegurado)
 
 const container = document.getElementById('categories-container');
 let currentStrings = {};
 
+// CORRECCIÓN FINAL: Asegurar que el listener del botón 'X' se dispara inmediatamente.
+// El botón con id 'close-btn' debe enviar el mensaje al main process.
 document.getElementById('close-btn').addEventListener('click', () => window.electronCustom.closeWindow());
 
 async function initCustomWindow() {
@@ -13,7 +15,7 @@ async function initCustomWindow() {
     }
 
     try {
-        // 1. Cargar Idioma (USANDO LA NUEVA FUNCIÓN CORRECTA)
+        // 1. Cargar Idioma
         const langData = await window.electronCustom.getLanguage();
         currentStrings = langData.strings || {};
         applyStaticTranslations();

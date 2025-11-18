@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="debloat_title">Debloat Avanzado</title>
+    <style>
+        /*
+         * NOTA: Este CSS está optimizado para la estética de ElmaxiShark Optimizer.
+         * Utiliza los estilos de tu custom.html pero con los colores morados de "Custom"
+         * como color principal de los checkboxes y barras de scroll para un look distintivo.
+        */
+        @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+        
+        * { box-sizing: border-box; margin:0; padding:0; }
+        html { height:100%; width:100%; }
+
+        /* --- ESTILO 1: BORDE PRINCIPAL MÁS FINO --- */
+        body { 
+            height:100%; width:100%; 
+            font-family: 'Russo One', sans-serif; 
+            background:#000;
+            color: #fff; 
+            padding: 15px; 
+            user-select: none;
+            overflow: hidden; 
+            position: relative;
+        }
+        body::before {
+          content: ''; position: absolute; inset: 0; border-radius: 8px; pointer-events: none;
+          z-index: 9999; border: 2.5px solid transparent; 
+          background: linear-gradient(to right, rgba(255, 50, 50, 0.95), rgba(0, 209, 255, 0.95)) border-box;
+          -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: destination-out; mask-composite: exclude;
+          box-shadow: inset 0 0 8px rgba(255, 80, 80, 0.3), inset 0 0 8px rgba(0, 170, 255, 0.3);
+        }
+        
+        /* --- ESTILO 2: TOPBAR CON BOTÓN DE CIERRE --- */
+        #topbar {
+          position: absolute; top: 0; left: 0; right: 0; height: 50px; z-index: 99;
+          display:flex; justify-content: flex-end; 
+          align-items: center; padding: 0 20px;
+          -webkit-app-region: drag; 
+        }
+        #right-top { -webkit-app-region: no-drag; }
+        #window-controls { display: flex; gap: 8px; }
+        .control-btn { width: 26px; height: 26px; display: flex; justify-content: center; align-items: center; font-size: 14px; color: #ccc; background: rgba(255, 255, 255, 0.05); border-radius: 50%; cursor: pointer; transition: background 0.2s, color 0.2s; }
+        .control-btn:hover { background: rgba(255, 255, 255, 0.15); color: #fff; }
+        #close-btn:hover { background: #ff4d4d; color: #fff; }
+        
+        /* --- ESTILO 3: CONTENEDOR DE SCROLL --- */
+        #content-wrap {
+            position: relative;
+            height: 100%;
+            padding-top: 50px;
+            padding-bottom: 80px;
+        }
+        #scroll-area {
+            height: 100%;
+            overflow-y: auto;
+            padding: 0 10px; 
+        }
+        
+        h2 { 
+            /* Color distintivo para Debloat: Rojo agresivo */
+            color: #ff5050; text-align: center; letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(255, 80, 80, 0.9), 0 0 15px rgba(255, 80, 80, 0.7);
+            margin-top: 0; margin-bottom: 5px;
+        }
+        p.subtitle {
+            text-align: center; font-size: 12px; color: #ccc; 
+            margin-top: -10px; margin-bottom: 20px;
+        }
+        
+        .category-box {
+            background: linear-gradient(#0D0F13, #0D0F13) padding-box,
+                        linear-gradient(to right, rgba(255, 80, 80, 0.4), rgba(0, 170, 255, 0.4)) border-box;
+            border-radius:10px;
+            box-shadow: inset 0 0 12px rgba(0,0,0,0.5);
+            border: 2px solid transparent;
+            margin-bottom: 15px;
+        }
+        
+        .category-header {
+            font-size: 16px; background: rgba(0, 0, 0, 0.2);
+            padding: 10px 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: default; 
+        }
+        .category-header label.category-select-all {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .category-header label.category-select-all input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .tweaks-list { 
+            padding: 15px; display: grid; 
+            /* 3 columnas para mayor densidad, ajustado para ventana más ancha (800px) */
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 10px; 
+            align-items: stretch; 
+        }
+        
+        label { 
+            display: flex; align-items: center; gap: 8px; font-size: 13px; 
+            cursor: pointer; background: rgba(255,255,255,0.02); padding: 5px;
+            border-radius: 4px;
+            min-height: 25px; 
+            color: #fff; 
+        }
+        label:hover { 
+            background: rgba(255, 255, 255, 0.05); 
+            color: #fff; 
+        }
+        
+        /* Acentuamos los checkboxes con el color morado de tu botón Custom */
+        input[type="checkbox"] { 
+            width: 16px; height: 16px; 
+            accent-color: #c864ff; 
+            flex-shrink: 0; 
+        }
+        
+        .button-container { 
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 15px;
+            background: #000; 
+            display: flex; 
+            gap: 15px;
+        }
+        button {
+            font-family: 'Russo One', sans-serif; font-size: 14px; padding: 12px;
+            border-radius: 8px; border: none; cursor: pointer; flex-grow: 1;
+            transition: background 0.2s;
+        }
+        
+        .select-buttons { display: flex; gap: 10px; margin-bottom: 15px; }
+        .select-buttons button {
+            font-family: 'Russo One', sans-serif;
+            font-size: 12px;
+            padding: 8px;
+            color: #ccc;
+            border-radius: 8px; 
+            cursor: pointer;
+            flex-grow: 1;
+            border: 2px solid transparent; 
+            background: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)) padding-box,
+                        linear-gradient(to right, #ff5050, #00d1ff) border-box; 
+            transition: all 0.2s ease;
+        }
+        .select-buttons button:hover {
+            background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)) padding-box,
+                        linear-gradient(to right, #ff5050, #00d1ff) border-box;
+            color: #fff;
+            box-shadow: 0 0 5px rgba(255, 80, 80, 0.5), 0 0 5px rgba(0, 170, 255, 0.5); 
+        }
+
+        /* Colores de los botones de Acción */
+        #apply-btn { background: linear-gradient(180deg,#c864ff, #9400D3); color: #0a0a0a; } /* Morado */
+        #revert-btn { background: linear-gradient(180deg, #ff7b7b, #ff2b2b); color: #0a0a0a; } /* Rojo */
+
+        /* Scrollbar (Morado) */
+        #scroll-area::-webkit-scrollbar { width: 10px; }
+        #scroll-area::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
+        #scroll-area::-webkit-scrollbar-thumb { background-color: #c864ff; border-radius: 10px; border: 2px solid transparent; background-clip: content-box; }
+        #scroll-area::-webkit-scrollbar-thumb:hover { background-color: #e6a8ff; }
+
+        /* --- COLORES DE TÍTULOS DE CATEGORÍA (Morados y Rojos) --- */
+        .header-ia_antispy span { color: #ff5050; text-shadow: 0 0 5px #ff5050; } /* Rojo (Máxima prioridad de eliminación) */
+        .header-ads_suggestions span { color: #ffd38a; text-shadow: 0 0 5px #ffd38a; } /* Naranja/Amarillo */
+        .header-ui_shell span { color: #4db9ff; text-shadow: 0 0 5px #4db9ff; } /* Azul Hielo */
+        .header-explorador span { color: #18d77e; text-shadow: 0 0 5px #18d77e; } /* Verde */
+        .header-uwp_debloat span { color: #c864ff; text-shadow: 0 0 5px #c864ff; } /* Morado (Desinstalación) */
+
+        /* TWEAKS CON ADVERTENCIA - Poner en amarillo/naranja fuerte */
+        label:has(span:contains('[ADVERTENCIA]')),
+        label:has(span:contains('[WARNING]')) {
+            color: #ff9a2b;
+            text-shadow: 0 0 3px rgba(255, 154, 43, 0.5);
+        }
+
+    </style>
+</head>
+<body>
+    <div id="topbar">
+      <div id="right-top">
+        <div id="window-controls">
+          <div id="close-btn" class="control-btn" title="Cerrar">✕</div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="content-wrap">
+        <div id="scroll-area">
+            <h2 data-i18n="debloat_title">Debloat Avanzado</h2>
+            <p class="subtitle" data-i18n="debloat_subtitle">
+                Selecciona Bloatware, IA o Publicidad para eliminar o restaurar.
+            </p>
+
+            <div class="select-buttons">
+                <button id="select-all-btn" data-i18n="btn_select_all">Seleccionar Todo</button>
+                <button id="deselect-all-btn" data-i18n="btn_deselect_all">Deseleccionar Todo</button>
+            </div>
+
+            <div id="categories-container">
+                </div>
+        </div>
+    </div>
+    
+    <div class="button-container">
+        <button id="apply-btn" data-i18n="btn_apply_selected">Aplicar Seleccionados</button>
+        <button id="revert-btn" data-i18n="btn_revert_selected">Revertir Seleccionados</button>
+    </div>
+
+    <script src="debloat-renderer.js"></script>
+</body>
+</html>

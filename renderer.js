@@ -1,10 +1,12 @@
-// renderer.js (v2.0.3 GOLD - Final con PayPal Listener)
+// renderer.js (v2.4 - FIX FINAL: Tooltips y Log)
 const tituloEl = document.getElementById('titulo');
 let typingTimeout;
 let currentStrings = {};
 
 function applyLanguage(strings) {
     currentStrings = strings;
+    
+    // CORRECCIÓN TOOLTIPS: Asegurar que se asignan los atributos data-tooltip y title
     document.querySelectorAll('[data-i18n]').forEach(el => { 
         const key = el.getAttribute('data-i18n');
         if (currentStrings[key]) el.textContent = currentStrings[key]; 
@@ -55,14 +57,20 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     window.electronAPI.on('log-update', (data) => {
         const cls = (data.message && data.message.includes('[ERROR]')) ? 'log-error' : '';
+        
+        // LIMPIEZA DEL COMANDO
         const cmd = data.command.replace(/ >nul 2>&1/g, '').replace(/@echo off/g, '').replace(/chcp \d+ >nul/g, '').replace(/^@/i, '');
+        
         let logText = data.message;
+        
+        // CORRECCIÓN LOG: Si viene un ID, usamos la traducción. Si no, usamos el mensaje literal.
         if (data.id && currentStrings[data.id]) {
-            logText = `[${currentStrings[data.id]}]`;
-        } else if (data.message && !data.message.startsWith('[') && data.command !== "=== FIN ===") {
-             logText = `[${data.message}]`;
+            logText = currentStrings[data.id]; // Usamos la traducción como texto principal
+        } else if (data.message && data.command !== "=== FIN ===") {
+            logText = data.message;
         }
-        log.innerHTML = `<div class="${cls}">${logText}</div><div class="log-command">${cmd}</div>` + log.innerHTML;
+
+        log.innerHTML = `<div class="${cls}">[${logText}]</div><div class="log-command">${cmd}</div>` + log.innerHTML;
     });
 
     window.electronAPI.on('progress-update', (data) => {
@@ -82,6 +90,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     const botonesNiveles = document.querySelectorAll('#niveles .boton');
     const btnRed = document.getElementById('btn-network-tool');
+    const btnDebloat = document.getElementById('btn-debloat-tool');
+    const btnShell = document.getElementById('btn-shell-tools'); 
     const customBtn = document.querySelector('#niveles .boton.overdrive');
 
     window.electronAPI.on('set-initial-mode', (state) => {
@@ -95,11 +105,13 @@ window.addEventListener('DOMContentLoaded', async () => {
         });
         if (customBtn) customBtn.classList.toggle('active', state.customTweaksActive);
         if (btnRed) btnRed.classList.toggle('active', state.networkToolActive);
+        if (btnDebloat) btnDebloat.classList.toggle('active', state.debloatTweaksActive);
+        if (btnShell) btnShell.classList.toggle('active', state.shellToolActive);
     });
 
+    // Listener principal de modos (Modos 1-Clic: Básico, Equilibrado, etc.)
     botonesNiveles.forEach(btn => {
         if (btn.classList.contains('overdrive')) { 
-            btn.addEventListener('click', () => window.electronAPI.send('open-custom-menu')); 
             return; 
         }
         btn.addEventListener('click', () => {
@@ -131,11 +143,23 @@ window.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
+    // Listener para el botón Custom (Modo Overdrive)
+    if (customBtn) { 
+        customBtn.addEventListener('click', () => {
+            window.electronAPI.send('open-custom-menu'); 
+        });
+    }
+
+    // LISTENERS DE HERRAMIENTAS INDIVIDUALES
     document.getElementById('btn-backup-reg').addEventListener('click', () => window.electronAPI.send('run-tool', { tool: 'backup-reg' }));
     document.getElementById('btn-restore').addEventListener('click', () => window.electronAPI.send('run-tool', { tool: 'restauracion' }));
     document.getElementById('btn-energy').addEventListener('click', () => window.electronAPI.send('run-tool', { tool: 'energia' }));
     document.getElementById('btn-clean').addEventListener('click', () => window.electronAPI.send('run-tool', { tool: 'limpieza-sistema' }));
     if (btnRed) btnRed.addEventListener('click', () => window.electronAPI.send('toggle-network-tool'));
+    if (btnDebloat) btnDebloat.addEventListener('click', () => window.electronAPI.send('run-tool', { tool: 'debloat' }));
+    
+    // NUEVO LISTENER: Toggle para instalar/desinstalar Shell Menu
+    if (btnShell) btnShell.addEventListener('click', () => window.electronAPI.send('run-tool', { tool: 'shell' }));
 
     window.electronAPI.on('set-app-version', (v) => { const el = document.getElementById('version-display'); if (el) el.textContent = `v${v}`; });
     
@@ -151,19 +175,6 @@ window.addEventListener('DOMContentLoaded', async () => {
         // Enviar la URL a main.js para abrirla externamente
         window.electronAPI.send('open-external-link', releaseUrl); 
     });
-
-    // Eliminar el listener de 'update-message' ya que electron-updater ya no se usa
-    // window.electronAPI.on('update-message', (d) => { ... });
-
-    // Eliminar el listener de 'update-message' si existía en el original:
-    // La función original contenía:
-    /*
-    window.electronAPI.on('update-message', (d) => { 
-        const cls = d.type === 'error' ? 'log-error' : d.type === 'success' ? 'log-success' : 'log-info-update'; 
-        log.innerHTML = `<div class="${cls}">${d.text}</div>` + log.innerHTML; 
-    });
-    */
-    // Lo anterior ha sido efectivamente eliminado al no reescribirlo.
 
     // END: MODIFICACION PARA ELIMINAR electron-updater y REDIRIGIR AL SITIO WEB
 
