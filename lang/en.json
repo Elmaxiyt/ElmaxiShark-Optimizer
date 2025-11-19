@@ -31,7 +31,6 @@
   "mode_custom": "Custom",
   "mode_custom_tip": "Select individual tweaks (Advanced Users)",
   "utility_guide": "Download Guide",
-  "utility_dictionary": "Tweaks Dictionary",
   "utility_update": "Check for Updates",
   "log_initial": "Waiting for actions...",
   "copyright": "© 2025 ElmaxiZone. All rights reserved.",
@@ -115,13 +114,13 @@
   "serv_diag_ics": "Disable services (Diagnosticshub, ICS)",
   "serv_advanced": "Disable services (Notes, Radio, Tablet)",
   "serv_bam": "Disable BAM Service (Background Activity Moderator)",
+  "crit_sysmain": "Disable SysMain (Superfetch) - [RECOMMENDED SSD]",
   "serv_search": "[WARNING] Disable Windows Search (Breaks search bar)",
   "serv_spooler": "[WARNING] Disable Print Spooler (Breaks printers)",
   "serv_xbox": "Disable Xbox Services",
-  "crit_sysmain": "Disable SysMain (Superfetch) - [RECOMMENDED SSD]",
-  "crit_mitigations": "Disable CPU Mitigations (Spectre/Meltdown) - [BOOST CPU]",
-  "crit_hpet": "Optimize HPET/TSC (Timers)",
 
+  "sys_hibernate": "Disable Hibernation (Frees up space & reduces SSD writing)",
+  "crit_mitigations": "Disable CPU Mitigations (Spectre/Meltdown) - [BOOST CPU]",
   "sys_longpaths": "Enable Long File Paths (LongPaths)",
   "sys_trim": "Verify/Enable TRIM for SSD",
   "sys_ntfs_8dot3": "Disable NTFS 8.3 Name Creation (Improves I/O)",
@@ -135,7 +134,7 @@
   "sys_hyperv": "[WARNING] Disable virtualization (Hyper-V)",
   "sys_vulkan_icd": "Clear Vulkan driver configuration (ICD)",
   "sys_lastaccess": "Disable Last Access Time (Improves NTFS)",
-  "sys_hibernate": "Disable Hibernation (Frees up space & reduces SSD writing)",
+  "mem_compression_pagecombining": "Disable Memory Compression and Page Combining (For 16GB+ RAM)",
 
   "rend_prioridad_gpu": "Prioritize CPU and GPU for games",
   "rend_priority_separation": "Optimize priorities (Foreground Boost)",
@@ -147,6 +146,7 @@
   "rend_tdr_delay": "Increase TdrDelay (GPU Stability)",
   "rend_mmcss": "Force MMCSS Always On (FPS Stability)",
 
+  "net_qos": "Unlock QoS Bandwidth (Remove 20% System Reserve)",
   "net_dns_cloudflare": "Set DNS to Cloudflare/Google",
   "net_rss": "Enable RSS (Receive Side Scaling)",
   "net_probing": "Disable internet probing",
@@ -160,7 +160,6 @@
   "net_ipv6": "Disable IPv6",
   "net_icmp_redirect": "Disable ICMP Redirects",
   "net_ndu": "Disable NDU (Network Diagnostic)",
-  "net_qos": "Unlock QoS Bandwidth (Remove 20% System Reserve)",
 
   "debloat_ai_copilot": "Disable Copilot AI (Button & Background Service)",
   "debloat_ai_recall": "Disable Windows 'Recall' feature (Constant desktop recording)",
@@ -211,9 +210,10 @@
   "uwp_tips": "Remove 'Tips' (Windows Suggestions)", 
   "uwp_todo": "Remove 'Microsoft To Do'", 
   "uwp_weather": "Remove 'Weather' (Bing Weather)", 
-  "uwp_xbox": "Remove 'Xbox' and related Services (Game Bar / Console)",
+  "uwp_xbox": "Remove 'Xbox' and related Services (Game Bar / Consola)",
   "uwp_edge_iea": "[RISK] Uninstall Edge (Only legal in the European Economic Area - EEA)",
   "uwp_restore_all": "[RESCUE] Reinstall ALL default Windows Apps",
+  "uwp_restore_store": "[FIX] Restore only Microsoft Store",
 
   "log_process_completed": "Process completed!",
   "tool_restore_creating": "Creating Restore Point...",
@@ -227,6 +227,5 @@
   "shell_menu_mode_balanced": "Adding 'Balanced Mode' to menu...",
   "shell_menu_mode_extreme": "Adding 'Extreme Mode' to menu...",
   "shell_menu_mode_god": "Adding 'Gamer Mode' to menu...",
-  "uwp_restore_store": "[FIX] Restore only Microsoft Store",
   "backup_open_folder": "Opening folder. [WARNING: To restore the registry, run the .reg files in Safe Mode. This is the LAST resort before using the Restore Point.]"
 }

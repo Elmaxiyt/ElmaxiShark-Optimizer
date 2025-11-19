@@ -1,5 +1,5 @@
 // scripts/custom-tweaks.js
-// (v3.2 - GOLD EDITION: Safe Tweaks + QoS & MMCSS - ORGANIZED)
+// (v3.3 - FIX HPET & ADD MMAgent TWEAKS)
 
 module.exports = {
 
@@ -73,7 +73,7 @@ module.exports = {
   sistema: [
     { id: 'sys_hibernate', message: "Desactivar Hibernación (Libera espacio y reduce escritura)", apply: 'powercfg -h off', revert: 'powercfg -h on' },
     { id: 'crit_mitigations', message: "Desactivar Mitigaciones (Spectre/Meltdown) - [BOOST CPU]", apply: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management" /v FeatureSettingsOverride /t REG_DWORD /d 3 /f & reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management" /v FeatureSettingsOverrideMask /t REG_DWORD /d 3 /f', revert: 'reg delete "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management" /v FeatureSettingsOverride /f >nul 2>&1 & reg delete "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management" /v FeatureSettingsOverrideMask /f >nul 2>&1' },
-    { id: 'crit_hpet', message: "Optimizar HPET/TSC (Temporizadores)", apply: 'bcdedit /deletevalue useplatformclock & bcdedit /set tscsyncpolicy Enhanced', revert: 'bcdedit /set useplatformclock true & bcdedit /deletevalue tscsyncpolicy' },
+    /* ELIMINADO: { id: 'crit_hpet', message: "Optimizar HPET/TSC (Temporizadores)", apply: 'bcdedit /deletevalue useplatformclock & bcdedit /set tscsyncpolicy Enhanced', revert: 'bcdedit /set useplatformclock true & bcdedit /deletevalue tscsyncpolicy' }, */
     { id: 'sys_longpaths', message: "Habilitar rutas de archivo largas (LongPaths)", apply: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem" /v LongPathsEnabled /t REG_DWORD /d 1 /f', revert: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem" /v LongPathsEnabled /t REG_DWORD /d 0 /f' },
     { id: 'sys_trim', message: "Verificar/Activar TRIM para SSD", apply: 'fsutil behavior set DisableDeleteNotify 0', revert: 'fsutil behavior set DisableDeleteNotify 0' },
     { id: 'sys_ntfs_8dot3', message: "Desactivar Nombres 8.3 de NTFS (Mejora E/S)", apply: 'fsutil behavior set disable8dot3 1', revert: 'fsutil behavior set disable8dot3 0' },
@@ -86,7 +86,9 @@ module.exports = {
     { id: 'sys_shadercache', message: "Optimizar registro de Caché de Shaders (Direct3D)", apply: 'reg add "HKLM\\SOFTWARE\\Microsoft\\Direct3D" /v "ShaderCache" /t REG_DWORD /d 1 /f & reg add "HKLM\\SOFTWARE\\Microsoft\\Direct3D" /v "ShaderCacheSize" /t REG_DWORD /d 10240 /f & reg add "HKLM\\SOFTWARE\\Microsoft\\Direct3D" /v "ShaderCacheDefrag" /t REG_DWORD /d 1 /f', revert: 'reg delete "HKLM\\SOFTWARE\\Microsoft\\Direct3D" /v "ShaderCache" /f >nul 2>&1 & reg delete "HKLM\\SOFTWARE\\Microsoft\\Direct3D" /v "ShaderCacheSize" /f >nul 2>&1 & reg delete "HKLM\\SOFTWARE\\Microsoft\\Direct3D" /v "ShaderCacheDefrag" /f >nul 2>&1' },
     { id: 'sys_hyperv', message: "[ADVERTENCIA] Desactivar virtualizacion (Hyper-V)", apply: 'bcdedit /set hypervisorlaunchtype off', revert: 'bcdedit /set hypervisorlaunchtype auto' },
     { id: 'sys_vulkan_icd', message: "Limpiar configuracion de drivers Vulkan (ICD)", apply: 'setx VK_ICD_FILENAMES ""', revert: 'echo "Irreversible (Reinstalar driver)"' },
-    { id: 'sys_lastaccess', message: "Desactivar Last Access Time (Mejora NTFS)", apply: 'fsutil behavior set disableLastAccess 1', revert: 'fsutil behavior set disableLastAccess 2' }
+    { id: 'sys_lastaccess', message: "Desactivar Last Access Time (Mejora NTFS)", apply: 'fsutil behavior set disableLastAccess 1', revert: 'fsutil behavior set disableLastAccess 2' },
+    // AÑADIDO: Rescatado de Overdrive (Compresión de Memoria)
+    { id: 'mem_compression_pagecombining', message: "Desactivar Compresion de Memoria y Page Combining (Para 16GB+ RAM)", apply: 'powershell -Command "Disable-MMAgent -MemoryCompression; Disable-MMAgent -PageCombining"', revert: 'powershell -Command "Enable-MMAgent -MemoryCompression; Enable-MMAgent -PageCombining"' }
   ],
 
   // --- Categoría Rendimiento/Energía ---
