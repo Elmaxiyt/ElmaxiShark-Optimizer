@@ -1,0 +1,90 @@
+DICTIONNAIRE TECHNIQUE : PROS, CONS ET RISQUES
+(ElmaxiShark Optimizer v1.5.0)
+
+Ce document explique en détail ce que fait chaque ajustement de l'outil. Utilisez-le pour comprendre ce que vous activez, surtout dans le menu "Custom".
+===========================================================================
+1. NETTOYAGE (Généralisé)
+===========================================================================
+* Ce qu'il inclut : Suppression des dossiers Temp, Prefetch, Caches DirectX/NVIDIA/AMD, et Caches de Navigateurs/Steam.
+* AVANTAGE : Libère de l'espace disque et résout les erreurs graphiques (textures corrompues).
+* RISQUE : Nul. La seule chose qui se produira est que la première fois que vous ouvrirez un jeu ou un programme, il faudra 1 seconde de plus pour charger pendant qu'il reconstruit son cache.
+
+===========================================================================
+2. INTERFACE (Visuels et Commodité)
+===========================================================================
+[Effets Visuels / Transparence]
+* PRO : L'interface Windows est ressentie comme plus "réactive" et rapide. Moins de charge pour le GPU.
+* CONTRE : Windows semble plus laid (sans transparences ni animations fluides).
+[Sticky Keys (Touches Spéciales)]
+* PRO : Empêche le jeu de se minimiser si vous appuyez plusieurs fois sur SHIFT de suite.
+* CONTRE : Vous perdez les fonctionnalités d'accessibilité pour les personnes ayant un handicap moteur.
+[Visionneuse de Photos Classique (Windows 7)]
+* PRO : Ouvre les images instantanément, beaucoup plus rapidement que l'application "Photos" moderne.
+* CONTRE : Ancienne interface.
+
+===========================================================================
+3. CONFIDENTIALITÉ (Télémétrie et Bloat)
+===========================================================================
+[Télémétrie (DiagTrack/WerSvc)]
+* PRO : Microsoft arrête de collecter des données sur votre utilisation et les erreurs. Économise de la bande passante.
+* CONTRE : Si Windows plante, il n'enverra pas le rapport d'erreur à Microsoft.
+[Suggestions et Publicité]
+* PRO : Menu Démarrer et Paramètres plus propres sans publicités pour Candy Crush ou Office 365.
+* CONTRE : Aucun.
+
+===========================================================================
+4. SERVICES ET SYSTÈME
+===========================================================================
+[SysMain / Superfetch]
+* PRO : Réduit l'utilisation du CPU et du Disque en arrière-plan. Vital pour le Gaming.
+* CONTRE : Les applications de bureau (Word, Chrome) peuvent prendre un peu plus de temps à s'ouvrir la première fois.
+[Recherche Windows]
+* RISQUE MOYEN : Si vous le désactivez, la barre de recherche de la barre des tâches cessera de fonctionner.
+* RECOMMANDATION : Uniquement pour les utilisateurs qui savent rechercher des fichiers manuellement.
+[File d'attente d'Impression (Spooler)]
+* RISQUE ÉLEVÉ : Si vous avez une imprimante, NE LE DÉSACTIVEZ PAS. Elle cessera de fonctionner.
+* PRO : Économise de la RAM si vous n'imprimez JAMAIS rien.
+[Hibernation]
+* PRO : Libère beaucoup d'espace disque (égal à votre quantité de RAM). Réduit les écritures sur SSD.
+* CONTRE : Vous ne pourrez pas utiliser la fonction "Hiberner" (seulement Suspendre ou Arrêter).
+[Mitigations (Spectre/Meltdown)]
+* AVANTAGE : Peut augmenter les FPS (5-15%) sur les anciens CPU.
+* RISQUE DE SÉCURITÉ : Votre CPU est théoriquement exposé à des vulnérabilités complexes.
+* RECOMMANDATION : Activez-le uniquement pour le jeu si vous recherchez la performance maximale.
+[Virtualisation (Hyper-V)]
+* RISQUE ÉLEVÉ : Si vous le désactivez, les éléments suivants ne fonctionneront pas : Sous-système Windows pour Linux (WSL), Docker, Émulateurs Android, Sandbox.
+* PRO : Réduit légèrement la latence du système.
+[Compression de Mémoire et Page Combining]
+* RISQUE MOYEN-ÉLEVÉ : Désactive la compression de RAM et augmente le risque de *stutters* si la RAM se remplit complètement. Idéal uniquement pour les systèmes avec **16 Go ou plus** de mémoire.
+[Désactiver la Compression VRAM]
+* RISQUE ÉLEVÉ : Force le GPU à utiliser beaucoup plus de VRAM non compressée. Peut provoquer des artefacts ou une instabilité si la VRAM se remplit.
+
+===========================================================================
+5. RÉSEAU (Ping et Latence)
+===========================================================================
+[Algorithme de Nagle]
+* PRO : Réduit la latence (ping) dans les jeux compétitifs en envoyant les paquets instantanément.
+* CONTRE : Peut ralentir légèrement le transfert de très gros fichiers sur le réseau local.
+[Déverrouiller la Bande Passante QoS]
+* PRO : Supprime la limite de 20 % que Windows réserve pour ses mises à jour.
+* CONTRE : Aucun.
+[MMCSS Toujours Actif]
+* PRO : Force le système à toujours prioriser les jeux et l'audio, prévenant les *stutters*.
+* CONTRE : Consommation d'énergie imperceptiblement plus élevée.
+
+===========================================================================
+6. DEBLOAT (Suppression d'Applications) - ATTENTION !
+===========================================================================
+[Supprimer Microsoft Store]
+* RISQUE TRÈS ÉLEVÉ : Vous ne pourrez plus rien installer depuis le Store, ni GamePass, ni mettre à jour des applications de base comme la Calculatrice.
+* RECOMMANDATION : Ne touchez pas à moins d'être un expert.
+[Supprimer Edge]
+* RISQUE : Peut casser des liens système et des widgets. Microsoft le réinstalle souvent.
+* RECOMMANDATION : Mieux vaut "Bloquer" ses fonctions avec les tweaks IA/Publicités que de le supprimer complètement.
+[SAUVETAGE - Réinstaller des Applications]
+* CE QU'IL FAIT : Tente de réinstaller et de réenregistrer toutes les applications par défaut d'usine de Windows (Calculatrice, Photos, Store, etc.).
+* QUAND L'UTILISER : Si vous avez supprimé quelque chose par erreur et que vous souhaitez le récupérer.
+* NOTE : Vous verrez beaucoup de lettres rouges (erreurs) dans la console pendant le processus. C'est NORMAL, cela signifie qu'il essaie d'installer des applications que vous avez déjà ou qui sont en cours d'utilisation. Ignorez.
+
+===========================================================================
+© ElmaxiShark Optimizer - La connaissance est le pouvoir.

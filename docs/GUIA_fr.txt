@@ -1,0 +1,64 @@
+GUIDE RAPIDE : QUEL MODE DOIS-JE UTILISER ?
+(ElmaxiShark Optimizer v1.5.0)
+
+Pour éviter les problèmes et obtenir le meilleur résultat, trouvez votre profil d'utilisateur et suivez ces recommandations :
+
+================================
+AVANT DE COMMENCER (OBLIGATOIRE !)
+================================
+
+1.  Étape 1 : Première Bouée de Sauvetage (Sauvegarde du Registre) : Cliquez sur le bouton "Backup Registro".
+    > ⚠️ NOTE IMPORTANTE : Ceci est une sauvegarde manuelle, et c'est le **dernier recours** avant le Point de Restauration.
+    Si vous devez l'utiliser, double-cliquez sur les fichiers .reg **en Mode Sans Échec de Windows** pour garantir une annulation sans conflit.
+2.  Étape 2 : Deuxième Bouée de Sauvetage (Point de Restauration) : Cliquez sur le bouton "Punto Restauracion".
+    > 👍 Recommandation : Le Point de Restauration est le moyen le plus simple et le plus sûr d'annuler des changements majeurs.
+3.  Étape 3 : Après avoir appliqué un mode, REDÉMARREZ VOTRE PC.
+    L'application vous le rappellera, mais il est essentiel de le faire pour que les changements prennent effet.
+
+===============================================
+PROFIL 1 : Utilisateur Débutant / Portable de Travail
+===============================================
+
+* Qui êtes-vous ? : Vous utilisez votre PC ou portable pour naviguer, étudier ou jouer occasionnellement.
+  Vous voulez qu'il soit plus rapide, mais vous NE POUVEZ PAS vous permettre que quoi que ce soit échoue.
+* Mode Recommandé : Basique ou Équilibré.
+    * Pourquoi : Ces modes nettoient le système, désactivent la télémétrie et accélèrent les tâches quotidiennes sans toucher à quoi que ce soit qui pourrait nuire à la stabilité.
+    * Outils Utiles : "Limpieza Sistema" et "Shell Tools" (pour des raccourcis d'accès rapide).
+
+================================
+PROFIL 2 : Joueur sur Portable
+================================
+
+* Qui êtes-vous ? : Vous jouez sur un portable *gaming*.
+  La batterie et les températures vous importent, tout comme les FPS.
+* Mode Recommandé : Équilibré, Extrême ou Mode Gamer.
+    * Pourquoi : "Équilibré" vous donne un excellent coup de pouce sans rien risquer.
+      "Extrême" optimise le GPU et le système sans changements réseau agressifs.
+      "Mode Gamer" est désormais 100 % sûr (il ne casse plus la virtualisation) et vous donnera la performance maximale possible.
+
+===============================================
+PROFIL 3 : Joueur sur Ordinateur de Bureau
+===============================================
+
+* Qui êtes-vous ? : Vous avez un PC de bureau pour le jeu.
+  Vous voulez le maximum de FPS possible.
+* Mode Recommandé : Mode Gamer.
+    * Pourquoi : C'est le mode ultime.
+      Il applique toutes les optimisations réseau (Nagle/QoS), GPU, système et énergie de manière sûre.
+    * Outils : "Red Avanzada" et "Debloat Avanzado" (pour supprimer les bloatwares gourmands en ressources).
+
+===============================================
+PROFIL 4 : Utilisateur Expert / Passionné de Tweaks
+===============================================
+
+* Qui êtes-vous ? : Vous savez ce qu'est `bcdedit`, vous comprenez les risques et vous voulez un contrôle total.
+* Mode Recommandé : Mode Custom.
+* Votre chemin :
+    1.  N'appliquez AUCUN mode 1-clic (ou appliquez-en un comme base).
+    2.  Allez dans le menu "Custom".
+    3.  "Custom" vous permet de sélectionner *exactement* ce que vous voulez, y compris les tweaks que nous avons retirés des modes normaux par sécurité (comme la désactivation d'Hyper-V, les mitigations de CPU ou la désinstallation des applications du Store).
+
+Petit à petit, nous polissons cet incroyable outil grâce à vos précieux retours.
+
+Merci d'utiliser ElmaxiShark Optimizer. Je vous aime !
+Salutations Elmaxi

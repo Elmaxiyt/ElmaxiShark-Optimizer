@@ -3,7 +3,7 @@ const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 
 let width, height, particles;
-const PARTICLE_COUNT = 80;
+const PARTICLE_COUNT = 250;
 const CONNECT_DISTANCE = 100;
 
 // --- NUEVA PALETA DE COLORES ---

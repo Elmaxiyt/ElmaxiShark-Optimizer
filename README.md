@@ -1,4 +1,4 @@
-# ElmaxiShark Optimizer v1.4.0
+# ElmaxiShark Optimizer v1.5.0
 
 Creado por Elmaxi ([@Elmaxizone en YouTube](https://www.youtube.com/@Elmaxizone))
 
@@ -12,96 +12,84 @@ Creado por Elmaxi ([@Elmaxizone en YouTube](https://www.youtube.com/@Elmaxizone)
 
 ---
 
-## 🚀 Novedades de la v1.4.0 (COMPETITIVE UPDATE)
+## 🚀 Novedades de la v1.5.0 (THE GOLD UPDATE)
 
-¡La actualización definitiva para Gamers y Power Users! Hemos escuchado a la comunidad y traemos herramientas totalmente nuevas.
+¡La versión más pulida, segura y completa hasta la fecha! Hemos reescrito la lógica interna para darte el control total.
 
-* **🟣 Nuevo: Herramienta "Debloat Avanzado":** Una ventana dedicada para eliminar Bloatware, Inteligencia Artificial (Copilot/Recall) y Publicidad de Windows. ¡Incluye un **Botón de Rescate** para reinstalar apps borradas por error!
-* **🔵 Nuevo: Herramienta "Shell Tools":** Añade o quita accesos directos útiles (Limpieza, Energía, etc.) directamente en el menú contextual (clic derecho) de tu escritorio.
-* **🔴 Red Avanzada 2.0 (Safe Competitive):** Hemos reescrito el motor de optimización de red. Ahora es **100% seguro para juegos competitivos** (Valorant, CS2, CoD, Battlefield), eliminando problemas de desconexión y mejorando el registro de impactos (Hitreg).
-* **⚡ Nuevos Tweaks "Pro":**
-    * **QoS Unlock:** Libera el 20% de ancho de banda que Windows se guarda para sí mismo.
-    * **MMCSS Always On:** Mantiene la prioridad de juegos siempre activa para evitar micro-tirones.
-    * **Sticky Keys:** Opción para desactivar el molesto aviso al pulsar Shift 5 veces.
-* **📚 Documentación Técnica:** Al descargar la guía, ahora recibes también un **"Diccionario de Tweaks"** que te explica qué hace cada opción y sus riesgos.
-* **🎨 Nueva Interfaz Visual:** Organización de botones por colores lógicos (Seguridad, Energía, Limpieza, Herramientas) para un uso más intuitivo.
+### 🛠️ Nuevas Herramientas y Lógica
+* **🔴 Red Avanzada (Centralizada):** ¡Cambio importante! Los modos de 1-clic (Básico, Gamer, etc.) ya **NO** tocan tu configuración de internet. Ahora toda la optimización de ping, DNS, Nagle, QoS y Adaptador vive exclusivamente en este botón para evitar conflictos.
+* **🖱️ Nueva Herramienta "Reducir Input Lag":** Un módulo dedicado para optimizar la cola de datos del ratón y teclado, y desactivar la aceleración de Windows para una precisión 1:1 (Raw Input).
+* **🟣 Debloat Avanzado 3.0:**
+    * **Botón de Rescate:** ¿Borraste algo por error? Ahora puedes reinstalar todas las apps por defecto con un clic.
+    * **Anti-IA:** Nuevos scripts para eliminar **Copilot** y la función **Recall** (grabación de pantalla) de Windows 11.
+* **⚡ Shell Tools (Fix):** Corregido el error en rutas con espacios. Ahora puedes añadir el menú de limpieza al clic derecho sin problemas.
+
+### 🎨 Mejoras Visuales y de Uso
+* **🌍 Multi-Idioma Completo:** La aplicación ahora está traducida al 100% (Interfaz, Tooltips y Guías) en **Español, Inglés, Portugués, Francés y Alemán**.
+* **✨ Fix de Pantalla Completa:** Solucionado el corte de los bordes de neón al maximizar la ventana.
+* **💡 Sistema de Prioridad de Color:** El anillo central ahora reacciona de forma inteligente. El modo "Custom" tiene prioridad visual (Morado) sobre las herramientas individuales.
+* **📝 Tooltips Recuperados:** Vuelven las descripciones flotantes con bordes de colores según la categoría (Verde, Naranja, Rojo, Morado).
 
 ---
 
 ## ⚠️ Guía Rápida: ¿Qué modo debo usar?
 
-Para saber qué modo es el mejor para tu sistema (Portátil, PC Gaming, etc.), por favor haz clic en el botón **"Descargar Guía"** que se encuentra en la aplicación.
-
-Esto guardará dos archivos en tu carpeta de Descargas:
-1. `GUIA_RECOMENDACIONES.txt` (Instrucciones básicas).
+Para saber qué modo es el mejor para tu sistema, haz clic en el botón **"Descargar Guía"** dentro de la aplicación. Esto bajará dos archivos actualizados a tu carpeta de Descargas:
+1. `GUIA_RECOMENDACIONES.txt` (Instrucciones básicas según tu perfil de usuario).
 2. `DICCIONARIO_TWEAKS.txt` (Explicación técnica de cada ajuste).
 
 ### Antes de Empezar (¡OBLIGATORIO!)
 
-1.  **Paso 1: Primer Salvavidas (Backup de Registro):** Haz clic en el botón **"Backup Registro"** (color gris/azul).
-    > **⚠️ NOTA IMPORTANTE:** Este es un backup manual. Si tienes que usarlo, haz doble clic en los archivos `.reg` **en Modo Seguro de Windows** para garantizar la reversión sin conflictos.
-2.  **Paso 2: Segundo Salvavidas (Punto de Restauración):** Haz clic en el botón **"Punto Restauracion"** (color verde).
-    > **👍 Recomendación:** El Punto de Restauración es la forma más fácil y segura de deshacer cambios grandes.
+1.  **Paso 1: Primer Salvavidas (Backup de Registro):** Haz clic en el botón **"Backup Registro"** (color gris/azul). Guarda tu configuración actual en `Documentos\ElmaxiShark_Backups`.
+2.  **Paso 2: Segundo Salvavidas (Punto de Restauración):** Haz clic en el botón **"Punto Restauracion"** (color verde). Es la forma más segura de deshacer cambios.
 3.  **Paso 3:** Después de aplicar cualquier modo, **REINICIA EL EQUIPO**.
 
 ---
 
 ## 🔧 Cómo Usar (Instalación)
 
-1.  Descarga el `ElmaxiShark Optimizer.exe` desde la sección de **[Releases](https://github.com/Elmaxiyt/ElmaxiShark-Optimizer/releases)** de este repositorio.
-2.  Ejecuta el archivo `.exe`. La aplicación te pedirá permisos de Administrador (UAC).
+1.  Descarga el `ElmaxiShark Optimizer.exe` desde la sección de **[Releases](https://github.com/Elmaxiyt/ElmaxiShark-Optimizer/releases)**.
+2.  Ejecuta el archivo `.exe`. La aplicación te pedirá permisos de Administrador.
 3.  **(Recomendado)** Usa las herramientas de backup primero.
-4.  Elige un modo de optimización siguiendo la guía.
-5.  Para revertir los cambios de un modo, simplemente **vuelve a hacer clic en el botón que esté activo**.
+4.  Elige un modo de optimización o usa las herramientas individuales.
+5.  Para revertir los cambios de un modo, simplemente **vuelve a hacer clic en el botón que esté activo** (se apagará la luz del botón).
 
 ---
 
-## 📂 Detalle de los Modos y Herramientas
+## 📂 Detalle de los Modos (1-Clic)
 
-### Herramientas Individuales
-
-* **Backup Registro:** Guarda claves críticas del registro en `Documentos\ElmaxiShark_Backups`.
-* **Punto Restauracion:** Crea un punto de restauración del sistema de Windows.
-* **Crear Plan Energia:** Crea y activa el plan 'Modo Gaming Extremo'.
-* **Limpieza Sistema:** Ejecuta tareas de limpieza profundas (Temp, Prefetch, Cachés, DNS).
-* **Shell Tools:** (Nuevo) Gestiona accesos directos en tu escritorio.
-* **Debloat Avanzado:** (Nuevo) Panel de control total para eliminar basura de Windows, IA y Telemetría.
-* **Red Avanzada:** Aplica optimizaciones de latencia (Nagle, QoS, Throttling) y script de adaptador de red.
-
-### Modos de Optimización (1-Clic)
+> **NOTA:** Ninguno de estos modos toca la configuración de red. Usa el botón "Red Avanzada" por separado si lo deseas.
 
 #### Modo Básico
-* **Limpieza:** Caches, Temporales y Windows Update.
-* **Visuales:** Ajusta para rendimiento básico sin afear el sistema.
-* **Red/Sistema:** DNS rápidos, TRIM para SSD y soporte para rutas largas.
+* **Limpieza:** Caches, Temporales, DirectX y Windows Update.
+* **Visuales:** Ajusta efectos para rendimiento básico sin afear el sistema.
+* **Sistema:** TRIM para SSD y soporte para rutas largas.
 
 #### Modo Equilibrado
 *(Aplica Básico + lo siguiente)*
-* **Servicios:** Desactiva Telemetría básica, Game Bar, DVR y servicios innecesarios (Fax, Mapas).
-* **Privacidad:** Bloquea sugerencias y sincronización innecesaria.
+* **Servicios:** Desactiva Telemetría, Game Bar, DVR y servicios innecesarios (Fax, Mapas).
+* **Privacidad:** Bloquea sugerencias, historial de actividad y sincronización.
 * **Sistema:** Optimiza memoria NTFS y prioridades de CPU (Foreground Boost).
 
 #### Modo Extremo
 *(Aplica Equilibrado + lo siguiente)*
 * **Rendimiento:** Prioriza CPU/GPU para juegos, activa HwSchMode (GPU Scheduling).
-* **Red:** Optimiza Network Throttling y TCP avanzado.
 * **Energía:** Desactiva Power Throttling e Inicio Rápido para mayor estabilidad.
+* **Sistema:** Desactiva Hibernación para liberar espacio en disco.
 
 #### Modo Gamer (Gold Tier)
 *(Aplica Extremo + lo siguiente)*
-> **NOTA:** Este modo es 100% seguro y está diseñado para el máximo FPS estable.
-* **Red Competitiva:** Desactiva Algoritmo de Nagle, QoS (Reserva de ancho de banda) y NDU.
+* **Enfoque Puro:** Diseñado para el máximo FPS estable.
 * **Estabilidad:** Fuerza MMCSS (Multimedia Class Scheduler) siempre activo.
-* **Seguridad:** NO toca la virtualización (Hyper-V) para garantizar compatibilidad con todo.
+* **Servicios:** Desactiva SysMain (Superfetch) para reducir uso de disco en segundo plano.
 
 ### Modo Personalizado (Custom)
 * **Propósito:** Para usuarios expertos que quieren control total.
-* **Qué hace:** Abre un menú con casillas individuales.
-* **Exclusivos de Custom:** Aquí encontrarás los tweaks que hemos retirado de los modos automáticos por seguridad o preferencia personal:
+* **Exclusivos de Custom:** Aquí encontrarás los tweaks retirados de los modos automáticos por seguridad:
     * Desactivar Hyper-V (Virtualización).
     * Desactivar Mitigaciones de CPU (Spectre/Meltdown).
     * Desactivar Windows Search o Cola de Impresión.
-    * Tweaks de Kernel (HPET, etc.).
+    * Tweaks de Kernel.
 
 ---
 
@@ -110,9 +98,9 @@ Esto guardará dos archivos en tu carpeta de Descargas:
 ElmaxiShark Optimizer es una herramienta gratuita (freeware). Creada y propiedad de Elmaxi.
 
 * Puedes usar esta aplicación libremente para fines personales y no comerciales.
-* Puedes distribuir la aplicación (en su forma original, sin modificar) siempre y cuando des crédito claro y visible al creador (Elmaxi) e incluyas este archivo `README.md` sin modificar.
+* Puedes distribuir la aplicación (en su forma original, sin modificar) siempre y cuando des crédito claro y visible al creador (Elmaxi).
 * **ESTÁ PROHIBIDO vender esta aplicación o cualquier parte de ella.**
-* Está prohibido modificar, descompilar o realizar ingeniería inversa a la aplicación con fines de lucro o para crear obras derivadas sin el permiso expreso del autor.
+* Está prohibido modificar, descompilar o realizar ingeniería inversa a la aplicación con fines de lucro.
 
 El incumplimiento de estos términos puede llevar a acciones legales.
 

@@ -11,28 +11,72 @@
 
   <div id="main-title-container">
     <div class="line"></div>
-    <div id="main-title" data-i18n="main_title">ELMAXISHARK OPTIMIZER</div>
+    <div id="center-title-wrapper">
+        <div id="main-title" data-i18n="main_title">ELMAXISHARK OPTIMIZER</div>
+        <div id="free-badge">FREE EDITION</div>
+    </div>
     <div class="line"></div>
   </div>
 
   <div id="topbar">
     <div id="left-top">
-       <div id="btn-translate" class="control-btn" data-i18n-tip="language_title" title="Idioma (Versión Pro)">🌐</div>
+       <div id="btn-translate" class="control-btn" title="Idioma / Language">🇪🇸</div>
+       <div id="language-menu"></div>
     </div>
+    
     <div id="right-top">
+      <div id="top-icons">
+          <a id="yt-link-top" href="https://www.youtube.com/@Elmaxizone" target="_blank" title="YouTube">
+            <img id="yt-icon-top" class="top-social-icon" src="assets/youtube.png" alt="YouTube" draggable="false">
+          </a>
+          <a id="paypal-link-top" href="https://paypal.me/Elmaxizone" target="_blank" title="Donar (PayPal)">
+            <img id="paypal-icon-top" class="top-social-icon" src="assets/paypal.png" alt="Donar" draggable="false">
+          </a>
+      </div>
+
+      <div class="separator-vertical"></div>
+
       <div id="window-controls">
         <div id="minimize-btn" class="control-btn" title="Minimizar">-</div>
+        <div id="maximize-btn" class="control-btn" title="Maximizar">□</div>
         <div id="close-btn" class="control-btn" title="Cerrar">✕</div>
       </div>
     </div>
   </div>
 
   <div id="widget">
-    <img id="logo" src="assets/logo.png" alt="Logo" draggable="false">
-    <h1 id="titulo"></h1>
-    <p id="subtitulo" data-i18n="subtitle">Potencia tu sistema con un CLICK</p>
+    <div id="header-area">
+        <div class="side-info left">
+            <div class="info-label-left" data-i18n="header_specs">ESPECIFICACIONES</div>
+            <div class="spec-list">
+                <div class="spec-item"><span id="os-info" class="spec-val">...</span></div>
+                <div class="spec-item"><span id="cpu-info" class="spec-val">...</span></div>
+                <div class="spec-item"><span id="gpu-info" class="spec-val">...</span></div>
+                <div class="spec-item"><span id="ram-info" class="spec-val">...</span></div>
+            </div>
+        </div>
 
-    <div id="info-herramientas" data-i18n="tools_info">Herramientas Individuales:</div>
+        <div id="logo-container">
+            <img id="logo" src="assets/logo.png" alt="Logo" draggable="false">
+        </div>
+
+        <div class="side-info right">
+            <div class="info-label" data-i18n="header_status">ESTADO DEL SISTEMA</div>
+            <div class="junk-data-col">
+                <div id="junk-info" class="info-val-large">---</div>
+                <div id="health-text" class="info-subtext">...</div>
+            </div>
+            
+            <div class="health-bar-container">
+                <div id="health-fill-horizontal"></div>
+                <div class="health-grid-overlay"></div>
+            </div>
+        </div>
+    </div>
+
+    <p id="subtitulo"></p>
+
+    <div class="section-title" data-i18n="tools_info">Herramientas Individuales:</div>
     
     <div id="herramientas">
       <button id="btn-restore" class="boton tool" data-mode="restauracion" data-i18n="tool_restore" data-i18n-tip="tool_restore_tip">Punto Restauracion</button>
@@ -42,9 +86,10 @@
       <button id="btn-shell-tools" class="boton tool tool-shell" data-mode="shell" data-i18n="tool_shell_menu" data-i18n-tip="tool_shell_menu_tip">Shell Tools (Menu)</button> 
       <button id="btn-debloat-tool" class="boton tool tool-debloat" data-mode="debloat" data-i18n="tool_debloat" data-i18n-tip="tool_debloat_tip">Debloat Avanzado</button> 
       <button id="btn-network-tool" class="boton tool" data-mode="net-adv" data-i18n="tool_net_adv" data-i18n-tip="tool_net_adv_tip">Red Avanzada</button>
+      <button id="btn-input-tool" class="boton tool" data-mode="input-lag" data-i18n="tool_input_lag" data-i18n-tip="tool_input_lag_tip">Reducir Input Lag</button>
     </div>
 
-    <div id="info-niveles" data-i18n="mode_info">Elige un modo de optimizacion:</div>
+    <div class="section-title" data-i18n="mode_info">Elige un modo de optimizacion:</div>
     
     <div id="niveles">
       <button class="boton minimo" data-mode="basico" data-i18n="mode_basic" data-i18n-tip="mode_basic_tip">Básico</button>
@@ -69,17 +114,8 @@
   </div>
 
   <footer id="copyright">
-      <div id="footer-icons">
-          <a id="yt-link-footer" href="https://www.youtube.com/@Elmaxizone" target="_blank" title="YouTube">
-            <img id="yt-icon" src="assets/youtube.png" alt="YouTube" draggable="false">
-          </a>
-          <a id="paypal-link-footer" href="https://paypal.me/Elmaxizone" target="_blank" title="Donar (PayPal)">
-            <img id="paypal-icon" src="assets/paypal.png" alt="Donar" draggable="false">
-          </a>
-      </div>
-
       <span data-i18n="copyright">© 2025 ElmaxiZone. Todos los derechos reservados.</span>
-      <span id="version-display">v1.3.0</span>
+      <span id="version-display">v1.5.0</span>
   </footer>
 
   <script src="particles.js"></script>

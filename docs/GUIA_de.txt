@@ -1,0 +1,64 @@
+KURZANLEITUNG: WELCHEN MODUS SOLL ICH VERWENDEN?
+(ElmaxiShark Optimizer v1.5.0)
+
+Um Probleme zu vermeiden und das beste Ergebnis zu erzielen, finden Sie Ihr Benutzerprofil und folgen Sie diesen Empfehlungen:
+
+================================
+VOR DEM START (PFLICHT!)
+================================
+
+1.  Schritt 1: Erster Rettungsanker (Registrierungs-Backup): Klicken Sie auf die Schaltfläche "Backup Registro".
+    > ⚠️ WICHTIGER HINWEIS: Dies ist ein manuelles Backup und der **letzte Ausweg** vor dem Wiederherstellungspunkt.
+    Wenn Sie es verwenden müssen, doppelklicken Sie auf die .reg-Dateien **im abgesicherten Modus von Windows**, um eine konfliktfreie Wiederherstellung zu gewährleisten.
+2.  Schritt 2: Zweiter Rettungsanker (Wiederherstellungspunkt): Klicken Sie auf die Schaltfläche "Punto Restauracion".
+    > 👍 Empfehlung: Der Wiederherstellungspunkt ist der sicherste und einfachste Weg, um größere Änderungen rückgängig zu machen.
+3.  Schritt 3: Nachdem Sie einen Modus angewendet haben, STARTEN SIE IHREN PC NEU.
+    Die App wird Sie daran erinnern, aber es ist wichtig, dass Sie dies tun, damit die Änderungen wirksam werden.
+
+===============================================
+PROFIL 1: Anfänger / Arbeits-Laptop
+===============================================
+
+* Wer sind Sie?: Sie nutzen Ihren PC oder Laptop zum Surfen, Lernen oder gelegentlichen Spielen.
+  Sie möchten, dass er schneller wird, können es sich aber NICHT leisten, dass etwas schiefgeht.
+* Empfohlener Modus: Basis oder Ausgewogen.
+    * Warum: Diese Modi bereinigen das System, deaktivieren die Telemetrie und beschleunigen alltägliche Aufgaben, ohne etwas zu berühren, das die Stabilität beeinträchtigen könnte.
+    * Nützliche Werkzeuge: "Limpieza Sistema" und "Shell Tools" (für Schnellzugriffe auf dem Desktop).
+
+================================
+PROFIL 2: Laptop-Gamer
+================================
+
+* Wer sind Sie?: Sie spielen auf einem *Gaming*-Laptop.
+  Akku und Temperaturen sind Ihnen wichtig, aber FPS auch.
+* Empfohlener Modus: Ausgewogen, Extrem oder Gamer Modus.
+    * Warum: "Ausgewogen" gibt Ihnen einen großen Schub ohne Risiko.
+      "Extrem" optimiert GPU und System ohne aggressive Netzwerkänderungen.
+      "Gamer Modus" ist jetzt 100 % sicher (er unterbricht keine Virtualisierung mehr) und bietet Ihnen die maximal mögliche Leistung.
+
+===============================================
+PROFIL 3: Desktop-Gamer (Desktop-PC)
+===============================================
+
+* Wer sind Sie?: Sie haben einen Desktop-PC zum Spielen.
+  Sie möchten die maximal möglichen FPS.
+* Empfohlener Modus: Gamer Modus.
+    * Warum: Es ist der ultimative Modus.
+      Er wendet alle sicheren Netzwerk- (Nagle/QoS), GPU-, System- und Energieoptimierungen an.
+    * Werkzeuge: "Red Avanzada" und "Debloat Avanzado" (zum Entfernen von ressourcenfressender Bloatware).
+
+===============================================
+PROFIL 4: Erfahrener Benutzer / Tweak-Enthusiast
+===============================================
+
+* Wer sind Sie?: Sie wissen, was `bcdedit` ist, verstehen die Risiken und wünschen die vollständige Kontrolle.
+* Empfohlener Modus: Custom Modus.
+* Ihr Weg:
+    1.  Wenden Sie KEINEN 1-Klick-Modus an (oder wenden Sie einen als Basis an).
+    2.  Gehen Sie zum Menü "Custom".
+    3.  "Custom" ermöglicht es Ihnen, *genau* auszuwählen, was Sie möchten, einschließlich der Tweaks, die wir aus Sicherheitsgründen aus den normalen Modi entfernt haben (wie das Deaktivieren von Hyper-V, CPU-Minderungen oder das Deinstallieren von Store-Apps).
+
+Nach und nach polieren wir dieses unglaubliche Tool mit Ihrem wertvollen Feedback.
+
+Vielen Dank, dass Sie ElmaxiShark Optimizer verwenden. Ich liebe dich!
+Grüße Elmaxi

@@ -5,6 +5,7 @@
     <title>Modo Custom</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap');
         
         * { box-sizing: border-box; margin:0; padding:0; }
         html { height:100%; width:100%; }
@@ -14,7 +15,7 @@
             height:100%; width:100%; 
             font-family: 'Russo One', sans-serif; 
             background:#000;
-            color: #fff; /* <-- Color de texto por defecto (blanco) */
+            color: #fff; 
             padding: 15px; 
             user-select: none;
             overflow: hidden; 
@@ -97,15 +98,17 @@
             align-items: stretch; 
         }
         label { 
-            display: flex; align-items: center; gap: 8px; font-size: 13px; 
+            display: flex; align-items: center; gap: 8px; 
+            font-size: 13px; 
+            font-family: 'Segoe UI', sans-serif; /* FIX: Fuente legible para texto pequeño */
             cursor: pointer; background: rgba(255,255,255,0.02); padding: 5px;
             border-radius: 4px;
             min-height: 25px; 
-            color: #fff; /* <-- Texto de tweaks vuelve a ser blanco */
+            color: #fff; 
         }
         label:hover { 
             background: rgba(255, 255, 255, 0.05); 
-            color: #fff; /* Mantenemos blanco en hover */
+            color: #fff; 
         }
         input[type="checkbox"] { width: 16px; height: 16px; accent-color: #c864ff; flex-shrink: 0; }
         
@@ -149,26 +152,31 @@
         #apply-btn { background: linear-gradient(180deg,#62ffb8,#18d77e); color: #0a0a0a; }
         #revert-btn { background: linear-gradient(180deg, #ff7b7b, #ff2b2b); color: #0a0a0a; }
 
-        /* Scrollbar */
+        /* Scrollbar (Morado) */
         #scroll-area::-webkit-scrollbar { width: 10px; }
         #scroll-area::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
         #scroll-area::-webkit-scrollbar-thumb { background-color: #c864ff; border-radius: 10px; border: 2px solid transparent; background-clip: content-box; }
         #scroll-area::-webkit-scrollbar-thumb:hover { background-color: #e6a8ff; }
 
-        /* --- COLORES DE TÍTULOS (SÓLO TÍTULOS) --- */
-        .header-limpieza span { color: #18d77e; text-shadow: 0 0 5px #18d77e; } /* Verde */
-        .header-interfaz span { color: #f0f0f0; text-shadow: 0 0 5px #f0f0f0; } /* Blanco */
-        .header-privacidad span { color: #c864ff; text-shadow: 0 0 5px #c864ff; } /* Morado */
+        /* --- COLORES DE TÍTULOS --- */
+        .header-limpieza span { color: #18d77e; text-shadow: 0 0 5px #18d77e; } 
+        .header-interfaz span { color: #f0f0f0; text-shadow: 0 0 5px #f0f0f0; } 
+        .header-privacidad span { color: #c864ff; text-shadow: 0 0 5px #c864ff; } 
         
-        .header-servicios span { color: #ff9a2b; text-shadow: 0 0 5px #ff9a2b; } /* Naranja */
-        .header-sistema span { color: #4db9ff; text-shadow: 0 0 5px #4db9ff; } /* Azul Hielo */
-        .header-rendimiento span { color: #ffd38a; text-shadow: 0 0 5px #ffd38a; } /* Naranja Claro/Amarillo */
-        .header-red span { color: #ff9a2b; text-shadow: 0 0 5px #ff9a2b; } /* Naranja */
+        .header-servicios span { color: #ff9a2b; text-shadow: 0 0 5px #ff9a2b; } 
+        .header-sistema span { color: #4db9ff; text-shadow: 0 0 5px #4db9ff; } 
+        .header-rendimiento span { color: #ffd38a; text-shadow: 0 0 5px #ffd38a; } 
+        .header-red span { color: #ff9a2b; text-shadow: 0 0 5px #ff9a2b; } 
 
-        .header-debloat span { color: #ff2b2b; text-shadow: 0 0 5px #ff2b2b; } /* Rojo */
-        .header-criticos span { color: #ff5050; text-shadow: 0 0 10px #ff5050, 0 0 5px #ff5050; } /* Rojo Brillante */
+        .header-debloat span { color: #ff2b2b; text-shadow: 0 0 5px #ff2b2b; } 
+        .header-criticos span { color: #ff5050; text-shadow: 0 0 10px #ff5050, 0 0 5px #ff5050; } 
         
-        /* --- ELIMINADO: Colores de texto de tweaks --- */
+        /* TWEAKS CON ADVERTENCIA - Poner en amarillo/naranja fuerte */
+        label:has(span:contains('[ADVERTENCIA]')),
+        label:has(span:contains('[WARNING]')) {
+            color: #ff9a2b;
+            text-shadow: 0 0 3px rgba(255, 154, 43, 0.5);
+        }
 
     </style>
 </head>

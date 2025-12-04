@@ -1,0 +1,70 @@
+GUÍA RÁPIDA: ¿QUÉ MODO DEBO USAR?
+(ElmaxiShark Optimizer v1.5.0)
+
+Para evitar problemas y obtener el mejor resultado, busca tu perfil de usuario y sigue estas recomendaciones:
+
+================================
+ANTES DE EMPEZAR (¡OBLIGATORIO!)
+================================
+
+1.  Paso 1: Primer Salvavidas (Backup de Registro): Haz clic en el botón "Backup Registro".
+> **⚠️ NOTA IMPORTANTE:** Este es un backup manual, y es el **último recurso** antes del Punto de Restauración.
+Si tienes que usarlo, haz doble clic en los archivos .reg **en Modo Seguro de Windows** para garantizar la reversión sin conflictos.
+
+2.  Paso 2: Segundo Salvavidas (Punto de Restauración): Haz clic en el botón "Punto Restauracion".
+> **👍 Recomendación:** El Punto de Restauración es la forma más fácil y segura de deshacer cambios grandes.
+
+3.  Paso 3: Después de aplicar cualquier modo, REINICIA EL EQUIPO.
+La app te lo recordará, pero es fundamental que lo hagas para que los cambios surtan efecto.
+
+===============================================
+PERFIL 1: Usuario Principiante / Portátil de Trabajo
+===============================================
+
+* ¿Quién eres?: Usas tu PC o portátil para navegar, estudiar, o jugar ocasionalmente.
+Quieres que vaya más rápido, pero NO puedes permitirte que nada falle.
+
+* Modo Recomendado: Básico o Equilibrado.
+    * Por qué: Estos modos limpian el sistema, desactivan la telemetría y aceleran las tareas diarias sin tocar nada que pueda romper la estabilidad.
+    * Herramientas Útiles: "Limpieza Sistema" y "Shell Tools" (para tener accesos rápidos en el escritorio).
+
+================================
+PERFIL 2: Gamer de Portátil
+================================
+
+* ¿Quién eres?: Juegas en un portátil *gaming*.
+La batería y las temperaturas te importan, pero también los FPS.
+
+* Modo Recomendado: Equilibrado, Extremo o Modo Gamer.
+    * Por qué: "Equilibrado" te da un gran impulso sin arriesgar nada.
+      "Extremo" optimiza la GPU y el sistema sin tocar la red agresivamente.
+      "Modo Gamer" es ahora 100% seguro (ya no rompe virtualización) y te dará el máximo rendimiento posible.
+
+===============================================
+PERFIL 3: Gamer de Sobremesa (PC de Escritorio)
+===============================================
+
+* ¿Quién eres?: Tienes un PC de escritorio para jugar.
+Quieres los máximos FPS posibles.
+
+* Modo Recomendado: Modo Gamer.
+    * Por qué: Es el modo definitivo.
+    * Aplica todas las optimizaciones de red (Nagle/QoS), GPU, sistema y energía de forma segura.
+    * Herramientas: "Red Avanzada" y "Debloat Avanzado" (para quitar basura que consume recursos).
+
+===============================================
+PERFIL 4: Usuario Experto / Entusiasta del Tweak
+===============================================
+
+* ¿Quién eres?: Sabes lo que es `bcdedit`, entiendes los riesgos y quieres control total.
+
+* Modo Recomendado: Modo Custom.
+* Tu ruta:
+    1.  NO apliques ningún modo de 1-clic (o aplica uno como base).
+    2.  Ve al menú "Custom".
+    3.  "Custom" te permite seleccionar *exactamente* lo que quieres, incluyendo los tweaks que hemos quitado de los modos normales por seguridad (como desactivar Hyper-V, mitigaciones de CPU o desinstalar apps de la Store).
+
+Poco a poco estamos puliendo esta increíble Herramienta con vuestro valioso Feedback
+
+Gracias por usar ElmaxiShark Optimizer. ¡Os quiero!
+Saludos Elmaxi

@@ -1,6 +1,6 @@
 {
   "name": "elmaxishark-optimizer",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Optimizador de Windows para Gaming por ElmaxiShark",
   "main": "main.js",
   "scripts": {
@@ -44,8 +44,7 @@
       "debloat.html",
       "debloat-preload.js",
       "debloat-renderer.js",
-      "GUIA_RECOMENDACIONES.txt",
-      "DICCIONARIO_TWEAKS.txt",
+      "docs/**/*",
       "lang/**/*"
     ],
     "win": {

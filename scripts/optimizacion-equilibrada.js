@@ -1,8 +1,8 @@
-// scripts/optimizacion-equilibrada.js (v2.0 - Añadida Privacidad y QoL)
+// scripts/optimizacion-equilibrada.js (v1.5.3 - NETWORK TWEAKS REMOVED)
 const optimizacionBasica = require('./optimizacion-basica.js');
 
 const applyEquilibrado = [
-  // --- NUEVO: Privacidad y QoL Seguros ---
+  // --- Privacidad y QoL Seguros ---
   { id: 'qol_stickykeys', message: "Desactivando Sticky Keys (Shift 5 veces)...", command: 'reg add "HKCU\\Control Panel\\Accessibility\\StickyKeys" /v "Flags" /t REG_SZ /d "506" /f & reg add "HKCU\\Control Panel\\Accessibility\\Keyboard Response" /v "Flags" /t REG_SZ /d "122" /f & reg add "HKCU\\Control Panel\\Accessibility\\ToggleKeys" /v "Flags" /t REG_SZ /d "58" /f' },
   { id: 'privacy_activity_history', message: "Desactivando Historial de Actividad...", command: 'reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System" /v "PublishUserActivities" /t REG_DWORD /d 0 /f & reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System" /v "UploadUserActivities" /t REG_DWORD /d 0 /f' },
   { id: 'privacy_notifications_toast', message: "Desactivando Notificaciones Toast molestas...", command: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications" /v "ToastEnabled" /t REG_DWORD /d 0 /f' },
@@ -27,22 +27,16 @@ const applyEquilibrado = [
   { id: 'mem_pagingexecutive', message: "Desactivando Paging Executive...", command: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management" /v "DisablePagingExecutive" /t REG_DWORD /d 1 /f' },
   { id: 'sys_ntfs_memory', message: "Optimizando memoria NTFS...", command: 'fsutil behavior set memoryusage 2' },
   { id: 'sys_shadercache', message: "Optimizando registro de Caché de Shaders...", command: 'reg add "HKLM\\SOFTWARE\\Microsoft\\Direct3D" /v "ShaderCache" /t REG_DWORD /d 1 /f & reg add "HKLM\\SOFTWARE\\Microsoft\\Direct3D" /v "ShaderCacheSize" /t REG_DWORD /d 10240 /f & reg add "HKLM\\SOFTWARE\\Microsoft\\Direct3D" /v "ShaderCacheDefrag" /t REG_DWORD /d 1 /f' },
-  { id: 'ui_menu_contextual', message: "Activando Menu Contextual Completo (W10 style)...", command: 'reg add "HKCU\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32" /v "" /t REG_SZ /d "" /f' },
-  { id: 'qol_mouse_accel', message: "Desactivando aceleracion del raton...", command: 'reg add "HKCU\\Control Panel\\Mouse" /v MouseSpeed /t REG_SZ /d 0 /f & reg add "HKCU\\Control Panel\\Mouse" /v MouseThreshold1 /t REG_SZ /d 0 /f & reg add "HKCU\\Control Panel\\Mouse" /v MouseThreshold2 /t REG_SZ /d 0 /f' },
-  { id: 'qol_keyboard', message: "Optimizando respuesta del teclado...", command: 'reg add "HKCU\\Control Panel\\Keyboard" /v KeyboardDelay /t REG_SZ /d 0 /f & reg add "HKCU\\Control Panel\\Keyboard" /v KeyboardSpeed /t REG_SZ /d 31 /f' },
   { id: 'qol_fse', message: "Desactivando Optimizaciones de Pantalla Completa...", command: 'reg add "HKCU\\System\\GameConfigStore" /v GameDVR_FSEBehaviorMode /t REG_DWORD /d 2 /f' },
   { id: 'privacy_uwp_background', message: "Restringiendo Apps UWP en segundo plano...", command: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications" /v GlobalUserDisabled /t REG_DWORD /d 1 /f' },
-  { id: 'net_probing', message: "Desactivando sondeo de internet...", command: 'reg add "HKLM\\System\\ControlSet001\\services\\NlaSvc\\Parameters\\Internet" /v "EnableActiveProbing" /t REG_DWORD /d 0 /f' },
+  // ELIMINADO: net_probing (Movido a Red Avanzada)
   { id: 'rend_priority_separation', message: "Optimizando prioridades (Foreground Boost)...", command: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl" /v Win32PrioritySeparation /t REG_DWORD /d 26 /f' }
 ];
 
 const revertEquilibrado = [
-  // Revertir Nuevos
   { id: 'qol_stickykeys', message: "Restaurando Sticky Keys...", command: 'reg add "HKCU\\Control Panel\\Accessibility\\StickyKeys" /v "Flags" /t REG_SZ /d "510" /f' },
   { id: 'privacy_activity_history', message: "Restaurando Historial de Actividad...", command: 'reg delete "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System" /v "PublishUserActivities" /f >nul 2>&1 & reg delete "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System" /v "UploadUserActivities" /f >nul 2>&1' },
   { id: 'privacy_notifications_toast', message: "Reactivando Notificaciones Toast...", command: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications" /v "ToastEnabled" /t REG_DWORD /d 1 /f' },
-
-  // Revertir Originales
   { id: 'serv_telemetria', message: "Reactivando servicios de telemetria...", command: 'sc config diagtrack start= auto & sc config DPS start= auto & sc config WerSvc start= auto' },
   { id: 'serv_gamebar', message: "Reactivando Game Bar y DVR...", command: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR" /v AppCaptureEnabled /t REG_DWORD /d 1 /f & reg delete "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR" /v AllowGameDVR /f >nul 2>&1 & reg add "HKLM\\SOFTWARE\\Microsoft\\GameBar" /v AllowAutoGameMode /t REG_DWORD /d 1 /f' },
   { id: 'serv_fax_maps_phone', message: "Reactivando servicios base...", command: 'sc config Fax start= auto & sc config MapsBroker start= auto & sc config PhoneSvc start= auto' },
@@ -62,12 +56,9 @@ const revertEquilibrado = [
   { id: 'mem_pagingexecutive', message: "Restaurando Paging Executive...", command: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management" /v "DisablePagingExecutive" /t REG_DWORD /d 0 /f' },
   { id: 'sys_ntfs_memory', message: "Restaurando memoria NTFS...", command: 'fsutil behavior set memoryusage 1' },
   { id: 'sys_shadercache', message: "Restaurando registro Caché Shaders...", command: 'reg delete "HKLM\\SOFTWARE\\Microsoft\\Direct3D" /v "ShaderCache" /f >nul 2>&1 & reg delete "HKLM\\SOFTWARE\\Microsoft\\Direct3D" /v "ShaderCacheSize" /f >nul 2>&1 & reg delete "HKLM\\SOFTWARE\\Microsoft\\Direct3D" /v "ShaderCacheDefrag" /f >nul 2>&1' },
-  { id: 'ui_menu_contextual', message: "Restaurando Menu Contextual Moderno...", command: 'reg delete "HKCU\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" /f >nul 2>&1' },
-  { id: 'qol_mouse_accel', message: "Restaurando aceleracion del raton...", command: 'reg add "HKCU\\Control Panel\\Mouse" /v MouseSpeed /t REG_SZ /d 1 /f & reg add "HKCU\\Control Panel\\Mouse" /v MouseThreshold1 /t REG_SZ /d 6 /f & reg add "HKCU\\Control Panel\\Mouse" /v MouseThreshold2 /t REG_SZ /d 10 /f' },
-  { id: 'qol_keyboard', message: "Restaurando respuesta del teclado...", command: 'reg add "HKCU\\Control Panel\\Keyboard" /v KeyboardDelay /t REG_SZ /d 1 /f & reg add "HKCU\\Control Panel\\Keyboard" /v KeyboardSpeed /t REG_SZ /d 31 /f' },
   { id: 'qol_fse', message: "Restaurando Optimizaciones Pantalla Completa...", command: 'reg delete "HKCU\\System\\GameConfigStore" /v GameDVR_FSEBehaviorMode /f >nul 2>&1' },
   { id: 'privacy_uwp_background', message: "Permitiendo Apps UWP en segundo plano...", command: 'reg delete "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications" /v GlobalUserDisabled /f >nul 2>&1' },
-  { id: 'net_probing', message: "Reactivando sondeo de internet...", command: 'reg add "HKLM\\System\\ControlSet001\\services\\NlaSvc\\Parameters\\Internet" /v "EnableActiveProbing" /t REG_DWORD /d 1 /f' },
+  // ELIMINADO: net_probing revert
   { id: 'rend_priority_separation', message: "Restaurando prioridades...", command: 'reg add "HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl" /v Win32PrioritySeparation /t REG_DWORD /d 2 /f' }
 ];
 

@@ -1,0 +1,90 @@
+TECHNICAL DICTIONARY: PROS, CONS AND RISKS
+(ElmaxiShark Optimizer v1.5.0)
+
+This document explains in detail what each adjustment of the tool does. Use it to understand what you are activating, especially in the "Custom" menu.
+===========================================================================
+1. CLEANUP (Generalized)
+===========================================================================
+* What it includes: Deletion of Temp folders, Prefetch, DirectX/NVIDIA/AMD Caches, and Browser/Steam Caches.
+* BENEFIT: Frees up disk space and solves graphics errors (corrupt textures).
+* RISK: None. The only thing that will happen is that the first time you open a game or program, it will take 1 second longer to load while it rebuilds its cache.
+
+===========================================================================
+2. INTERFACE (Visuals and Convenience)
+===========================================================================
+[Visual Effects / Transparency]
+* PRO: The Windows interface feels "snappy" and fast. Less load for the GPU.
+* CONS: Windows looks uglier (without transparencies or smooth animations).
+[Sticky Keys (Special Keys)]
+* PRO: Prevents the game from minimizing if you press SHIFT multiple times in a row.
+* CONS: You lose accessibility features for people with motor disabilities.
+[Classic Photo Viewer (Windows 7)]
+* PRO: Opens images instantly, much faster than the modern "Photos" app.
+* CONS: Old interface.
+
+===========================================================================
+3. PRIVACY (Telemetry & Bloat)
+===========================================================================
+[Telemetry (DiagTrack/WerSvc)]
+* PRO: Microsoft stops collecting data about your usage and errors. Saves bandwidth.
+* CONS: If Windows crashes, it will not send the error report to Microsoft.
+[Suggestions and Advertising]
+* PRO: Cleaner Start Menu and Settings without ads for Candy Crush or Office 365.
+* CONS: None.
+
+===========================================================================
+4. SERVICES AND SYSTEM
+===========================================================================
+[SysMain / Superfetch]
+* PRO: Reduces CPU and Disk usage in the background. Vital for Gaming.
+* CONS: Office applications (Word, Chrome) may take slightly longer to open the first time.
+[Windows Search]
+* MEDIUM RISK: If you disable it, the search bar on the taskbar will stop working.
+* RECOMMENDATION: Only for users who know how to search for files manually.
+[Print Spooler]
+* HIGH RISK: If you disable it, the printer will stop working.
+* PRO: Saves RAM if you are NEVER going to print anything.
+[Hibernation]
+* PRO: Frees up a lot of disk space (equal to your RAM amount). Reduces writes to SSD.
+* CONS: You will not be able to use the "Hibernate" function (only Suspend or Shutdown).
+[Mitigations (Spectre/Meltdown)]
+* BENEFIT: Can increase FPS (5-15%) on older CPUs.
+* SECURITY RISK: Your CPU is theoretically exposed to complex vulnerabilities.
+* RECOMMENDATION: Activate it only for gaming if you are looking for maximum performance.
+[Virtualization (Hyper-V)]
+* HIGH RISK: If you disable it, the following will not work: Windows Subsystem for Linux (WSL), Docker, Android Emulators, Sandbox.
+* PRO: Slightly reduces system latency.
+[Memory Compression and Page Combining]
+* MEDIUM-HIGH RISK: Disables RAM compression and increases the risk of *stutters* if the RAM fills up completely. Ideal only for systems with **16 GB or more** of memory.
+[Disable VRAM Compression]
+* HIGH RISK: Forces the GPU to use much more uncompressed VRAM. Can cause artifacts or instability if VRAM fills up.
+
+===========================================================================
+5. NETWORK (Ping and Latency)
+===========================================================================
+[Nagle's Algorithm]
+* PRO: Reduces latency (ping) in competitive games by sending packets instantly.
+* CONS: Can slow down the transfer of very large files on the local network slightly.
+[Unlock QoS Bandwidth]
+* PRO: Removes the 20% limit that Windows reserves for its updates.
+* CONS: None.
+[MMCSS Always On]
+* PRO: Forces the system to always prioritize games and audio, preventing stutters.
+* CONS: Imperceptibly higher power consumption.
+
+===========================================================================
+6. DEBLOAT (App Removal) - CAUTION!
+===========================================================================
+[Remove Microsoft Store]
+* VERY HIGH RISK: You will not be able to install anything from the store, nor GamePass, nor update basic apps like Calculator.
+* RECOMMENDATION: Do not touch unless you are an expert.
+[Remove Edge]
+* RISK: Can break system links and widgets. Microsoft reinstalls it often.
+* RECOMMENDATION: Better to "Block" its functions with AI/Ads tweaks than to completely remove it.
+[RESCUE - Reinstall Apps]
+* WHAT IT DOES: Attempts to reinstall and re-register all factory default applications in Windows (Calculator, Photos, Store, etc.).
+* WHEN TO USE IT: If you have accidentally deleted something and want to recover it.
+* NOTE: You will see many red letters (errors) in the console during the process. This is NORMAL, it means it is trying to install apps that you already have or that are currently in use. Ignore it.
+
+===========================================================================
+© ElmaxiShark Optimizer - Knowledge is power.

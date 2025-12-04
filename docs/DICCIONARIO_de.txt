@@ -1,0 +1,90 @@
+TECHNISCHES WÖRTERBUCH: PROS, CONS UND RISIKEN
+(ElmaxiShark Optimizer v1.5.0)
+
+Dieses Dokument erklärt detailliert, was jede Einstellung des Tools bewirkt. Verwenden Sie es, um zu verstehen, was Sie aktivieren, insbesondere im Menü "Custom".
+===========================================================================
+1. BEREINIGUNG (Allgemein)
+===========================================================================
+* Was es beinhaltet: Löschen von Temp-Ordnern, Prefetch, DirectX/NVIDIA/AMD-Caches und Browser/Steam-Caches.
+* VORTEIL: Gibt Speicherplatz frei und behebt Grafikfehler (beschädigte Texturen).
+* RISIKO: Keines. Das einzige, was passiert, ist, dass beim ersten Öffnen eines Spiels oder Programms das Laden 1 Sekunde länger dauert, während der Cache neu erstellt wird.
+
+===========================================================================
+2. SCHNITTSTELLE (Visuelles und Komfort)
+===========================================================================
+[Visuelle Effekte / Transparenz]
+* PRO: Die Windows-Oberfläche fühlt sich "reaktionsschneller" und schneller an. Weniger Last für die GPU.
+* CONTRA: Windows sieht hässlicher aus (ohne Transparenzen oder flüssige Animationen).
+[Sticky Keys (Spezielle Tasten)]
+* PRO: Verhindert, dass das Spiel minimiert wird, wenn Sie mehrmals hintereinander SHIFT drücken.
+* CONTRA: Sie verlieren die Barrierefreiheitsfunktionen für Menschen mit motorischen Behinderungen.
+[Klassische Fotoanzeige (Windows 7)]
+* PRO: Öffnet Bilder sofort, viel schneller als die moderne "Fotos"-App.
+* CONTRA: Alte Benutzeroberfläche.
+
+===========================================================================
+3. DATENSCHUTZ (Telemetrie und Bloat)
+===========================================================================
+[Telemetrie (DiagTrack/WerSvc)]
+* PRO: Microsoft stellt die Sammlung von Daten über Ihre Nutzung und Fehler ein. Spart Bandbreite.
+* CONTRA: Wenn Windows abstürzt, wird der Fehlerbericht nicht an Microsoft gesendet.
+[Vorschläge und Werbung]
+* PRO: Saubereres Startmenü und Einstellungen ohne Werbung für Candy Crush oder Office 365.
+* CONTRA: Keines.
+
+===========================================================================
+4. DIENSTE UND SYSTEM
+===========================================================================
+[SysMain / Superfetch]
+* PRO: Reduziert die CPU- und Festplattenauslastung im Hintergrund. Entscheidend für Gaming.
+* CONTRA: Office-Anwendungen (Word, Chrome) benötigen beim ersten Öffnen möglicherweise etwas länger.
+[Windows-Suche]
+* MITTLERES RISIKO: Wenn Sie es deaktivieren, funktioniert die Suchleiste in der Taskleiste nicht mehr.
+* EMPFEHLUNG: Nur für Benutzer, die wissen, wie man Dateien manuell sucht.
+[Druckwarteschlange (Spooler)]
+* HOHES RISIKO: Wenn Sie einen Drucker haben, NICHT deaktivieren. Er wird nicht mehr funktionieren.
+* PRO: Spart RAM, wenn Sie NIEMALS etwas drucken werden.
+[Ruhezustand]
+* PRO: Gibt viel Speicherplatz frei (entspricht Ihrer RAM-Menge). Reduziert Schreibvorgänge auf der SSD.
+* CONTRA: Sie können die Funktion "Ruhezustand" nicht verwenden (nur Standby oder Herunterfahren).
+[Minderungen (Spectre/Meltdown)]
+* VORTEIL: Kann die FPS (5-15%) auf älteren CPUs erhöhen.
+* SICHERHEITSRISIKO: Ihre CPU ist theoretisch komplexen Sicherheitslücken ausgesetzt.
+* EMPFEHLUNG: Nur für Spiele aktivieren, wenn Sie maximale Leistung anstreben.
+[Virtualisierung (Hyper-V)]
+* HOHES RISIKO: Wenn Sie es deaktivieren, funktionieren folgende Dinge nicht: Windows-Subsystem für Linux (WSL), Docker, Android-Emulatoren, Sandbox.
+* PRO: Reduziert die Systemlatenz geringfügig.
+[Speicherkomprimierung und Page Combining]
+* MITTLERES-HOHES RISIKO: Deaktiviert die RAM-Komprimierung und erhöht das Risiko von *Rucklern*, wenn der RAM vollständig gefüllt wird. Ideal nur für Systeme mit **16 GB oder mehr** Arbeitsspeicher.
+[VRAM-Komprimierung deaktivieren]
+* HOHES RISIKO: Zwingt die GPU, viel mehr unkomprimierten VRAM zu verwenden. Kann zu Artefakten oder Instabilität führen, wenn der VRAM voll wird.
+
+===========================================================================
+5. NETZWERK (Ping und Latenz)
+===========================================================================
+[Nagle-Algorithmus]
+* PRO: Reduziert die Latenz (Ping) in kompetitiven Spielen, indem Pakete sofort gesendet werden.
+* CONTRA: Kann die Übertragung sehr großer Dateien im lokalen Netzwerk geringfügig verlangsamen.
+[QoS-Bandbreite freigeben]
+* PRO: Entfernt das 20%-Limit, das Windows für seine Updates reserviert.
+* CONTRA: Keines.
+[MMCSS immer aktiv]
+* PRO: Zwingt das System, Spiele und Audio immer zu priorisieren, wodurch Ruckler verhindert werden.
+* CONTRA: Unmerklich höherer Stromverbrauch.
+
+===========================================================================
+6. DEBLOAT (App-Entfernung) - ACHTUNG!
+===========================================================================
+[Microsoft Store entfernen]
+* SEHR HOHES RISIKO: Sie können nichts mehr aus dem Store installieren, weder GamePass noch grundlegende Apps wie den Taschenrechner aktualisieren.
+* EMPFEHLUNG: Nur für Experten.
+[Edge entfernen]
+* RISIKO: Kann Systemlinks und Widgets beschädigen. Microsoft installiert ihn oft neu.
+* EMPFEHLUNG: Besser, seine Funktionen mit KI/Werbungs-Tweaks zu "blockieren", als ihn komplett zu entfernen.
+[RETTUNG - Apps neu installieren]
+* WAS ES BEWIRKT: Versucht, alle werkseitigen Standardanwendungen in Windows (Taschenrechner, Fotos, Store usw.) neu zu installieren und neu zu registrieren.
+* WANN VERWENDEN: Wenn Sie versehentlich etwas gelöscht haben und es wiederherstellen möchten.
+* HINWEIS: Während des Vorgangs werden viele rote Buchstaben (Fehler) in der Konsole angezeigt. Das ist NORMAL, es bedeutet, dass versucht wird, bereits vorhandene oder verwendete Apps zu installieren. Ignorieren Sie dies.
+
+===========================================================================
+© ElmaxiShark Optimizer - Wissen ist Macht.

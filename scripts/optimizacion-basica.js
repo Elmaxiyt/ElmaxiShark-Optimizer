@@ -1,4 +1,4 @@
-// scripts/optimizacion-basica.js (v1.4 - FULL SYNC IDs)
+// scripts/optimizacion-basica.js (v1.5.2 - ULTRA SAFE: NETWORK TWEAKS REMOVED)
 module.exports = {
   apply: [
     { id: 'clean_temp', message: "Limpiando archivos temporales (Usuario)...", command: 'del /f /s /q %TEMP%\\* >nul 2>&1' },
@@ -16,9 +16,8 @@ module.exports = {
     { id: 'ui_transparencia', message: "Desactivando efectos de transparencia...", command: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize" /v EnableTransparency /t REG_DWORD /d 0 /f' },
     { message: "Manteniendo suavizado de fuentes...", command: 'reg add "HKCU\\Control Panel\\Desktop" /v FontSmoothing /t REG_SZ /d 2 /f' },
     { id: 'qol_wallpaper', message: "Mejorando calidad de compresion de Wallpaper...", command: 'reg add "HKCU\\Control Panel\\Desktop" /v "JPEGImportQuality" /t REG_DWORD /d "100" /f' },
-    { id: 'net_dns_cloudflare', message: "Cambiando DNS (Ethernet y Wi-Fi) a Cloudflare/Google...", command: 'netsh interface ipv4 set dnsserver name="Ethernet" static 1.1.1.1 primary >nul 2>&1 & netsh interface ipv4 add dnsserver name="Ethernet" address=8.8.8.8 index=2 >nul 2>&1 & netsh interface ipv4 set dnsserver name="Wi-Fi" static 1.1.1.1 primary >nul 2>&1 & netsh interface ipv4 add dnsserver name="Wi-Fi" address=8.8.8.8 index=2 >nul 2>&1' },
     { id: 'net_flushdns', message: "Limpiando cache de DNS...", command: 'ipconfig /flushdns' },
-    { id: 'net_rss', message: "Activando RSS...", command: 'netsh interface tcp set global rss=enabled' },
+    // ELIMINADO: net_rss (Movido a Red Avanzada)
     { id: 'sys_trim', message: "Verificando TRIM para SSD...", command: 'fsutil behavior set DisableDeleteNotify 0' },
     { id: 'qol_show_extensions', message: "Mostrando extensiones de archivos conocidos...", command: 'reg add "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced" /v "HideFileExt" /t REG_DWORD /d 0 /f' },
     { id: 'ui_menus_animaciones', message: "Acelerando menus y desactivando animaciones...", command: 'reg add "HKCU\\Control Panel\\Desktop" /v MenuShowDelay /t REG_SZ /d 10 /f & reg add "HKCU\\Control Panel\\Desktop\\WindowMetrics" /v MinAnimate /t REG_SZ /d 0 /f' },
@@ -26,7 +25,6 @@ module.exports = {
     { id: 'sys_ntfs_8dot3', message: "Desactivando Nombres 8.3 de NTFS (Mejora rendimiento de disco)...", command: 'fsutil behavior set disable8dot3 1' }
   ],
   revert: [
-    { id: 'net_dns_cloudflare', message: "Restaurando DNS (Ethernet y Wi-Fi) a Automatico (DHCP)...", command: 'netsh interface ipv4 set dnsserver name="Ethernet" source=dhcp >nul 2>&1 & netsh interface ipv4 set dnsserver name="Wi-Fi" source=dhcp >nul 2>&1' },
     { id: 'ui_visualfx', message: "Restaurando efectos visuales (Recomendado)...", command: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects" /v VisualFXSetting /t REG_DWORD /d 0 /f' },
     { id: 'ui_transparencia', message: "Reactivando efectos de transparencia...", command: 'reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize" /v EnableTransparency /t REG_DWORD /d 1 /f' },
     { id: 'qol_wallpaper', message: "Restaurando calidad de Wallpaper...", command: 'reg delete "HKCU\\Control Panel\\Desktop" /v "JPEGImportQuality" /f >nul 2>&1' },

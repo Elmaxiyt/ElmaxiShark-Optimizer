@@ -1,0 +1,65 @@
+QUICK GUIDE: WHICH MODE SHOULD I USE?
+(ElmaxiShark Optimizer v1.5.0)
+
+To avoid issues and get the best result, find your user profile and follow these recommendations:
+
+================================
+BEFORE STARTING (MANDATORY!)
+================================
+
+1.  Step 1: First Lifesaver (Registry Backup): Click the "Registry Backup" button.
+    > ⚠️ IMPORTANT NOTE: This is a manual backup, and is the **last resort** before the Restore Point.
+    If you need to use it, double-click the .reg files **in Windows Safe Mode** to ensure conflict-free reversal.
+2.  Step 2: Second Lifesaver (Restore Point): Click the "Restore Point" button.
+    > 👍 Recommendation: The Restore Point is the safest and easiest way to undo major changes.
+3.  Step 3: After applying any mode, RESTART YOUR PC.
+    The app will remind you, but it is essential that you do so for the changes to take effect.
+
+===============================================
+PROFILE 1: Beginner User / Work Laptop
+===============================================
+
+* Who are you?: You use your PC or laptop to browse, study, or play occasionally.
+  You want it to go faster, but you CANNOT afford for anything to fail.
+* Recommended Mode: Basic or Balanced.
+    * Why: These modes clean the system, disable telemetry, and speed up daily tasks without touching anything that could break stability.
+    * Useful Tools: "System Cleanup" and "Shell Tools" (for quick access shortcuts).
+
+================================
+PROFILE 2: Laptop Gamer
+================================
+
+* Who are you?: You play on a *gaming* laptop.
+  Battery and temperatures matter to you, but so do FPS.
+* Recommended Mode: Balanced, Extreme or Gamer Mode.
+    * Why: "Balanced" gives you a great boost without risking anything.
+      "Extreme" optimizes GPU and system without aggressive network changes.
+      "Gamer Mode" is now 100% safe (it no longer breaks virtualization) and will give you the maximum possible performance.
+
+===============================================
+PROFILE 3: Desktop Gamer (Desktop PC)
+===============================================
+
+* Who are you?: You have a desktop PC for gaming.
+  You want the maximum possible FPS.
+* Recommended Mode: Gamer Mode.
+    * Why: It's the ultimate mode.
+      It applies all safe network (Nagle/QoS), GPU, system, and power optimizations.
+    * Tools: "Advanced Network" and "Advanced Debloat" (to remove resource-hogging bloatware).
+
+===============================================
+PROFILE 4: Expert User / Tweak Enthusiast
+===============================================
+
+* Who are you?: You know what `bcdedit` is, understand the risks, and want total control.
+* Recommended Mode: Custom Mode.
+* Your route:
+    1.  DO NOT apply any 1-click mode (or apply one as a base).
+    2.  Go to the "Custom" menu.
+    3.  "Custom" allows you to select *exactly* what you want, including tweaks we removed from normal modes for safety (like disabling Hyper-V, CPU mitigations, or uninstalling Store apps).
+
+Little by little we are polishing this incredible Tool with your valuable Feedback
+
+Thank you for using ElmaxiShark Optimizer.
+I love you!
+Greetings Elmaxi
